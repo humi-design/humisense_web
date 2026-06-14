@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - HUMISENSE{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="pt-32 pb-20 hero-gradient grid-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="badge badge-primary mb-4">{{ product.category }}</span>
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="gradient-text">{{ product.name }}</span>
+                </h1>
+                <p class="text-2xl text-gray-600 dark:text-gray-400 mb-8">{{ product.tagline }}</p>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">{{ product.description }}</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary text-lg px-8 py-4">
+                        Get Started
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a href="#demo" class="btn btn-outline text-lg px-8 py-4">
+                        Request Demo
+                    </a>
+                </div>
+                <p class="mt-6 text-gray-500">{{ product.pricing }}</p>
+            </div>
+            <div class="relative">
+                <div class="w-full aspect-square max-w-md mx-auto">
+                    <div class="absolute inset-0 bg-gradient-to-br rounded-3xl" style="background-color: {{ product.color }}20;"></div>
+                    <div class="absolute inset-8 bg-gradient-to-br rounded-2xl flex items-center justify-center" style="background-color: {{ product.color }}30;">
+                        <svg class="w-32 h-32" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="section-subtitle mx-auto">Everything you need to build and deploy intelligent applications.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for feature in product.features %}
+            <div class="card p-6 flex items-start gap-4">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background-color: {{ product.color }}20;">
+                    <svg class="w-5 h-5" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <span class="text-gray-700 dark:text-gray-300">{{ feature }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="section bg-gray-100 dark:bg-gray-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="section-title">Why Choose {{ product.name }}?</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                    Experience the benefits of enterprise-grade AI technology.
+                </p>
+                
+                <div class="space-y-6">
+                    {% for benefit in product.benefits %}
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-gray-700 dark:text-gray-300">{{ benefit }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="card p-8">
+                <h3 class="text-2xl font-bold mb-6">Quick Start Example</h3>
+                <div class="code-block">
+                    <code>{{ product.api_example.code }}</code>
+                </div>
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-sm text-gray-500 mb-2">Endpoint: <span class="font-mono text-primary-500">{{ product.api_example.endpoint }}</span></p>
+                    <p class="text-sm text-gray-500">Method: <span class="font-mono text-green-500">{{ product.api_example.method }}</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases Section -->
+<section class="section">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="section-title">Use Cases</h2>
+            <p class="section-subtitle mx-auto">See how {{ product.name }} is transforming industries.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for use_case in product.use_cases %}
+            <div class="card p-6 text-center">
+                <div class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style="background-color: {{ product.color }}20;">
+                    <svg class="w-8 h-8" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">{{ use_case.title }}</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">{{ use_case.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Demo Request Section -->
+<section id="demo" class="section bg-gray-100 dark:bg-gray-800/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="card p-8 md:p-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4">Request a Demo</h2>
+                <p class="text-gray-600 dark:text-gray-400">See {{ product.name }} in action. Our team will contact you to schedule a personalized demo.</p>
+            </div>
+            
+            <form id="demo-form" class="space-y-6">
+                <input type="hidden" name="product" value="{{ product.name }}">
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="label">Name *</label>
+                        <input type="text" name="name" class="input" required>
+                    </div>
+                    <div>
+                        <label class="label">Email *</label>
+                        <input type="email" name="email" class="input" required>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="label">Company</label>
+                        <input type="text" name="company" class="input">
+                    </div>
+                    <div>
+                        <label class="label">Phone</label>
+                        <input type="tel" name="phone" class="input">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="label">Use Case</label>
+                    <textarea name="use_case" rows="3" class="input" placeholder="Tell us about your use case..."></textarea>
+                </div>
+                
+                <div>
+                    <label class="label">Preferred Contact Time</label>
+                    <select name="preferred_time" class="input">
+                        <option value="">Select preferred time</option>
+                        <option value="morning">Morning (9AM - 12PM)</option>
+                        <option value="afternoon">Afternoon (12PM - 5PM)</option>
+                        <option value="evening">Evening (5PM - 8PM)</option>
+                        <option value="any">Any time</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-full text-lg py-4">
+                    Request Demo
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing CTA -->
+<section class="section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+        <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">{{ product.pricing }}</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary text-lg px-8 py-4">
+                Start Free Trial
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline text-lg px-8 py-4">
+                Talk to Sales
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('demo-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        const response = await fetch('{{ url_for("request_demo") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            Swal.fire({
+                title: 'Success!',
+                text: result.message,
+                icon: 'success',
+                confirmButtonColor: '#6366F1'
+            });
+            e.target.reset();
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: result.message,
+                icon: 'error',
+                confirmButtonColor: '#6366F1'
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Something went wrong. Please try again.',
+            icon: 'error',
+            confirmButtonColor: '#6366F1'
+        });
+    }
+});
+</script>
+{% endblock %}

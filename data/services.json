@@ -1,0 +1,242 @@
+[
+  {
+    "id": "web-development",
+    "name": "Web Development",
+    "icon": "globe",
+    "color": "#3B82F6",
+    "short_description": "Custom web applications built with modern frameworks and AI integration.",
+    "description": "We build high-performance web applications using cutting-edge technologies. Our team specializes in creating responsive, accessible, and AI-powered web experiences that drive business growth.",
+    "features": [
+      "Custom web application development",
+      "Progressive Web Apps (PWA)",
+      "AI chatbot integration",
+      "Real-time features and WebSocket",
+      "API development and integration",
+      "Performance optimization",
+      "SEO and accessibility compliance",
+      "Ongoing maintenance and support"
+    ],
+    "technologies": ["React", "Next.js", "Vue.js", "Flask", "Django", "Node.js", "Tailwind CSS"],
+    "starting_price": "Starting at $15,000"
+  },
+  {
+    "id": "mobile-development",
+    "name": "Mobile App Development",
+    "icon": "smartphone",
+    "color": "#10B981",
+    "short_description": "Native and cross-platform mobile apps with intelligent features.",
+    "description": "Create powerful mobile experiences for iOS and Android. We develop apps that leverage AI capabilities to deliver personalized, intuitive user experiences.",
+    "features": [
+      "Native iOS and Android development",
+      "Cross-platform with React Native/Flutter",
+      "AI-powered features and personalization",
+      "Offline-first architecture",
+      "Push notifications and messaging",
+      "Camera and voice integration",
+      "App Store optimization",
+      "Enterprise mobility solutions"
+    ],
+    "technologies": ["Swift", "Kotlin", "React Native", "Flutter", "Firebase", "GraphQL"],
+    "starting_price": "Starting at $25,000"
+  },
+  {
+    "id": "ai-automation",
+    "name": "AI Automation",
+    "icon": "cpu",
+    "color": "#8B5CF6",
+    "short_description": "Streamline operations with intelligent automation solutions.",
+    "description": "Transform your business processes with AI-powered automation. We identify automation opportunities and implement intelligent systems that reduce manual work and improve efficiency.",
+    "features": [
+      "Process analysis and optimization",
+      "Intelligent document processing",
+      "Workflow automation",
+      "AI-powered data entry",
+      "Decision support systems",
+      "Integration with existing systems",
+      "Continuous learning and improvement",
+      "ROI tracking and reporting"
+    ],
+    "technologies": ["Python", "LangChain", "GPT APIs", "Computer Vision", "RPA"],
+    "starting_price": "Starting at $20,000"
+  },
+  {
+    "id": "agentic-ai",
+    "name": "Agentic AI",
+    "icon": "bot",
+    "color": "#F59E0B",
+    "short_description": "Deploy autonomous AI agents for complex task execution.",
+    "description": "Build and deploy autonomous AI agents that can reason, plan, and execute tasks with minimal human intervention. Our agentic AI solutions handle complex workflows end-to-end.",
+    "features": [
+      "Multi-agent system design",
+      "Autonomous decision making",
+      "Tool use and API integration",
+      "Memory and context management",
+      "Safety guardrails and compliance",
+      "Real-time monitoring",
+      "Human-in-the-loop capabilities",
+      "Custom agent training"
+    ],
+    "technologies": ["LangChain", "AutoGPT", "Custom LLMs", "Vector Databases", "Agent Frameworks"],
+    "starting_price": "Starting at $50,000"
+  },
+  {
+    "id": "ai-agents",
+    "name": "AI Agents",
+    "icon": "users",
+    "color": "#EC4899",
+    "short_description": "Custom AI agents tailored to your business needs.",
+    "description": "Develop specialized AI agents designed for your specific use cases. From customer service to research assistance, our AI agents deliver consistent, high-quality results.",
+    "features": [
+      "Domain-specific agent training",
+      "Custom knowledge base integration",
+      "Multi-channel deployment",
+      "Personalization capabilities",
+      "Analytics and insights",
+      "Continuous improvement",
+      "Seamless human handoff",
+      "Compliance and auditing"
+    ],
+    "technologies": ["GPT-4", "Fine-tuning", "RAG", "Vector Search", "Prompt Engineering"],
+    "starting_price": "Starting at $30,000"
+  },
+  {
+    "id": "machine-learning",
+    "name": "Machine Learning",
+    "icon": "brain",
+    "color": "#06B6D4",
+    "short_description": "Custom ML models for prediction, classification, and optimization.",
+    "description": "Develop custom machine learning solutions that solve your unique business challenges. From data preprocessing to model deployment, we build production-ready ML systems.",
+    "features": [
+      "Predictive modeling",
+      "Classification and clustering",
+      "Recommendation systems",
+      "Anomaly detection",
+      "Time series forecasting",
+      "Natural language processing",
+      "Computer vision solutions",
+      "MLOps and model monitoring"
+    ],
+    "technologies": ["Python", "scikit-learn", "TensorFlow", "PyTorch", "XGBoost", "MLflow"],
+    "starting_price": "Starting at $35,000"
+  },
+  {
+    "id": "data-science",
+    "name": "Data Science",
+    "icon": "database",
+    "color": "#14B8A6",
+    "short_description": "Extract valuable insights from your data assets.",
+    "description": "Transform raw data into strategic business insights. Our data science team employs advanced analytics and visualization techniques to help you make data-driven decisions.",
+    "features": [
+      "Data exploration and analysis",
+      "Statistical modeling",
+      "Exploratory data analysis",
+      "Data visualization and dashboards",
+      "A/B testing and experimentation",
+      "Customer segmentation",
+      "Trend analysis and forecasting",
+      "Data storytelling"
+    ],
+    "technologies": ["Python", "R", "Pandas", "NumPy", "Tableau", "Power BI", "SQL"],
+    "starting_price": "Starting at $20,000"
+  },
+  {
+    "id": "power-bi",
+    "name": "Power BI",
+    "icon": "pie-chart",
+    "color": "#F97316",
+    "short_description": "Comprehensive Power BI solutions for business intelligence.",
+    "description": "Unlock the full potential of your data with custom Power BI implementations. We design, develop, and deploy enterprise-grade analytics solutions that drive actionable insights.",
+    "features": [
+      "Custom report and dashboard development",
+      "Data modeling and DAX optimization",
+      "Power BI administration",
+      "Embedded analytics integration",
+      "Real-time data visualization",
+      "Mobile report optimization",
+      "Performance tuning",
+      "Training and documentation"
+    ],
+    "technologies": ["Power BI", "DAX", "Power Query", "SQL Server", "Azure Synapse"],
+    "starting_price": "Starting at $10,000"
+  },
+  {
+    "id": "analytics-reporting",
+    "name": "Analytics & Reporting",
+    "icon": "bar-chart",
+    "color": "#84CC16",
+    "short_description": "Data-driven insights and comprehensive reporting solutions.",
+    "description": "Transform your data into actionable insights with our analytics and reporting services. We help you measure what matters and make informed business decisions.",
+    "features": [
+      "KPI definition and tracking",
+      "Automated reporting systems",
+      "Self-service analytics",
+      "Custom dashboard development",
+      "Data warehouse implementation",
+      "ETL pipeline development",
+      "Real-time analytics",
+      "Executive reporting"
+    ],
+    "technologies": ["Looker", "Metabase", "Apache Superset", "BigQuery", "Snowflake", "dbt"],
+    "starting_price": "Starting at $15,000"
+  },
+  {
+    "id": "ai-consulting",
+    "name": "AI Consulting",
+    "icon": "lightbulb",
+    "color": "#A855F7",
+    "short_description": "Strategic AI guidance and implementation roadmap.",
+    "description": "Navigate your AI journey with expert consulting services. We assess your needs, develop strategies, and guide implementation for successful AI adoption.",
+    "features": [
+      "AI readiness assessment",
+      "Use case identification",
+      "Technology stack recommendations",
+      "Implementation roadmap",
+      "Proof of concept development",
+      "Team training and enablement",
+      "Vendor selection support",
+      "AI ethics and governance"
+    ],
+    "technologies": ["Industry Best Practices", "Custom Frameworks", "Assessment Tools"],
+    "starting_price": "Starting at $5,000"
+  },
+  {
+    "id": "cloud-deployment",
+    "name": "Cloud Deployment",
+    "icon": "cloud",
+    "color": "#0EA5E9",
+    "short_description": "Scalable cloud infrastructure for AI applications.",
+    "description": "Deploy and scale your AI applications with confidence. We provide comprehensive cloud solutions that ensure performance, security, and cost efficiency.",
+    "features": [
+      "Cloud architecture design",
+      "AI workload optimization",
+      "Auto-scaling implementations",
+      "Security and compliance",
+      "Cost optimization",
+      "Disaster recovery planning",
+      "CI/CD for ML pipelines",
+      "Monitoring and alerting"
+    ],
+    "technologies": ["AWS", "Azure", "Google Cloud", "Kubernetes", "Docker", "Terraform"],
+    "starting_price": "Starting at $25,000"
+  },
+  {
+    "id": "mlops",
+    "name": "MLOps",
+    "icon": "settings",
+    "color": "#EF4444",
+    "short_description": "Production-ready ML infrastructure and workflows.",
+    "description": "Build robust ML infrastructure with modern MLOps practices. We help you automate, monitor, and maintain machine learning systems in production.",
+    "features": [
+      "ML pipeline automation",
+      "Model versioning and registry",
+      "Automated model training",
+      "Model serving and inference",
+      "Performance monitoring",
+      "A/B testing infrastructure",
+      "Feature stores",
+      "Model drift detection"
+    ],
+    "technologies": ["MLflow", "Kubeflow", "DVC", "Airflow", "Seldon", "Weights & Biases"],
+    "starting_price": "Starting at $40,000"
+  }
+]

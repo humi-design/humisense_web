@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Jennifer Martinez",
+    "role": "CTO",
+    "company": "TechCorp Industries",
+    "avatar": "JM",
+    "quote": "HUMISENSE transformed our customer service with their Sentinel Chat platform. We've seen a 60% reduction in support tickets and our customers love the instant, intelligent responses.",
+    "rating": 5
+  },
+  {
+    "id": 2,
+    "name": "David Chen",
+    "role": "VP of Engineering",
+    "company": "FinanceHub",
+    "avatar": "DC",
+    "quote": "The HumiSense Analytics AI platform gave us insights we never knew existed. We can now make data-driven decisions in minutes instead of days.",
+    "rating": 5
+  },
+  {
+    "id": 3,
+    "name": "Sarah Thompson",
+    "role": "Research Director",
+    "company": "MedTech Labs",
+    "avatar": "ST",
+    "quote": "HumiSense Research Assistant has accelerated our literature reviews by 90%. It's become an indispensable tool for our research team.",
+    "rating": 5
+  },
+  {
+    "id": 4,
+    "name": "Michael Brown",
+    "role": "CEO",
+    "company": "RetailMax",
+    "avatar": "MB",
+    "quote": "The AI agents built by HUMISENSE handle our inventory management autonomously. The ROI was evident within the first month.",
+    "rating": 5
+  },
+  {
+    "id": 5,
+    "name": "Emily Watson",
+    "role": "Data Science Lead",
+    "company": "DataDriven Inc",
+    "avatar": "EW",
+    "quote": "Their MLOps consulting helped us build a production ML pipeline that scales to millions of predictions daily. Exceptional expertise and support.",
+    "rating": 5
+  },
+  {
+    "id": 6,
+    "name": "Robert Garcia",
+    "role": "Product Manager",
+    "company": "SmartHome Solutions",
+    "avatar": "RG",
+    "quote": "Integrating HumiSense Voice API was seamless. Our voice-controlled devices now understand natural speech with 99% accuracy.",
+    "rating": 5
+  },
+  {
+    "id": 7,
+    "name": "Lisa Anderson",
+    "role": "Head of Innovation",
+    "company": "Enterprise Solutions",
+    "avatar": "LA",
+    "quote": "HUMISENSE Agent Studio enabled us to deploy 15 specialized AI agents in just 3 months. The ROI has been phenomenal.",
+    "rating": 5
+  },
+  {
+    "id": 8,
+    "name": "James Wilson",
+    "role": "Director of Operations",
+    "company": "LogiTech",
+    "avatar": "JW",
+    "quote": "Their AI automation services streamlined our entire supply chain. We couldn't imagine operating without these systems now.",
+    "rating": 5
+  }
+]

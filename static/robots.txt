@@ -1,0 +1,25 @@
+# HUMISENSE robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://humisense.com/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /static/uploads/
+
+# Allow search engines to crawl important pages
+Allow: /
+Allow: /products/
+Allow: /services/
+Allow: /courses/
+Allow: /research/
+Allow: /about/
+Allow: /contact/

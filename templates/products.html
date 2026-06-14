@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - HUMISENSE{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="pt-32 pb-20 hero-gradient grid-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+            <span class="text-primary-500 font-semibold text-sm uppercase tracking-wider">Our Products</span>
+            <h1 class="text-5xl md:text-6xl font-bold mt-4 mb-6">
+                AI-Powered Products for <span class="gradient-text">Every Need</span>
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400">
+                From voice APIs to autonomous agents, our comprehensive suite of AI products helps you build, deploy, and scale intelligent applications.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Products Grid -->
+<section class="section">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for product in products %}
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="card product-card p-8 group">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6" style="background-color: {{ product.color }}20;">
+                    <svg class="w-8 h-8" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {% if product.icon == 'mic' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        {% elif product.icon == 'message-circle' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        {% elif product.icon == 'bot' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        {% elif product.icon == 'bar-chart-2' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        {% elif product.icon == 'book-open' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        {% else %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        {% endif %}
+                    </svg>
+                </div>
+                
+                <span class="badge badge-primary mb-4">{{ product.category }}</span>
+                
+                <h3 class="text-2xl font-bold mb-2 group-hover:text-primary-500 transition-colors">{{ product.name }}</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ product.tagline }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mb-6 line-clamp-3">{{ product.description }}</p>
+                
+                <div class="flex items-center text-primary-500 font-semibold">
+                    Learn more
+                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section bg-gray-100 dark:bg-gray-800/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-bold mb-6">Need a Custom Solution?</h2>
+        <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
+            We also offer custom AI development services to build tailored solutions for your specific needs.
+        </p>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary text-lg px-8 py-4">
+            Contact Sales
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+        </a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,192 @@
+[
+  {
+    "id": "voice-api",
+    "name": "HumiSense Voice API",
+    "tagline": "Transform Speech into Intelligent Action",
+    "description": "A powerful voice recognition and synthesis API that enables seamless speech-to-text, text-to-speech, and voice command capabilities for your applications.",
+    "category": "APIs",
+    "icon": "mic",
+    "color": "#6366F1",
+    "features": [
+      "Real-time speech recognition with 99.2% accuracy",
+      "Multi-language support (50+ languages)",
+      "Custom voice model training",
+      "Noise cancellation and audio enhancement",
+      "Speaker diarization",
+      "Emotion detection in voice",
+      "Low-latency streaming responses",
+      "WebSocket and REST API support"
+    ],
+    "benefits": [
+      "Reduce development time by 70%",
+      "Improve user engagement with voice interfaces",
+      "Accessible products for all users",
+      "24/7 automated customer support",
+      "Multilingual global reach"
+    ],
+    "use_cases": [
+      {"title": "Customer Service", "description": "AI-powered voice assistants for 24/7 customer support"},
+      {"title": "Healthcare", "description": "Voice-enabled clinical documentation and patient monitoring"},
+      {"title": "Accessibility", "description": "Voice control for applications serving users with disabilities"},
+      {"title": "Smart Home", "description": "Voice-controlled IoT devices and home automation"}
+    ],
+    "api_example": {
+      "endpoint": "/api/v1/voice/transcribe",
+      "method": "POST",
+      "code": "import requests\n\nresponse = requests.post(\n    'https://api.humisense.com/v1/voice/transcribe',\n    headers={'Authorization': 'Bearer YOUR_API_KEY'},\n    files={'audio': open('recording.wav', 'rb')}\n)\nprint(response.json())"
+    },
+    "pricing": "Starting at $99/month for 100,000 API calls"
+  },
+  {
+    "id": "sentinel-chat",
+    "name": "Sentinel Chat",
+    "tagline": "Enterprise-Grade Conversational AI",
+    "description": "A secure, customizable conversational AI platform for building intelligent chatbots and virtual assistants that understand context and intent.",
+    "category": "Platforms",
+    "icon": "message-circle",
+    "color": "#10B981",
+    "features": [
+      "Natural Language Understanding (NLU) engine",
+      "Context-aware conversation management",
+      "Multi-channel deployment (web, mobile, messaging)",
+      "Enterprise SSO and SAML integration",
+      "Custom knowledge base integration",
+      "Conversation analytics dashboard",
+      "A/B testing for responses",
+      "Compliance with SOC2 and GDPR"
+    ],
+    "benefits": [
+      "Handle 10x more customer queries",
+      "Reduce support ticket volume by 60%",
+      "Consistent brand voice across channels",
+      "Real-time conversation insights",
+      "Seamless human handoff"
+    ],
+    "use_cases": [
+      {"title": "Sales", "description": "AI sales assistant for lead qualification and product recommendations"},
+      {"title": "Support", "description": "Automated customer support with instant resolutions"},
+      {"title": "HR", "description": "Employee self-service chatbot for policy questions"},
+      {"title": "Education", "description": "Interactive learning assistants for students"}
+    ],
+    "api_example": {
+      "endpoint": "/api/v1/chat/send",
+      "method": "POST",
+      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\nresponse = client.chat.send(\n    message='I need help with my order',\n    context={'user_id': 'user_123', 'order_id': 'ORD-456'}\n)\nprint(response.reply)"
+    },
+    "pricing": "Starting at $299/month with unlimited conversations"
+  },
+  {
+    "id": "agent-studio",
+    "name": "HumiSense Agent Studio",
+    "tagline": "Build Autonomous AI Agents",
+    "description": "A comprehensive platform for designing, training, and deploying autonomous AI agents that can reason, plan, and execute complex tasks.",
+    "category": "Platforms",
+    "icon": "bot",
+    "color": "#F59E0B",
+    "features": [
+      "Visual workflow builder",
+      "Pre-built agent templates",
+      "Multi-modal input support",
+      "Tool and API integration framework",
+      "Memory and context management",
+      "Agent orchestration dashboard",
+      "Real-time monitoring and logging",
+      "Safety guardrails configuration"
+    ],
+    "benefits": [
+      "Automate complex business workflows",
+      "Reduce operational costs by 40%",
+      "Scale operations without scaling headcount",
+      "Improve decision-making speed",
+      "Enable 24/7 autonomous operations"
+    ],
+    "use_cases": [
+      {"title": "Research", "description": "Autonomous agents for literature review and data analysis"},
+      {"title": "Operations", "description": "Automated workflow orchestration across systems"},
+      {"title": "Content", "description": "AI agents for content creation and curation"},
+      {"title": "Finance", "description": "Automated financial analysis and reporting agents"}
+    ],
+    "api_example": {
+      "endpoint": "/api/v1/agents/deploy",
+      "method": "POST",
+      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\nagent = client.agents.create(\n    name='Research Assistant',\n    capabilities=['web_search', 'data_analysis', 'report_generation'],\n    memory_type='vector_store'\n)\nagent.deploy()"
+    },
+    "pricing": "Starting at $599/month per agent"
+  },
+  {
+    "id": "analytics-ai",
+    "name": "HumiSense Analytics AI",
+    "tagline": "Intelligence Beyond Dashboards",
+    "description": "An AI-powered analytics platform that transforms raw data into actionable insights using advanced machine learning and natural language queries.",
+    "category": "Analytics",
+    "icon": "bar-chart-2",
+    "color": "#EC4899",
+    "features": [
+      "Natural language data querying",
+      "Automated insight generation",
+      "Predictive analytics",
+      "Anomaly detection",
+      "Causal inference engine",
+      "Custom visualization generation",
+      "Data preparation automation",
+      "Collaborative analytics workspaces"
+    ],
+    "benefits": [
+      "Get insights in seconds, not days",
+      "Democratize data access across organization",
+      "Identify opportunities and risks early",
+      "Make data-driven decisions with confidence",
+      "Reduce time from data to insight by 80%"
+    ],
+    "use_cases": [
+      {"title": "Business Intelligence", "description": "AI-powered dashboards with automatic insights"},
+      {"title": "Marketing", "description": "Customer behavior analysis and campaign optimization"},
+      {"title": "Operations", "description": "Supply chain optimization and efficiency analysis"},
+      {"title": "Finance", "description": "Financial forecasting and risk assessment"}
+    ],
+    "api_example": {
+      "endpoint": "/api/v1/analytics/query",
+      "method": "POST",
+      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\ninsights = client.analytics.query(\n    question='What were our top performing products last quarter?',\n    data_sources=['sales_db', 'inventory_db']\n)\nfor insight in insights:\n    print(insight.summary)"
+    },
+    "pricing": "Starting at $399/month for team tier"
+  },
+  {
+    "id": "research-assistant",
+    "name": "HumiSense Research Assistant",
+    "tagline": "Accelerate Scientific Discovery",
+    "description": "An AI-powered research tool that helps scientists and researchers discover insights, analyze papers, and accelerate the research process.",
+    "category": "Research",
+    "icon": "book-open",
+    "color": "#8B5CF6",
+    "features": [
+      "Semantic paper search across millions of sources",
+      "Automatic literature review generation",
+      "Research hypothesis suggestion",
+      "Experimental design assistance",
+      "Data analysis and visualization",
+      "Citation network analysis",
+      "Collaboration and annotation tools",
+      "Reproducibility tracking"
+    ],
+    "benefits": [
+      "Reduce literature review time by 90%",
+      "Discover relevant research faster",
+      "Identify research gaps and opportunities",
+      "Accelerate publication process",
+      "Improve research reproducibility"
+    ],
+    "use_cases": [
+      {"title": "Academic Research", "description": "Comprehensive literature reviews and hypothesis generation"},
+      {"title": "Pharmaceutical", "description": "Drug discovery and clinical trial analysis"},
+      {"title": "Technical Research", "description": "Engineering and computer science research acceleration"},
+      {"title": "Market Research", "description": "Competitive analysis and market opportunity identification"}
+    ],
+    "api_example": {
+      "endpoint": "/api/v1/research/literature-review",
+      "method": "POST",
+      "code": "import humisense\n\nclient = humisense.Client(api_key='YOUR_API_KEY')\nreview = client.research.literature_review(\n    topic='transformer architectures for NLP',\n    max_papers=50,\n    include_citations=True\n)\nprint(review.markdown)"
+    },
+    "pricing": "Starting at $199/month for individual researchers"
+  }
+]

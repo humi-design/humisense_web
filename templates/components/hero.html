@@ -1,0 +1,103 @@
+<!-- Hero Section Component -->
+<section class="relative min-h-screen flex items-center hero-gradient grid-pattern overflow-hidden pt-20">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl floating"></div>
+        <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl floating floating-delay-2"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary-500/5 to-accent-500/5 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="text-center lg:text-left">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-sm font-medium mb-6 fade-in-up">
+                    <span class="w-2 h-2 bg-primary-400 rounded-full mr-2 animate-pulse"></span>
+                    Trusted by 500+ Enterprise Clients
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 fade-in-up">
+                    <span class="gradient-text">Building the Future</span>
+                    <br>
+                    <span class="text-gray-900 dark:text-white">with AI</span>
+                </h1>
+                
+                <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-xl mx-auto lg:mx-0 fade-in-up">
+                    Transform your business with cutting-edge AI solutions. From voice APIs to autonomous agents, we provide the tools you need to succeed in the AI era.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start fade-in-up">
+                    <a href="{{ url_for('products') }}" class="btn btn-primary text-lg px-8 py-4">
+                        Explore Products
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a href="{{ url_for('contact') }}" class="btn btn-outline text-lg px-8 py-4">
+                        Request Demo
+                    </a>
+                </div>
+                
+                <!-- Trust Badges -->
+                <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 fade-in-up">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Trusted by industry leaders</p>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-8 opacity-60">
+                        <span class="text-2xl font-bold text-gray-400">TechCorp</span>
+                        <span class="text-2xl font-bold text-gray-400">FinanceHub</span>
+                        <span class="text-2xl font-bold text-gray-400">MedTech</span>
+                        <span class="text-2xl font-bold text-gray-400">RetailMax</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Content - Visual -->
+            <div class="relative hidden lg:block">
+                <div class="relative w-full aspect-square max-w-lg mx-auto">
+                    <!-- Main Visual Element -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-full animate-pulse"></div>
+                    <div class="absolute inset-8 bg-gradient-to-br from-primary-500/30 to-accent-500/30 rounded-full"></div>
+                    <div class="absolute inset-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
+                        <svg class="w-32 h-32 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Orbiting Elements -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-white dark:bg-gray-800 rounded-2xl shadow-xl flex items-center justify-center floating">
+                        <svg class="w-10 h-10 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-20 bg-white dark:bg-gray-800 rounded-2xl shadow-xl flex items-center justify-center floating floating-delay-1">
+                        <svg class="w-10 h-10 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-20 bg-white dark:bg-gray-800 rounded-2xl shadow-xl flex items-center justify-center floating floating-delay-2">
+                        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-20 h-20 bg-white dark:bg-gray-800 rounded-2xl shadow-xl flex items-center justify-center floating floating-delay-3">
+                        <svg class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400">
+        <span class="text-sm">Scroll to explore</span>
+        <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center p-2">
+            <div class="w-1 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+        </div>
+    </div>
+</section>
