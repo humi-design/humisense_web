@@ -1,162 +1,140 @@
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 headroom">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
-            <!-- Logo -->
-            <a href="{{ url_for('home') }}" class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
+<!-- Premium Navigation Bar -->
+<nav id="navbar" class="navbar">
+    <div class="navbar-container">
+        <!-- Logo -->
+        <a href="{{ url_for('home') }}" class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-lg shadow-primary-500/25">
+                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <span class="logo">HUMISENSE</span>
+        </a>
+        
+        <!-- Desktop Navigation -->
+        <div class="hide-mobile">
+            <ul class="nav-links">
+                <li><a href="{{ url_for('products') }}" class="nav-link {{ 'active' if request.endpoint == 'products' or request.endpoint == 'product_detail' else '' }}">Products</a></li>
+                <li><a href="{{ url_for('services') }}" class="nav-link {{ 'active' if request.endpoint == 'services' else '' }}">Services</a></li>
+                <li><a href="{{ url_for('research') }}" class="nav-link {{ 'active' if request.endpoint == 'research' else '' }}">Research</a></li>
+                <li><a href="{{ url_for('courses') }}" class="nav-link {{ 'active' if request.endpoint == 'courses' or request.endpoint == 'course_detail' else '' }}">Education</a></li>
+                <li><a href="{{ url_for('about') }}" class="nav-link {{ 'active' if request.endpoint == 'about' else '' }}">About</a></li>
+            </ul>
+        </div>
+        
+        <!-- CTA Buttons -->
+        <div class="nav-actions">
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary hidden md:inline-flex">
+                Contact Us
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-primary magnetic-btn btn-glow btn-ripple">
+                <span class="btn-content flex items-center gap-2">
+                    Get Started
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
-                </div>
-                <span class="text-2xl font-bold gradient-text">HUMISENSE</span>
+                </span>
             </a>
             
-            <!-- Desktop Navigation -->
-            <div class="hidden lg:flex items-center space-x-8">
-                <a href="{{ url_for('home') }}" class="nav-link {{ 'active' if request.endpoint == 'home' else '' }}">Home</a>
-                <a href="{{ url_for('products') }}" class="nav-link {{ 'active' if request.endpoint == 'products' or request.endpoint == 'product_detail' else '' }}">Products</a>
-                <a href="{{ url_for('services') }}" class="nav-link {{ 'active' if request.endpoint == 'services' else '' }}">Services</a>
-                <a href="{{ url_for('courses') }}" class="nav-link {{ 'active' if request.endpoint == 'courses' or request.endpoint == 'course_detail' else '' }}">Courses</a>
-                <a href="{{ url_for('research') }}" class="nav-link {{ 'active' if request.endpoint == 'research' else '' }}">Research</a>
-                <a href="{{ url_for('about') }}" class="nav-link {{ 'active' if request.endpoint == 'about' else '' }}">About</a>
-                <a href="{{ url_for('contact') }}" class="nav-link {{ 'active' if request.endpoint == 'contact' else '' }}">Contact</a>
-            </div>
-            
-            <!-- Right Actions -->
-            <div class="hidden lg:flex items-center space-x-4">
-                <!-- Theme Toggle -->
-                <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                    <svg id="sun-icon" class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    </svg>
-                    <svg id="moon-icon" class="w-6 h-6 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                    </svg>
-                </button>
-                
-                <a href="{{ url_for('contact') }}" class="btn btn-primary">
-                    Get Started
-                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
-            </div>
-            
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="mobile-menu-toggle md:hidden p-2" aria-label="Toggle menu">
+                <span class="block w-6 h-0.5 bg-white mb-1.5 transition-transform"></span>
+                <span class="block w-6 h-0.5 bg-white mb-1.5 transition-opacity"></span>
+                <span class="block w-6 h-0.5 bg-white transition-transform"></span>
             </button>
-        </div>
-    </div>
-    
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="mobile-menu lg:hidden">
-        <div class="p-6">
-            <div class="flex items-center justify-between mb-8">
-                <span class="text-2xl font-bold gradient-text">HUMISENSE</span>
-                <button id="mobile-menu-close" class="p-2 rounded-lg hover:bg-gray-800">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="space-y-4">
-                <a href="{{ url_for('home') }}" class="block py-3 text-lg font-medium hover:text-primary-400 transition-colors">Home</a>
-                <a href="{{ url_for('products') }}" class="block py-3 text-lg font-medium hover:text-primary-400 transition-colors">Products</a>
-                <a href="{{ url_for('services') }}" class="block py-3 text-lg font-medium hover:text-primary-400 transition-colors">Services</a>
-                <a href="{{ url_for('courses') }}" class="block py-3 text-lg font-medium hover:text-primary-400 transition-colors">Courses</a>
-                <a href="{{ url_for('research') }}" class="block py-3 text-lg font-medium hover:text-primary-400 transition-colors">Research</a>
-                <a href="{{ url_for('about') }}" class="block py-3 text-lg font-medium hover:text-primary-400 transition-colors">About</a>
-                <a href="{{ url_for('contact') }}" class="block py-3 text-lg font-medium hover:text-primary-400 transition-colors">Contact</a>
-            </div>
-            
-            <div class="mt-8 pt-8 border-t border-gray-700">
-                <div class="flex items-center justify-between mb-6">
-                    <span class="text-sm text-gray-400">Theme</span>
-                    <button id="mobile-theme-toggle" class="p-2 rounded-lg bg-gray-800">
-                        <svg id="mobile-sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                        </svg>
-                        <svg id="mobile-moon-icon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                        </svg>
-                    </button>
-                </div>
-                
-                <a href="{{ url_for('contact') }}" class="btn btn-primary w-full justify-center">
-                    Get Started
-                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
-            </div>
         </div>
     </div>
 </nav>
 
+<!-- Mobile Menu Overlay -->
+<div class="menu-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-full max-w-md h-full bg-[#0a0f1c] z-50 transform translate-x-full transition-transform duration-300">
+    <div class="p-8 h-full flex flex-col">
+        <div class="flex items-center justify-between mb-12">
+            <span class="text-2xl font-bold gradient-text">HUMISENSE</span>
+            <button id="mobile-menu-close" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <ul class="space-y-6 flex-1">
+            <li><a href="{{ url_for('products') }}" class="text-2xl font-semibold hover:text-primary-400 transition-colors block py-2">Products</a></li>
+            <li><a href="{{ url_for('services') }}" class="text-2xl font-semibold hover:text-primary-400 transition-colors block py-2">Services</a></li>
+            <li><a href="{{ url_for('research') }}" class="text-2xl font-semibold hover:text-primary-400 transition-colors block py-2">Research</a></li>
+            <li><a href="{{ url_for('courses') }}" class="text-2xl font-semibold hover:text-primary-400 transition-colors block py-2">Education</a></li>
+            <li><a href="{{ url_for('about') }}" class="text-2xl font-semibold hover:text-primary-400 transition-colors block py-2">About</a></li>
+            <li><a href="{{ url_for('contact') }}" class="text-2xl font-semibold hover:text-primary-400 transition-colors block py-2">Contact</a></li>
+        </ul>
+        
+        <div class="pt-8 border-t border-white/10">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary w-full justify-center text-lg py-4 btn-glow btn-ripple">
+                Get Started
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+
 <script>
-// Mobile menu toggle
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
-const mobileMenuClose = document.getElementById('mobile-menu-close');
-
-if (mobileMenuBtn && mobileMenu && mobileMenuClose) {
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-    
-    mobileMenuClose.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        document.body.style.overflow = '';
-    });
-    
-    // Close on link click
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-    });
-}
-
-// Theme toggle
-function toggleTheme() {
-    const html = document.documentElement;
-    const isDark = html.classList.contains('dark');
-    
-    if (isDark) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-    } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-    }
-}
-
-document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
-document.getElementById('mobile-theme-toggle')?.addEventListener('click', toggleTheme);
-
-// Headroom initialization
 document.addEventListener('DOMContentLoaded', () => {
-    const navbar = document.getElementById('navbar');
-    if (navbar && typeof Headroom !== 'undefined') {
-        const headroom = new Headroom(navbar, {
-            offset: 100,
-            tolerance: 5,
-            classes: {
-                initial: 'headroom',
-                pinned: 'headroom--pinned',
-                unpinned: 'headroom--unpinned',
-                top: 'headroom--top',
-                notTop: 'headroom--not-top'
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const menuOverlay = document.querySelector('.menu-overlay');
+    const body = document.body;
+
+    function openMenu() {
+        mobileMenu.classList.add('active');
+        menuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        menuOverlay.classList.add('opacity-100');
+        mobileMenu.style.transform = 'translateX(0)';
+        body.style.overflow = 'hidden';
+        
+        // Animate hamburger to X
+        const lines = mobileMenuBtn.querySelectorAll('span');
+        gsap.to(lines[0], { rotation: 45, y: 6, duration: 0.3 });
+        gsap.to(lines[1], { opacity: 0, duration: 0.15 });
+        gsap.to(lines[2], { rotation: -45, y: -6, duration: 0.3 });
+    }
+
+    function closeMenu() {
+        mobileMenu.classList.remove('active');
+        menuOverlay.classList.add('opacity-0', 'pointer-events-none');
+        menuOverlay.classList.remove('opacity-100');
+        mobileMenu.style.transform = 'translateX(100%)';
+        body.style.overflow = '';
+        
+        // Animate X to hamburger
+        const lines = mobileMenuBtn.querySelectorAll('span');
+        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3 });
+        gsap.to(lines[1], { opacity: 1, duration: 0.3 });
+        gsap.to(lines[2], { rotation: 0, y: 0, duration: 0.3 });
+    }
+
+    if (mobileMenuBtn && mobileMenu && mobileMenuClose) {
+        mobileMenuBtn.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
             }
         });
-        headroom.init();
+        
+        mobileMenuClose.addEventListener('click', closeMenu);
+        menuOverlay?.addEventListener('click', closeMenu);
+        
+        // Close on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
     }
 });
 </script>
