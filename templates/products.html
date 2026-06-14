@@ -1,78 +1,152 @@
 {% extends 'base.html' %}
 
-{% block title %}Products - HUMISENSE{% endblock %}
+{% block title %}AI Products - HUMISENSE{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="pt-32 pb-20 hero-gradient grid-pattern">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto">
-            <span class="text-primary-500 font-semibold text-sm uppercase tracking-wider">Our Products</span>
-            <h1 class="text-5xl md:text-6xl font-bold mt-4 mb-6">
-                AI-Powered Products for <span class="gradient-text">Every Need</span>
-            </h1>
-            <p class="text-xl text-gray-600 dark:text-gray-400">
-                From voice APIs to autonomous agents, our comprehensive suite of AI products helps you build, deploy, and scale intelligent applications.
-            </p>
-        </div>
+<!-- Page Header -->
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="page-header-gradient"></div>
+    </div>
+    <div class="page-header-content">
+        <span class="hero-tagline">MAKE IT HAPPEN</span>
+        <h1 class="page-header-title">AI Products</h1>
+        <p class="page-header-subtitle">
+            Enterprise-grade AI solutions built for production. From voice APIs to autonomous agents, our products power the next generation of intelligent applications.
+        </p>
     </div>
 </section>
 
-<!-- Products Grid -->
+<!-- Products Section -->
 <section class="section">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="section-container">
+        <!-- Products Grid -->
+        <div class="products-grid stagger-children">
             {% for product in products %}
-            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="card product-card p-8 group">
-                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6" style="background-color: {{ product.color }}20;">
-                    <svg class="w-8 h-8" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        {% if product.icon == 'mic' %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                        {% elif product.icon == 'message-circle' %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        {% elif product.icon == 'bot' %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        {% elif product.icon == 'bar-chart-2' %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        {% elif product.icon == 'book-open' %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                        {% else %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        {% endif %}
+            <div class="product-card">
+                <div class="product-icon" style="background: {{ product.color }}20; color: {{ product.color }}">
+                    {% if product.icon == 'mic' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" x2="12" y1="19" y2="22"/>
                     </svg>
-                </div>
-                
-                <span class="badge badge-primary mb-4">{{ product.category }}</span>
-                
-                <h3 class="text-2xl font-bold mb-2 group-hover:text-primary-500 transition-colors">{{ product.name }}</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ product.tagline }}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-500 mb-6 line-clamp-3">{{ product.description }}</p>
-                
-                <div class="flex items-center text-primary-500 font-semibold">
-                    Learn more
-                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    {% elif product.icon == 'message-circle' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
                     </svg>
+                    {% elif product.icon == 'bot' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8"/>
+                        <rect width="16" height="12" x="4" y="8" rx="2"/>
+                        <path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+                    </svg>
+                    {% elif product.icon == 'bar-chart-2' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/>
+                    </svg>
+                    {% elif product.icon == 'book-open' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    {% endif %}
                 </div>
-            </a>
+                <span class="product-category">{{ product.category }}</span>
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-tagline">{{ product.tagline }}</p>
+                <p class="product-description mb-lg">{{ product.description }}</p>
+                <ul class="product-features">
+                    {% for feature in product.features[:6] %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                <div class="flex gap-md mt-xl">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-primary flex-1 justify-center">
+                        Learn More
+                    </a>
+                    <a href="{{ url_for('contact') }}" class="btn btn-secondary">
+                        Request Demo
+                    </a>
+                </div>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
+<!-- Features Section -->
+<section class="section bg-secondary">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                </svg>
+                Why HUMISENSE
+            </span>
+            <h2 class="section-title">Enterprise-Grade Infrastructure</h2>
+            <p class="section-subtitle">
+                Built for scale, security, and reliability. Our products meet the highest standards for enterprise deployment.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
+            <div class="card text-center">
+                <div class="w-16 h-16 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                <h4 class="text-lg font-semibold mb-sm">SOC2 Compliant</h4>
+                <p class="text-sm text-secondary">Enterprise-grade security with SOC2 Type II certification and GDPR compliance.</p>
+            </div>
+            
+            <div class="card text-center">
+                <div class="w-16 h-16 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18"/>
+                        <path d="m19 9-5 5-4-4-3 3"/>
+                    </svg>
+                </div>
+                <h4 class="text-lg font-semibold mb-sm">99.9% Uptime</h4>
+                <p class="text-sm text-secondary">Production-ready infrastructure with redundant systems and 24/7 monitoring.</p>
+            </div>
+            
+            <div class="card text-center">
+                <div class="w-16 h-16 mx-auto mb-lg rounded-2xl bg-primary/10 flex items-center justify-center text-accent-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <h4 class="text-lg font-semibold mb-sm">Low Latency</h4>
+                <p class="text-sm text-secondary">Global edge network ensures fast response times worldwide.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CTA Section -->
-<section class="section bg-gray-100 dark:bg-gray-800/50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-4xl font-bold mb-6">Need a Custom Solution?</h2>
-        <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
-            We also offer custom AI development services to build tailored solutions for your specific needs.
+<section class="cta-section">
+    <div class="cta-bg">
+        <div class="cta-gradient"></div>
+    </div>
+    <div class="cta-content" data-animate>
+        <h2 class="cta-title">
+            Ready to <span class="gradient-text">Get Started</span>?
+        </h2>
+        <p class="cta-subtitle">
+            Schedule a demo to see our AI products in action.
         </p>
-        <a href="{{ url_for('contact') }}" class="btn btn-primary text-lg px-8 py-4">
-            Contact Sales
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-        </a>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                Request Demo
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary btn-lg">
+                Contact Sales
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %}
