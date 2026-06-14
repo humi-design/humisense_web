@@ -1,298 +1,272 @@
 {% extends 'base.html' %}
 
-{% block title %}HUMISENSE - Building the Future of AI{% endblock %}
+{% block title %}HUMISENSE - Building the Future with AI | MAKE IT HAPPEN{% endblock %}
 
 {% block content %}
 <!-- =====================================================
-     HERO SECTION - Immersive AI Experience
+     HERO SECTION
      ===================================================== -->
-<section id="hero" class="hero relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-    <!-- Three.js AI Orb Container -->
-    <div id="ai-orb-container" class="absolute inset-0 z-0"></div>
-    
-    <!-- Hero Background Elements -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div class="absolute top-1/4 -left-40 w-[600px] h-[600px] bg-primary-500/10 rounded-full blur-[120px] floating-card"></div>
-        <div class="absolute bottom-1/4 -right-40 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] floating-card" style="animation-delay: -3s;"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-r from-primary-500/5 via-purple-500/5 to-cyan-500/5 rounded-full blur-[150px]"></div>
+<section id="hero" class="hero">
+    <!-- Background Gradient -->
+    <div class="hero-bg">
+        <div class="hero-gradient"></div>
     </div>
     
-    <!-- Grid Pattern -->
-    <div class="absolute inset-0 grid-pattern opacity-30 z-0"></div>
-    
     <!-- Hero Content -->
-    <div class="relative z-10 section-container text-center px-4">
+    <div class="hero-content">
         <!-- Badge -->
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 fade-in-up" data-animate>
-            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-            <span class="text-sm font-medium text-gray-300">Trusted by 500+ Enterprise Clients</span>
+        <div class="hero-badge" data-animate>
+            <span class="hero-badge-dot"></span>
+            <span>Trusted by 500+ Enterprise Clients Worldwide</span>
         </div>
         
         <!-- Main Headline -->
-        <h1 class="text-[clamp(3rem,8vw,8rem)] font-bold font-display leading-[1.05] mb-8 fade-in-up" data-animate data-delay="100">
-            <span class="gradient-text">Build AI</span><br>
-            <span class="text-white">That Works.</span>
+        <h1 class="hero-title" data-animate data-delay="100">
+            <span class="hero-title-line">Building the Future</span>
+            <span class="hero-title-line gradient-text">with AI</span>
         </h1>
         
+        <!-- Tagline -->
+        <span class="hero-tagline" data-animate data-delay="200">MAKE IT HAPPEN</span>
+        
         <!-- Subheadline -->
-        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 fade-in-up" data-animate data-delay="200">
-            From research to production, HUMISENSE provides the infrastructure, tools, and expertise to build intelligent systems that transform industries.
+        <p class="hero-subtitle" data-animate data-delay="300">
+            Transform ideas into intelligent products, AI agents, automation systems, research innovations, and scalable digital experiences.
         </p>
         
         <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in-up" data-animate data-delay="300">
-            <a href="{{ url_for('contact') }}" class="btn btn-primary magnetic-btn btn-glow btn-ripple text-lg px-8 py-4">
-                <span class="btn-content flex items-center gap-2">
-                    Start Building
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        <div class="hero-cta" data-animate data-delay="400">
+            <a href="{{ url_for('products') }}" class="btn btn-primary btn-lg">
+                <span class="flex items-center gap-2">
+                    Explore Products
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"/>
+                        <path d="m12 5 7 7-7 7"/>
                     </svg>
                 </span>
             </a>
-            <a href="{{ url_for('products') }}" class="btn btn-secondary magnetic-btn text-lg px-8 py-4">
-                <span class="btn-content flex items-center gap-2">
-                    Explore Products
-                </span>
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary btn-lg">
+                Request Demo
             </a>
         </div>
         
         <!-- Trust Indicators -->
-        <div class="mt-20 pt-12 border-t border-white/5 fade-in-up" data-animate data-delay="400">
-            <p class="text-sm text-gray-500 mb-8 uppercase tracking-widest">Powering AI at leading companies</p>
-            <div class="flex flex-wrap items-center justify-center gap-12 opacity-50">
-                <span class="text-2xl font-bold text-gray-400 tracking-tight">TechCorp</span>
-                <span class="text-2xl font-bold text-gray-400 tracking-tight">FinanceHub</span>
-                <span class="text-2xl font-bold text-gray-400 tracking-tight">MedTech</span>
-                <span class="text-2xl font-bold text-gray-400 tracking-tight">RetailMax</span>
-                <span class="text-2xl font-bold text-gray-400 tracking-tight">CloudScale</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-gray-500 z-10">
-        <span class="text-xs uppercase tracking-widest">Scroll to explore</span>
-        <div class="w-6 h-10 border border-white/20 rounded-full flex justify-center pt-2">
-            <div class="w-1 h-2 bg-white/50 rounded-full animate-bounce"></div>
-        </div>
-    </div>
-</section>
-
-<!-- =====================================================
-     AI ECOSYSTEM VISUALIZATION
-     ===================================================== -->
-<section id="ecosystem" class="section relative overflow-hidden">
-    <div class="section-container">
-        <!-- Section Header -->
-        <div class="section-header" data-animate>
-            <span class="section-label">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
-                AI Ecosystem
-            </span>
-            <h2 class="section-title">The Complete AI Stack</h2>
-            <p class="section-subtitle">
-                Everything you need to build, deploy, and scale AI applications — from foundation models to production-ready APIs.
-            </p>
-        </div>
-        
-        <!-- 3D Neural Network Visualization -->
-        <div class="relative h-[500px] mb-12 rounded-2xl overflow-hidden bg-gradient-to-br from-primary-500/5 to-purple-500/5 border border-white/5">
-            <div id="neural-network-container" class="absolute inset-0"></div>
-            
-            <!-- Floating Labels -->
-            <div class="absolute top-8 left-8 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <span class="text-sm font-medium">Neural Network Active</span>
-            </div>
-            <div class="absolute bottom-8 right-8 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <span class="text-sm font-medium text-emerald-400">● 247 Nodes Connected</span>
-            </div>
-        </div>
-        
-        <!-- Feature Pills -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 stagger-children">
-            <div class="card p-6 text-center">
-                <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-primary-500/20 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                </div>
-                <h4 class="font-semibold mb-1">Foundation Models</h4>
-                <p class="text-sm text-gray-400">Pre-trained LLMs ready for fine-tuning</p>
-            </div>
-            <div class="card p-6 text-center">
-                <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                    </svg>
-                </div>
-                <h4 class="font-semibold mb-1">Voice APIs</h4>
-                <p class="text-sm text-gray-400">Real-time speech recognition & synthesis</p>
-            </div>
-            <div class="card p-6 text-center">
-                <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-cyan-500/20 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                </div>
-                <h4 class="font-semibold mb-1">AI Agents</h4>
-                <p class="text-sm text-gray-400">Autonomous systems that take action</p>
-            </div>
-            <div class="card p-6 text-center">
-                <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                </div>
-                <h4 class="font-semibold mb-1">Analytics</h4>
-                <p class="text-sm text-gray-400">Deep insights into AI performance</p>
+        <div class="hero-trust" data-animate data-delay="500">
+            <p class="hero-trust-label">Powering AI innovation at leading companies</p>
+            <div class="hero-trust-logos">
+                <span class="hero-trust-logo">TechCorp</span>
+                <span class="hero-trust-logo">FinanceHub</span>
+                <span class="hero-trust-logo">MedTech</span>
+                <span class="hero-trust-logo">RetailMax</span>
+                <span class="hero-trust-logo">CloudScale</span>
             </div>
         </div>
     </div>
 </section>
 
 <!-- =====================================================
-     PRODUCTS SHOWCASE
+     PRODUCTS SECTION - Primary Focus
      ===================================================== -->
-<section id="products" class="section relative bg-gradient-to-b from-transparent via-primary-500/5 to-transparent">
+<section id="products" class="section bg-secondary">
     <div class="section-container">
         <!-- Section Header -->
         <div class="section-header" data-animate>
             <span class="section-label">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
                 </svg>
-                Products
+                AI Products
             </span>
-            <h2 class="section-title">AI Products That Deliver</h2>
+            <h2 class="section-title">Powerful AI Products</h2>
             <p class="section-subtitle">
-                Production-ready AI solutions designed for real-world applications.
+                Enterprise-grade AI solutions built for production. From voice APIs to autonomous agents, our products power the next generation of intelligent applications.
             </p>
         </div>
         
         <!-- Products Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="products-grid stagger-children">
             {% for product in products %}
-            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-card tilt-card-3d group" data-animate>
-                <div class="product-icon" style="background: {{ product.color }}20;">
+            <div class="product-card">
+                <div class="product-icon" style="background: {{ product.color }}20; color: {{ product.color }}">
                     {% if product.icon == 'mic' %}
-                    <svg class="w-7 h-7" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" x2="12" y1="19" y2="22"/>
                     </svg>
                     {% elif product.icon == 'message-circle' %}
-                    <svg class="w-7 h-7" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
                     </svg>
                     {% elif product.icon == 'bot' %}
-                    <svg class="w-7 h-7" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8"/>
+                        <rect width="16" height="12" x="4" y="8" rx="2"/>
+                        <path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
                     </svg>
                     {% elif product.icon == 'bar-chart-2' %}
-                    <svg class="w-7 h-7" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/>
                     </svg>
                     {% elif product.icon == 'book-open' %}
-                    <svg class="w-7 h-7" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                    {% else %}
-                    <svg class="w-7 h-7" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                     </svg>
                     {% endif %}
                 </div>
-                <h3 class="product-title">{{ product.name }}</h3>
-                <p class="product-description">{{ product.tagline }}</p>
-                <span class="product-link">
+                <span class="product-category">{{ product.category }}</span>
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-tagline">{{ product.tagline }}</p>
+                <ul class="product-features">
+                    {% for feature in product.features[:4] %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-link">
                     Learn more
-                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
                     </svg>
-                </span>
-            </a>
+                </a>
+            </div>
             {% endfor %}
         </div>
         
-        <!-- View All Link -->
-        <div class="text-center mt-12" data-animate>
-            <a href="{{ url_for('products') }}" class="btn btn-secondary magnetic-btn">
-                <span class="btn-content">View All Products</span>
+        <!-- View All Products -->
+        <div class="text-center mt-4xl" data-animate>
+            <a href="{{ url_for('products') }}" class="btn btn-secondary btn-lg">
+                View All Products
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
             </a>
         </div>
     </div>
 </section>
 
 <!-- =====================================================
-     SERVICES SHOWCASE
+     AI AGENT ECOSYSTEM
      ===================================================== -->
-<section id="services" class="section relative overflow-hidden">
+<section id="agents" class="section">
     <div class="section-container">
         <!-- Section Header -->
         <div class="section-header" data-animate>
             <span class="section-label">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
-                Services
+                AI Agent Ecosystem
             </span>
-            <h2 class="section-title">AI Engineering Excellence</h2>
+            <h2 class="section-title">Autonomous AI Agents</h2>
             <p class="section-subtitle">
-                Expert services to help you navigate the complexities of AI adoption.
+                Deploy specialized AI agents that work 24/7. From sales to research, our agent ecosystem handles complex tasks autonomously.
             </p>
         </div>
         
-        <!-- Services Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Service 1 -->
-            <div class="card group" data-animate>
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        <!-- Agents Grid -->
+        <div class="agents-grid stagger-children">
+            <div class="agent-card">
+                <div class="agent-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <line x1="19" x2="19" y1="8" y2="14"/>
+                        <line x1="22" x2="16" y1="11" y2="11"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-3">AI Consulting</h3>
-                <p class="text-gray-400 mb-4">Strategic guidance to identify AI opportunities and create roadmaps for intelligent transformation.</p>
-                <a href="{{ url_for('services') }}" class="text-primary-400 font-medium text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                    Learn more
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
+                <h3 class="agent-name">Sales Agent</h3>
+                <p class="agent-description">Qualify leads, nurture prospects, and close deals with intelligent conversations.</p>
+                <div class="agent-capabilities">
+                    <span class="agent-capability">Lead Qualification</span>
+                    <span class="agent-capability">Product Recommendations</span>
+                    <span class="agent-capability">Meeting Scheduling</span>
+                </div>
             </div>
             
-            <!-- Service 2 -->
-            <div class="card group" data-animate data-delay="100">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+            <div class="agent-card">
+                <div class="agent-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <path d="M12 17h.01"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-3">MLOps & DevOps</h3>
-                <p class="text-gray-400 mb-4">End-to-end machine learning operations including CI/CD, monitoring, and model versioning.</p>
-                <a href="{{ url_for('services') }}" class="text-primary-400 font-medium text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                    Learn more
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
+                <h3 class="agent-name">Support Agent</h3>
+                <p class="agent-description">Resolve customer issues instantly with context-aware assistance.</p>
+                <div class="agent-capabilities">
+                    <span class="agent-capability">Ticket Resolution</span>
+                    <span class="agent-capability">Knowledge Base</span>
+                    <span class="agent-capability">Escalation</span>
+                </div>
             </div>
             
-            <!-- Service 3 -->
-            <div class="card group" data-animate data-delay="200">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+            <div class="agent-card">
+                <div class="agent-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Cloud Deployment</h3>
-                <p class="text-gray-400 mb-4">Scalable cloud infrastructure design and deployment on AWS, GCP, and Azure.</p>
-                <a href="{{ url_for('services') }}" class="text-primary-400 font-medium text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                    Learn more
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                <h3 class="agent-name">Research Agent</h3>
+                <p class="agent-description">Conduct comprehensive research and generate actionable insights.</p>
+                <div class="agent-capabilities">
+                    <span class="agent-capability">Literature Review</span>
+                    <span class="agent-capability">Data Analysis</span>
+                    <span class="agent-capability">Report Generation</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18"/>
+                        <path d="m19 9-5 5-4-4-3 3"/>
                     </svg>
-                </a>
+                </div>
+                <h3 class="agent-name">Analytics Agent</h3>
+                <p class="agent-description">Monitor metrics, detect anomalies, and provide real-time insights.</p>
+                <div class="agent-capabilities">
+                    <span class="agent-capability">Trend Analysis</span>
+                    <span class="agent-capability">Anomaly Detection</span>
+                    <span class="agent-capability">Forecasting</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" x2="12" y1="3" y2="15"/>
+                    </svg>
+                </div>
+                <h3 class="agent-name">Marketing Agent</h3>
+                <p class="agent-description">Optimize campaigns, generate content, and personalize outreach.</p>
+                <div class="agent-capabilities">
+                    <span class="agent-capability">Content Creation</span>
+                    <span class="agent-capability">A/B Testing</span>
+                    <span class="agent-capability">SEO Optimization</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M9 21V9"/>
+                    </svg>
+                </div>
+                <h3 class="agent-name">Operations Agent</h3>
+                <p class="agent-description">Automate workflows, coordinate tasks, and optimize processes.</p>
+                <div class="agent-capabilities">
+                    <span class="agent-capability">Workflow Automation</span>
+                    <span class="agent-capability">Task Management</span>
+                    <span class="agent-capability">Resource Allocation</span>
+                </div>
             </div>
         </div>
     </div>
@@ -301,23 +275,23 @@
 <!-- =====================================================
      STATISTICS SECTION
      ===================================================== -->
-<section id="stats" class="section relative bg-gradient-to-b from-transparent via-purple-500/5 to-transparent">
+<section id="stats" class="section bg-secondary">
     <div class="section-container">
         <div class="stats-grid stagger-children">
-            <div class="stat-card" data-animate>
-                <div class="stat-value counter" data-target="500" data-suffix="+">0+</div>
+            <div class="stat-card">
+                <div class="stat-value"><span class="counter" data-target="500">0</span><span class="stat-suffix">+</span></div>
                 <div class="stat-label">AI Models Deployed</div>
             </div>
-            <div class="stat-card" data-animate data-delay="100">
-                <div class="stat-value counter" data-target="98" data-suffix="%">0%</div>
+            <div class="stat-card">
+                <div class="stat-value"><span class="counter" data-target="98">0</span><span class="stat-suffix">%</span></div>
                 <div class="stat-label">Customer Satisfaction</div>
             </div>
-            <div class="stat-card" data-animate data-delay="200">
-                <div class="stat-value counter" data-target="50" data-suffix="+">0+</div>
+            <div class="stat-card">
+                <div class="stat-value"><span class="counter" data-target="50">0</span><span class="stat-suffix">+</span></div>
                 <div class="stat-label">Enterprise Clients</div>
             </div>
-            <div class="stat-card" data-animate data-delay="300">
-                <div class="stat-value counter" data-target="10" data-prefix="" data-suffix="M+">0M+</div>
+            <div class="stat-card">
+                <div class="stat-value"><span class="counter" data-target="10">0</span><span class="stat-suffix">M+</span></div>
                 <div class="stat-label">API Calls Monthly</div>
             </div>
         </div>
@@ -325,45 +299,337 @@
 </section>
 
 <!-- =====================================================
-     TESTIMONIALS
+     SERVICES SECTION
      ===================================================== -->
-<section id="testimonials" class="section relative overflow-hidden">
+<section id="services" class="section">
     <div class="section-container">
         <!-- Section Header -->
         <div class="section-header" data-animate>
             <span class="section-label">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                AI Services
+            </span>
+            <h2 class="section-title">Expert AI Services</h2>
+            <p class="section-subtitle">
+                From strategy to implementation, our team of AI experts helps you build, deploy, and scale intelligent solutions.
+            </p>
+        </div>
+        
+        <!-- Services Grid -->
+        <div class="services-grid stagger-children">
+            <div class="service-card">
+                <div class="service-icon" style="background: rgba(79, 70, 229, 0.1); color: #4f46e5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">AI Consulting</h3>
+                <p class="service-description">Strategic guidance for AI adoption, use case identification, and implementation roadmaps.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">Machine Learning</h3>
+                <p class="service-description">Custom ML models for prediction, classification, and optimization tailored to your data.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">AI Agents</h3>
+                <p class="service-description">Deploy autonomous agents that handle complex tasks with minimal human intervention.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">Cloud Deployment</h3>
+                <p class="service-description">Scalable cloud infrastructure for AI workloads with auto-scaling and monitoring.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 12v2m-9-9h6m6 0h2M4.22 4.22l4.24 4.24m7.07 7.07 4.24 4.24M4.22 19.78l4.24-4.24m7.07-7.07-4.24-4.24"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">MLOps</h3>
+                <p class="service-description">Production-ready ML infrastructure with automated training, deployment, and monitoring.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">Data Science</h3>
+                <p class="service-description">Transform raw data into strategic insights with advanced analytics and visualization.</p>
+            </div>
+        </div>
+        
+        <!-- View All Services -->
+        <div class="text-center mt-4xl" data-animate>
+            <a href="{{ url_for('services') }}" class="btn btn-secondary btn-lg">
+                View All Services
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     AI ACADEMY SECTION
+     ===================================================== -->
+<section id="academy" class="section bg-secondary">
+    <div class="section-container">
+        <!-- Section Header -->
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                AI Academy
+            </span>
+            <h2 class="section-title">Learn AI Skills</h2>
+            <p class="section-subtitle">
+                Master AI technologies with hands-on courses taught by industry experts. From Python to LLMs, build the skills of tomorrow.
+            </p>
+        </div>
+        
+        <!-- Courses Grid -->
+        <div class="courses-grid stagger-children">
+            <div class="course-card">
+                <div class="course-header">
+                    <div class="course-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                        </svg>
+                    </div>
+                    <div class="course-info">
+                        <span class="course-level beginner">Beginner</span>
+                        <h3 class="course-name">Python for AI</h3>
+                        <div class="course-meta">
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                6 weeks
+                            </span>
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                                </svg>
+                                8 modules
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <p class="course-description">Master Python programming fundamentals with a focus on AI and data science applications.</p>
+                <div class="course-footer">
+                    <a href="{{ url_for('course_detail', course_id='python-ai') }}" class="product-link">
+                        Learn more
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="course-card">
+                <div class="course-header">
+                    <div class="course-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <div class="course-info">
+                        <span class="course-level intermediate">Intermediate</span>
+                        <h3 class="course-name">Machine Learning</h3>
+                        <div class="course-meta">
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                10 weeks
+                            </span>
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                                </svg>
+                                12 modules
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <p class="course-description">Comprehensive ML course covering supervised, unsupervised, and reinforcement learning.</p>
+                <div class="course-footer">
+                    <a href="{{ url_for('course_detail', course_id='machine-learning') }}" class="product-link">
+                        Learn more
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="course-card">
+                <div class="course-header">
+                    <div class="course-icon" style="background: rgba(236, 72, 153, 0.1); color: #ec4899;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                        </svg>
+                    </div>
+                    <div class="course-info">
+                        <span class="course-level advanced">Advanced</span>
+                        <h3 class="course-name">Generative AI</h3>
+                        <div class="course-meta">
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                8 weeks
+                            </span>
+                            <span class="course-meta-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                                </svg>
+                                10 modules
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <p class="course-description">Learn to create AI systems that generate original content including text, images, and code.</p>
+                <div class="course-footer">
+                    <a href="{{ url_for('course_detail', course_id='generative-ai') }}" class="product-link">
+                        Learn more
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- View All Courses -->
+        <div class="text-center mt-4xl" data-animate>
+            <a href="{{ url_for('courses') }}" class="btn btn-secondary btn-lg">
+                Explore All Courses
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     RESEARCH SECTION
+     ===================================================== -->
+<section id="research" class="section">
+    <div class="section-container">
+        <!-- Section Header -->
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/>
+                    <path d="M5.52 16h12.96"/>
+                </svg>
+                AI Research Lab
+            </span>
+            <h2 class="section-title">Pushing AI Boundaries</h2>
+            <p class="section-subtitle">
+                Our research team advances the state of AI through rigorous scientific exploration and practical innovation.
+            </p>
+        </div>
+        
+        <!-- Research Areas Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg stagger-children">
+            <div class="card text-center">
+                <div class="text-4xl mb-lg">🤖</div>
+                <h4 class="text-lg font-semibold mb-sm">Agentic AI</h4>
+                <p class="text-sm text-secondary">Autonomous agents that reason, plan, and execute complex tasks.</p>
+            </div>
+            <div class="card text-center">
+                <div class="text-4xl mb-lg">🔗</div>
+                <h4 class="text-lg font-semibold mb-sm">Multi-Agent Systems</h4>
+                <p class="text-sm text-secondary">Coordination and collaboration between multiple AI agents.</p>
+            </div>
+            <div class="card text-center">
+                <div class="text-4xl mb-lg">🎨</div>
+                <h4 class="text-lg font-semibold mb-sm">Generative AI</h4>
+                <p class="text-sm text-secondary">Creating AI systems for original content generation.</p>
+            </div>
+            <div class="card text-center">
+                <div class="text-4xl mb-lg">🔍</div>
+                <h4 class="text-lg font-semibold mb-sm">Explainable AI</h4>
+                <p class="text-sm text-secondary">Making AI decisions transparent and interpretable.</p>
+            </div>
+        </div>
+        
+        <!-- Research CTA -->
+        <div class="text-center mt-4xl" data-animate>
+            <a href="{{ url_for('research') }}" class="btn btn-secondary btn-lg">
+                Explore Research
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     TESTIMONIALS SECTION
+     ===================================================== -->
+<section id="testimonials" class="section bg-secondary">
+    <div class="section-container">
+        <!-- Section Header -->
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
                 Testimonials
             </span>
             <h2 class="section-title">Trusted by Industry Leaders</h2>
             <p class="section-subtitle">
-                See what our clients say about working with HUMISENSE.
+                See how leading companies are transforming their businesses with HUMISENSE AI solutions.
             </p>
         </div>
-    </div>
-    
-    <!-- Auto-scrolling Testimonials -->
-    <div class="testimonials-slider">
-        <div class="testimonials-track">
+        
+        <!-- Testimonials Grid -->
+        <div class="testimonials-grid stagger-children">
             {% for testimonial in testimonials %}
             <div class="testimonial-card">
-                <div class="flex items-center gap-1 mb-4">
+                <div class="testimonial-stars">
                     {% for i in range(testimonial.rating) %}
-                    <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                     </svg>
                     {% endfor %}
                 </div>
-                <p class="text-gray-300 mb-6 text-lg leading-relaxed">"{{ testimonial.content }}"</p>
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white font-bold">
-                        {{ testimonial.name[0] }}
-                    </div>
-                    <div>
-                        <div class="font-semibold">{{ testimonial.name }}</div>
-                        <div class="text-sm text-gray-400">{{ testimonial.role }}</div>
+                <p class="testimonial-content">"{{ testimonial.quote }}"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">{{ testimonial.avatar }}</div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-name">{{ testimonial.name }}</div>
+                        <div class="testimonial-role">{{ testimonial.role }}, {{ testimonial.company }}</div>
                     </div>
                 </div>
             </div>
@@ -375,54 +641,54 @@
 <!-- =====================================================
      FAQ SECTION
      ===================================================== -->
-<section id="faq" class="section relative">
-    <div class="section-container max-w-3xl">
+<section id="faq" class="section">
+    <div class="section-container">
         <!-- Section Header -->
         <div class="section-header" data-animate>
             <span class="section-label">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
                 </svg>
                 FAQ
             </span>
             <h2 class="section-title">Frequently Asked Questions</h2>
         </div>
         
-        <!-- FAQ Items -->
-        <div class="space-y-4" data-animate>
-            <div class="faq-item active">
+        <!-- FAQ List -->
+        <div class="faq-list">
+            <div class="faq-item" data-animate>
                 <button class="faq-question">
-                    <span>What makes HUMISENSE different from other AI platforms?</span>
-                    <svg class="faq-icon w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    <span class="faq-question-text">What makes HUMISENSE different from other AI platforms?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14"/><path d="M5 12h14"/>
                     </svg>
                 </button>
-                <div class="faq-answer" style="max-height: 200px;">
+                <div class="faq-answer">
                     <div class="faq-answer-content">
                         HUMISENSE combines cutting-edge research with production-ready infrastructure. We don't just provide APIs — we offer end-to-end solutions including consulting, MLOps, and custom development. Our focus on enterprise-grade reliability, security, and scalability sets us apart.
                     </div>
                 </div>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-animate>
                 <button class="faq-question">
-                    <span>How do I get started with HUMISENSE products?</span>
-                    <svg class="faq-icon w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    <span class="faq-question-text">How do I get started with HUMISENSE products?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14"/><path d="M5 12h14"/>
                     </svg>
                 </button>
                 <div class="faq-answer">
                     <div class="faq-answer-content">
-                        Getting started is easy. You can sign up for a free account and explore our API documentation. For enterprise solutions, schedule a consultation with our team to discuss your specific requirements and get a customized roadmap.
+                        Getting started is easy. You can sign up for a free account and explore our API documentation. For enterprise solutions, schedule a consultation with our team to discuss your specific requirements.
                     </div>
                 </div>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-animate>
                 <button class="faq-question">
-                    <span>What kind of support do you offer?</span>
-                    <svg class="faq-icon w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    <span class="faq-question-text">What kind of support do you offer?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14"/><path d="M5 12h14"/>
                     </svg>
                 </button>
                 <div class="faq-answer">
@@ -432,16 +698,30 @@
                 </div>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-animate>
                 <button class="faq-question">
-                    <span>Can HUMISENSE help with custom AI development?</span>
-                    <svg class="faq-icon w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    <span class="faq-question-text">Can HUMISENSE help with custom AI development?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14"/><path d="M5 12h14"/>
                     </svg>
                 </button>
                 <div class="faq-answer">
                     <div class="faq-answer-content">
                         Absolutely. Our engineering team specializes in custom AI development tailored to your specific use case. From model fine-tuning to building entirely new AI systems, we work closely with clients to deliver solutions that meet their unique needs.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-animate>
+                <button class="faq-question">
+                    <span class="faq-question-text">Do you offer training for our team?</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14"/><path d="M5 12h14"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes! Our AI Academy offers comprehensive training programs from beginner to advanced levels. We also provide custom corporate training tailored to your organization's specific needs and technology stack.
                     </div>
                 </div>
             </div>
@@ -452,33 +732,31 @@
 <!-- =====================================================
      FINAL CTA SECTION
      ===================================================== -->
-<section id="cta" class="cta-section relative overflow-hidden">
-    <!-- Background Glow -->
-    <div class="cta-glow"></div>
-    
-    <!-- Animated Particles -->
-    <div class="particles" data-count="30"></div>
+<section id="cta" class="cta-section">
+    <!-- Background Gradient -->
+    <div class="cta-bg">
+        <div class="cta-gradient"></div>
+    </div>
     
     <div class="cta-content" data-animate>
+        <span class="hero-tagline">MAKE IT HAPPEN</span>
         <h2 class="cta-title">
             Ready to <span class="gradient-text">Build the Future</span>?
         </h2>
         <p class="cta-subtitle">
-            Join hundreds of companies already building with HUMISENSE. Start your journey today.
+            Join hundreds of companies already building with HUMISENSE. Start your AI journey today.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ url_for('contact') }}" class="btn btn-primary magnetic-btn btn-glow btn-ripple text-lg px-10 py-4">
-                <span class="btn-content flex items-center gap-2">
-                    Schedule a Demo
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                <span class="flex items-center gap-2">
+                    Request Demo
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                     </svg>
                 </span>
             </a>
-            <a href="{{ url_for('contact') }}" class="btn btn-secondary magnetic-btn text-lg px-10 py-4">
-                <span class="btn-content flex items-center gap-2">
-                    Talk to an Expert
-                </span>
+            <a href="{{ url_for('products') }}" class="btn btn-secondary btn-lg">
+                Explore Products
             </a>
         </div>
     </div>

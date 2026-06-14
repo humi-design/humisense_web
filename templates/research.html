@@ -1,250 +1,232 @@
 {% extends 'base.html' %}
 
-{% block title %}Research - HUMISENSE{% endblock %}
+{% block title %}AI Research Lab - HUMISENSE{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="pt-32 pb-20 hero-gradient grid-pattern">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto">
-            <span class="text-primary-500 font-semibold text-sm uppercase tracking-wider">Research Center</span>
-            <h1 class="text-5xl md:text-6xl font-bold mt-4 mb-6">
-                Advancing <span class="gradient-text">AI Research</span>
-            </h1>
-            <p class="text-xl text-gray-600 dark:text-gray-400">
-                Explore our cutting-edge research in artificial intelligence, machine learning, and emerging AI technologies.
-            </p>
+<!-- Page Header -->
+<section class="page-header">
+    <div class="page-header-bg">
+        <div class="page-header-gradient"></div>
+    </div>
+    <div class="page-header-content">
+        <span class="hero-tagline">MAKE IT HAPPEN</span>
+        <h1 class="page-header-title">AI Research Lab</h1>
+        <p class="page-header-subtitle">
+            Advancing the boundaries of artificial intelligence through rigorous scientific exploration and practical innovation.
+        </p>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section class="section">
+    <div class="section-container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4xl items-center">
+            <div data-animate>
+                <span class="hero-tagline">Our Mission</span>
+                <h2 class="text-4xl font-bold mt-md mb-lg">Advancing Humanity Through Practical AI</h2>
+                <p class="text-lg text-secondary mb-lg">
+                    At HUMISENSE Research Lab, we believe that the most impactful AI is built at the intersection of rigorous scientific research and real-world application. Our team of researchers and engineers work together to push the boundaries of what's possible.
+                </p>
+                <p class="text-lg text-secondary mb-lg">
+                    We publish our findings, contribute to open-source projects, and collaborate with academic institutions worldwide to ensure that AI benefits everyone.
+                </p>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary">
+                    Collaborate With Us
+                </a>
+            </div>
+            <div class="card p-2xl bg-gradient-to-br from-primary/5 to-secondary/5" data-animate data-delay="200">
+                <div class="grid grid-cols-2 gap-lg">
+                    <div class="text-center p-lg rounded-xl bg-tertiary">
+                        <div class="text-4xl font-bold gradient-text mb-sm">50+</div>
+                        <p class="text-sm text-secondary">Published Papers</p>
+                    </div>
+                    <div class="text-center p-lg rounded-xl bg-tertiary">
+                        <div class="text-4xl font-bold gradient-text mb-sm">15</div>
+                        <p class="text-sm text-secondary">Research Areas</p>
+                    </div>
+                    <div class="text-center p-lg rounded-xl bg-tertiary">
+                        <div class="text-4xl font-bold gradient-text mb-sm">25+</div>
+                        <p class="text-sm text-secondary">Research Partners</p>
+                    </div>
+                    <div class="text-center p-lg rounded-xl bg-tertiary">
+                        <div class="text-4xl font-bold gradient-text mb-sm">8</div>
+                        <p class="text-sm text-secondary">Open Source Projects</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Research Areas -->
-<section class="section">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="section-title">Research Focus Areas</h2>
-            <p class="section-subtitle mx-auto">Our researchers are exploring the frontiers of AI to solve complex real-world problems.</p>
+<section class="section bg-secondary">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/>
+                    <path d="M5.52 16h12.96"/>
+                </svg>
+                Research Areas
+            </span>
+            <h2 class="section-title">Our Focus Areas</h2>
+            <p class="section-subtitle">
+                Exploring the frontiers of AI across multiple disciplines.
+            </p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg stagger-children">
             {% for area in research_areas %}
-            <div class="card p-6 text-center group hover:shadow-xl transition-all">
-                <div class="w-16 h-16 rounded-2xl bg-primary-500/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-bold mb-2">{{ area.name }}</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{{ area.description }}</p>
+            <div class="card hover:border-primary/30 transition-all duration-300">
+                <div class="text-3xl mb-lg">{% if area.id == 'agentic_ai' %}🤖{% elif area.id == 'multi_agent' %}🔗{% elif area.id == 'generative_ai' %}🎨{% elif area.id == 'explainable_ai' %}🔍{% elif area.id == 'healthcare_ai' %}🏥{% elif area.id == 'nlp' %}💬{% elif area.id == 'computer_vision' %}👁️{% elif area.id == 'ai_accessibility' %}♿{% else %}🧠{% endif %}</div>
+                <h4 class="text-lg font-semibold mb-sm">{{ area.name }}</h4>
+                <p class="text-sm text-secondary">{{ area.description }}</p>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Published Papers -->
-<section class="section bg-gray-100 dark:bg-gray-800/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="section-title">Published Research</h2>
-            <p class="section-subtitle mx-auto">Discover our latest academic contributions to the field of artificial intelligence.</p>
+<!-- Publications -->
+<section class="section">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                </svg>
+                Publications
+            </span>
+            <h2 class="section-title">Recent Research</h2>
+            <p class="section-subtitle">
+                Our latest papers and findings published in leading journals and conferences.
+            </p>
         </div>
         
-        <div class="space-y-6 max-w-4xl mx-auto">
-            {% for paper in research %}
-            <div class="card p-8">
-                <div class="flex flex-col md:flex-row md:items-start gap-6">
-                    <div class="w-16 h-20 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
+        <div class="space-y-lg stagger-children">
+            <div class="card">
+                <div class="flex flex-wrap items-start justify-between gap-lg">
                     <div class="flex-1">
-                        <span class="text-sm text-primary-500 font-medium">{{ paper.year }}</span>
-                        <h3 class="text-xl font-bold mt-1 mb-2">{{ paper.title }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">{{ paper.authors|join(', ') }} • {{ paper.institution }}</p>
-                        <p class="text-gray-600 dark:text-gray-400 mb-4">{{ paper.abstract }}</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            {% for keyword in paper.keywords %}
-                            <span class="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">{{ keyword }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <a href="{{ paper.pdf_url }}" class="btn btn-primary btn-sm">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                                Download PDF
-                            </a>
-                            <button onclick="copyCitation('{{ paper.citation }}')" class="btn btn-secondary btn-sm">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                                </svg>
-                                Copy Citation
-                            </button>
+                        <span class="text-xs font-semibold text-accent-primary uppercase tracking-wide">NeurIPS 2024</span>
+                        <h4 class="text-xl font-semibold mt-sm mb-sm">Emergent Reasoning in Multi-Agent Systems</h4>
+                        <p class="text-secondary mb-lg">We present a novel framework for enabling autonomous reasoning in multi-agent AI systems, demonstrating significant improvements in complex task completion.</p>
+                        <div class="flex flex-wrap gap-sm">
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Multi-Agent</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Reasoning</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Emergent Behavior</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Collaboration Section -->
-<section class="section">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <h2 class="section-title">Research Collaboration</h2>
-                <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
-                    We actively collaborate with academic institutions, research organizations, and industry partners to advance AI research and its applications.
-                </p>
-                <div class="space-y-4">
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-primary-500/10 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold">Academic Partnerships</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Joint research projects with leading universities worldwide.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-accent-500/10 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold">Industry Collaboration</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Applied research solving real-world business challenges.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold">Open Research</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Publishing papers, datasets, and model architectures openly.</p>
-                        </div>
-                    </div>
+                    <a href="#" class="btn btn-secondary">Read Paper</a>
                 </div>
             </div>
             
-            <div class="card p-8">
-                <h3 class="text-2xl font-bold mb-6">Submit Your Research</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    Have a research paper you'd like to discuss or collaborate on? We'd love to hear from you.
-                </p>
-                
-                <form id="research-form" class="space-y-4">
-                    <div>
-                        <label class="label">Paper Title *</label>
-                        <input type="text" name="title" class="input" required>
+            <div class="card">
+                <div class="flex flex-wrap items-start justify-between gap-lg">
+                    <div class="flex-1">
+                        <span class="text-xs font-semibold text-accent-primary uppercase tracking-wide">ICML 2024</span>
+                        <h4 class="text-xl font-semibold mt-sm mb-sm">Scalable Voice Synthesis with Emotional Intelligence</h4>
+                        <p class="text-secondary mb-lg">A new approach to voice synthesis that captures emotional nuance while maintaining real-time performance for production applications.</p>
+                        <div class="flex flex-wrap gap-sm">
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Voice AI</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Generative Models</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Emotion Detection</span>
+                        </div>
                     </div>
-                    <div>
-                        <label class="label">Authors *</label>
-                        <input type="text" name="authors" class="input" placeholder="Author 1, Author 2, ..." required>
+                    <a href="#" class="btn btn-secondary">Read Paper</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="flex flex-wrap items-start justify-between gap-lg">
+                    <div class="flex-1">
+                        <span class="text-xs font-semibold text-accent-primary uppercase tracking-wide">ACL 2024</span>
+                        <h4 class="text-xl font-semibold mt-sm mb-sm">Context-Aware Conversational AI for Enterprise</h4>
+                        <p class="text-secondary mb-lg">Building on transformer architectures, we introduce enterprise-specific optimizations for conversational AI that maintain context across extended interactions.</p>
+                        <div class="flex flex-wrap gap-sm">
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">NLP</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Conversational AI</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-tertiary">Enterprise</span>
+                        </div>
                     </div>
-                    <div>
-                        <label class="label">Email *</label>
-                        <input type="email" name="email" class="input" required>
-                    </div>
-                    <div>
-                        <label class="label">Institution *</label>
-                        <input type="text" name="institution" class="input" required>
-                    </div>
-                    <div>
-                        <label class="label">Research Area *</label>
-                        <select name="research_area" class="input" required>
-                            <option value="">Select research area</option>
-                            <option value="agentic_ai">Agentic AI</option>
-                            <option value="multi_agent">Multi-Agent Systems</option>
-                            <option value="generative_ai">Generative AI</option>
-                            <option value="explainable_ai">Explainable AI</option>
-                            <option value="healthcare_ai">Healthcare AI</option>
-                            <option value="nlp">Natural Language Processing</option>
-                            <option value="computer_vision">Computer Vision</option>
-                            <option value="ai_accessibility">AI Accessibility</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Abstract *</label>
-                        <textarea name="abstract" rows="4" class="input" required></textarea>
-                    </div>
-                    <div>
-                        <label class="label">Keywords</label>
-                        <input type="text" name="keywords" class="input" placeholder="keyword1, keyword2, ...">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-full">
-                        Submit Research
-                    </button>
-                </form>
+                    <a href="#" class="btn btn-secondary">Read Paper</a>
+                </div>
             </div>
         </div>
     </div>
 </section>
-{% endblock %}
 
-{% block extra_scripts %}
-<script>
-function copyCitation(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        Swal.fire({
-            title: 'Copied!',
-            text: 'Citation copied to clipboard',
-            icon: 'success',
-            confirmButtonColor: '#6366F1',
-            timer: 2000,
-            showConfirmButton: false
-        });
-    });
-}
+<!-- Research Timeline -->
+<section class="section bg-secondary">
+    <div class="section-container">
+        <div class="section-header" data-animate>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Roadmap
+            </span>
+            <h2 class="section-title">Research Roadmap</h2>
+            <p class="section-subtitle">
+                Our upcoming research initiatives and milestones.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
+            <div class="card">
+                <div class="text-sm font-semibold text-accent-primary mb-md">2024 Q4</div>
+                <h4 class="text-lg font-semibold mb-sm">Agent Orchestration Framework</h4>
+                <p class="text-sm text-secondary">Open-source framework for coordinating multiple AI agents in complex workflows.</p>
+            </div>
+            <div class="card">
+                <div class="text-sm font-semibold text-accent-secondary mb-md">2025 Q1</div>
+                <h4 class="text-lg font-semibold mb-sm">Multimodal Understanding</h4>
+                <p class="text-sm text-secondary">Research into AI systems that can seamlessly understand and generate across text, image, audio, and video.</p>
+            </div>
+            <div class="card">
+                <div class="text-sm font-semibold text-accent-cyan mb-md">2025 Q2</div>
+                <h4 class="text-lg font-semibold mb-sm">Healthcare AI Suite</h4>
+                <p class="text-sm text-secondary">Specialized AI tools for medical imaging, clinical documentation, and drug discovery.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-document.getElementById('research-form')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    
-    try {
-        const response = await fetch('{{ url_for("submit_research") }}', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            Swal.fire({
-                title: 'Success!',
-                text: result.message,
-                icon: 'success',
-                confirmButtonColor: '#6366F1'
-            });
-            e.target.reset();
-        } else {
-            Swal.fire({
-                title: 'Error',
-                text: result.message,
-                icon: 'error',
-                confirmButtonColor: '#6366F1'
-            });
-        }
-    } catch (error) {
-        Swal.fire({
-            title: 'Error',
-            text: 'Something went wrong. Please try again.',
-            icon: 'error',
-            confirmButtonColor: '#6366F1'
-        });
-    }
-});
-</script>
+<!-- Submit Research -->
+<section class="section">
+    <div class="section-container">
+        <div class="card p-4xl text-center bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20" data-animate>
+            <span class="hero-tagline">Collaboration</span>
+            <h2 class="text-4xl font-bold mt-md mb-lg">Submit Your Research</h2>
+            <p class="text-lg text-secondary max-w-2xl mx-auto mb-2xl">
+                We welcome collaborations with academic researchers, industry partners, and independent scholars. Submit your research for consideration.
+            </p>
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                Submit Research
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-bg">
+        <div class="cta-gradient"></div>
+    </div>
+    <div class="cta-content" data-animate>
+        <h2 class="cta-title">
+            Join the <span class="gradient-text">AI Revolution</span>
+        </h2>
+        <p class="cta-subtitle">
+            Whether you're a researcher, developer, or organization, we invite you to collaborate with us.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                Contact Research Team
+            </a>
+            <a href="https://github.com/humisense" class="btn btn-secondary btn-lg" target="_blank">
+                View Open Source
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}

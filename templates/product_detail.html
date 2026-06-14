@@ -3,83 +3,95 @@
 {% block title %}{{ product.name }} - HUMISENSE{% endblock %}
 
 {% block content %}
-<!-- =====================================================
-     PRODUCT HERO - Immersive 3D Experience
-     ===================================================== -->
-<section class="pt-32 pb-20 relative overflow-hidden">
-    <!-- Background Elements -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-0 right-0 w-[800px] h-[800px] rounded-full blur-[150px]" style="background: {{ product.color }}10;"></div>
-        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full blur-[150px] bg-primary-500/5;"></div>
-    </div>
-    
-    <div class="section-container relative z-10">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <!-- Left Content -->
+<!-- Breadcrumbs -->
+<div class="section-container pt-32">
+    <nav class="breadcrumbs">
+        <a href="{{ url_for('home') }}">Home</a>
+        <span class="breadcrumbs-separator">/</span>
+        <a href="{{ url_for('products') }}">Products</a>
+        <span class="breadcrumbs-separator">/</span>
+        <span class="text-primary">{{ product.name }}</span>
+    </nav>
+</div>
+
+<!-- Product Hero -->
+<section class="section pt-0">
+    <div class="section-container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4xl items-center">
+            <!-- Product Info -->
             <div data-animate>
-                <span class="section-label mb-6 inline-flex">{{ product.category }}</span>
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold font-display mb-6 leading-tight">
-                    <span class="gradient-text">{{ product.name }}</span>
-                </h1>
-                <p class="text-2xl text-gray-300 mb-6">{{ product.tagline }}</p>
-                <p class="text-lg text-gray-400 mb-10 max-w-xl">{{ product.description }}</p>
+                <span class="hero-tagline">MAKE IT HAPPEN</span>
+                <div class="flex items-center gap-lg mt-lg mb-lg">
+                    <div class="product-icon-lg" style="background: {{ product.color }}20; color: {{ product.color }}">
+                        {% if product.icon == 'mic' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" x2="12" y1="19" y2="22"/>
+                        </svg>
+                        {% elif product.icon == 'message-circle' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+                        </svg>
+                        {% elif product.icon == 'bot' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+                        </svg>
+                        {% elif product.icon == 'bar-chart-2' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/>
+                        </svg>
+                        {% elif product.icon == 'book-open' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <span class="product-category">{{ product.category }}</span>
+                        <h1 class="text-4xl lg:text-5xl font-bold mt-sm">{{ product.name }}</h1>
+                    </div>
+                </div>
+                <p class="text-xl text-secondary mb-lg">{{ product.tagline }}</p>
+                <p class="text-lg text-tertiary mb-2xl">{{ product.description }}</p>
+                <p class="text-lg font-semibold text-accent mb-2xl">{{ product.pricing }}</p>
                 
-                <div class="flex flex-col sm:flex-row gap-4 mb-10">
-                    <a href="{{ url_for('contact') }}" class="btn btn-primary magnetic-btn btn-glow btn-ripple text-lg px-8 py-4">
-                        <span class="btn-content flex items-center gap-2">
-                            Get Started
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                <div class="flex flex-wrap gap-md">
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                        <span class="flex items-center gap-2">
+                            Request Demo
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
                             </svg>
                         </span>
                     </a>
-                    <a href="#demo" class="btn btn-secondary magnetic-btn text-lg px-8 py-4">
-                        <span class="btn-content">Request Demo</span>
+                    <a href="#api" class="btn btn-secondary btn-lg">
+                        View API Docs
                     </a>
                 </div>
-                
-                <p class="text-primary-400 font-medium">{{ product.pricing }}</p>
             </div>
             
-            <!-- Right - Product Visual -->
+            <!-- Product Visual -->
             <div class="relative" data-animate data-delay="200">
-                <div class="relative aspect-square max-w-lg mx-auto">
-                    <!-- Glow Effect -->
-                    <div class="absolute inset-0 rounded-3xl" style="background: radial-gradient(circle at center, {{ product.color }}30 0%, transparent 70%);"></div>
-                    
-                    <!-- Main Visual Card -->
-                    <div class="absolute inset-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center">
-                        <div class="text-center p-12">
-                            <div class="w-24 h-24 mx-auto mb-6 rounded-2xl flex items-center justify-center" style="background: {{ product.color }}20;">
+                <div class="card p-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+                    <div class="aspect-video rounded-xl bg-tertiary flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto mb-lg rounded-2xl flex items-center justify-center" style="background: {{ product.color }}30; color: {{ product.color }}">
                                 {% if product.icon == 'mic' %}
-                                <svg class="w-12 h-12" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                                </svg>
-                                {% elif product.icon == 'message-circle' %}
-                                <svg class="w-12 h-12" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                                {% elif product.icon == 'bot' %}
-                                <svg class="w-12 h-12" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                    <line x1="12" x2="12" y1="19" y2="22"/>
                                 </svg>
                                 {% else %}
-                                <svg class="w-12 h-12" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/>
                                 </svg>
                                 {% endif %}
                             </div>
-                            <h3 class="text-2xl font-bold mb-2">{{ product.name }}</h3>
-                            <p class="text-gray-400">AI-Powered Solution</p>
+                            <p class="text-lg font-semibold">{{ product.name }}</p>
+                            <p class="text-sm text-muted">Interactive Demo</p>
                         </div>
-                    </div>
-                    
-                    <!-- Floating Elements -->
-                    <div class="absolute -top-4 -right-4 w-20 h-20 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center float-animation">
-                        <span class="text-2xl">🚀</span>
-                    </div>
-                    <div class="absolute -bottom-4 -left-4 w-20 h-20 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center float-animation" style="animation-delay: -2s;">
-                        <span class="text-2xl">⚡</span>
                     </div>
                 </div>
             </div>
@@ -87,83 +99,89 @@
     </div>
 </section>
 
-<!-- =====================================================
-     FEATURES SECTION
-     ===================================================== -->
-<section class="section relative">
+<!-- Features & Details Tabs -->
+<section class="section bg-secondary">
     <div class="section-container">
-        <div class="section-header" data-animate>
-            <span class="section-label">Features</span>
-            <h2 class="section-title">Powerful Capabilities</h2>
-            <p class="section-subtitle">Everything you need to build and deploy intelligent applications.</p>
+        <div class="tabs">
+            <button class="tab active" data-tab="features">Features</button>
+            <button class="tab" data-tab="benefits">Benefits</button>
+            <button class="tab" data-tab="usecases">Use Cases</button>
+            <button class="tab" data-tab="api">API</button>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for feature in product.features %}
-            <div class="card p-6 flex items-start gap-4 tilt-card-3d" data-animate>
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background: {{ product.color }}20;">
-                    <svg class="w-6 h-6" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                </div>
-                <span class="text-gray-300">{{ feature }}</span>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- =====================================================
-     BENEFITS & CODE SECTION
-     ===================================================== -->
-<section class="section relative bg-gradient-to-b from-transparent via-primary-500/5 to-transparent">
-    <div class="section-container">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <!-- Benefits -->
-            <div data-animate>
-                <span class="section-label mb-4">Benefits</span>
-                <h2 class="section-title text-left mb-6">Why Choose {{ product.name }}?</h2>
-                <p class="text-lg text-gray-400 mb-8">
-                    Experience the benefits of enterprise-grade AI technology.
-                </p>
-                
-                <div class="space-y-6">
-                    {% for benefit in product.benefits %}
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors">
-                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                        </div>
-                        <span class="text-gray-300 text-lg">{{ benefit }}</span>
+        <!-- Features Tab -->
+        <div id="features" class="tab-content active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+                {% for feature in product.features %}
+                <div class="card flex items-start gap-md">
+                    <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-accent-primary flex-shrink-0 mt-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
                     </div>
-                    {% endfor %}
+                    <p class="text-sm">{{ feature }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Benefits Tab -->
+        <div id="benefits" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+                {% for benefit in product.benefits %}
+                <div class="card flex items-start gap-lg">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-accent-emerald flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold mb-xs">{{ benefit }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Use Cases Tab -->
+        <div id="usecases" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+                {% for use_case in product.use_cases %}
+                <div class="card">
+                    <h4 class="text-lg font-semibold mb-sm">{{ use_case.title }}</h4>
+                    <p class="text-secondary">{{ use_case.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- API Tab -->
+        <div id="api" class="tab-content">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-title">{{ product.api_example.endpoint }}</span>
+                    <button class="code-copy">Copy</button>
+                </div>
+                <div class="code-content">
+                    <pre><code>{{ product.api_example.code }}</code></pre>
                 </div>
             </div>
             
-            <!-- Code Example -->
-            <div class="card p-8" data-animate data-delay="200">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold">Quick Start</h3>
-                    <div class="flex gap-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+            <div class="mt-2xl">
+                <h4 class="text-lg font-semibold mb-lg">API Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+                    <div class="card">
+                        <span class="text-sm text-muted mb-sm block">Method</span>
+                        <span class="font-semibold">{{ product.api_example.method }}</span>
                     </div>
-                </div>
-                
-                <div class="bg-[#0a0f1c] rounded-xl p-6 overflow-x-auto mb-6">
-                    <pre class="font-mono text-sm text-gray-300"><code>{{ product.api_example.code }}</code></pre>
-                </div>
-                
-                <div class="flex flex-wrap gap-4 pt-6 border-t border-white/10">
-                    <div class="px-4 py-2 rounded-lg bg-white/5">
-                        <span class="text-xs text-gray-500 block mb-1">Endpoint</span>
-                        <span class="font-mono text-sm text-primary-400">{{ product.api_example.endpoint }}</span>
+                    <div class="card">
+                        <span class="text-sm text-muted mb-sm block">Endpoint</span>
+                        <span class="font-semibold font-mono text-sm">{{ product.api_example.endpoint }}</span>
                     </div>
-                    <div class="px-4 py-2 rounded-lg bg-white/5">
-                        <span class="text-xs text-gray-500 block mb-1">Method</span>
-                        <span class="font-mono text-sm text-emerald-400">{{ product.api_example.method }}</span>
+                    <div class="card">
+                        <span class="text-sm text-muted mb-sm block">Authentication</span>
+                        <span class="font-semibold">Bearer Token</span>
                     </div>
                 </div>
             </div>
@@ -171,172 +189,73 @@
     </div>
 </section>
 
-<!-- =====================================================
-     USE CASES SECTION
-     ===================================================== -->
-<section class="section relative">
+<!-- Architecture Section -->
+<section class="section">
     <div class="section-container">
         <div class="section-header" data-animate>
-            <span class="section-label">Use Cases</span>
-            <h2 class="section-title">Transforming Industries</h2>
-            <p class="section-subtitle">See how {{ product.name }} is revolutionizing businesses worldwide.</p>
+            <span class="section-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                </svg>
+                Architecture
+            </span>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">
+                Simple integration, powerful results. Our API-first architecture ensures seamless integration with your existing systems.
+            </p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {% for use_case in product.use_cases %}
-            <div class="card p-6 text-center tilt-card-3d group" data-animate>
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110" style="background: {{ product.color }}20;">
-                    <svg class="w-8 h-8" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-2">{{ use_case.title }}</h3>
-                <p class="text-gray-400 text-sm">{{ use_case.description }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-xl stagger-children">
+            <div class="card text-center">
+                <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-primary/10 flex items-center justify-center text-accent-primary font-bold text-lg">1</div>
+                <h4 class="text-lg font-semibold mb-sm">Integrate</h4>
+                <p class="text-sm text-secondary">Add our SDK to your application with just a few lines of code.</p>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- =====================================================
-     DEMO REQUEST SECTION
-     ===================================================== -->
-<section id="demo" class="section relative">
-    <div class="section-container">
-        <div class="max-w-3xl mx-auto">
-            <div class="card p-8 md:p-12 relative overflow-hidden" data-animate>
-                <!-- Background Glow -->
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] rounded-full blur-[100px]" style="background: {{ product.color }}20;"></div>
-                
-                <div class="relative z-10">
-                    <div class="text-center mb-10">
-                        <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Request a Demo</h2>
-                        <p class="text-gray-400">See {{ product.name }} in action. Our team will contact you to schedule a personalized demo.</p>
-                    </div>
-                    
-                    <form id="demo-form" class="space-y-6">
-                        <input type="hidden" name="product" value="{{ product.name }}">
-                        
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="label text-gray-300 mb-2 block">Name *</label>
-                                <input type="text" name="name" class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-primary-500 transition-colors text-white placeholder-gray-500" required>
-                            </div>
-                            <div>
-                                <label class="label text-gray-300 mb-2 block">Email *</label>
-                                <input type="email" name="email" class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-primary-500 transition-colors text-white placeholder-gray-500" required>
-                            </div>
-                        </div>
-                        
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="label text-gray-300 mb-2 block">Company</label>
-                                <input type="text" name="company" class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-primary-500 transition-colors text-white placeholder-gray-500">
-                            </div>
-                            <div>
-                                <label class="label text-gray-300 mb-2 block">Phone</label>
-                                <input type="tel" name="phone" class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-primary-500 transition-colors text-white placeholder-gray-500">
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="label text-gray-300 mb-2 block">Use Case</label>
-                            <textarea name="use_case" rows="3" class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-primary-500 transition-colors text-white placeholder-gray-500 resize-none" placeholder="Tell us about your use case..."></textarea>
-                        </div>
-                        
-                        <div>
-                            <label class="label text-gray-300 mb-2 block">Preferred Contact Time</label>
-                            <select name="preferred_time" class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-primary-500 transition-colors text-white">
-                                <option value="">Select preferred time</option>
-                                <option value="morning">Morning (9AM - 12PM)</option>
-                                <option value="afternoon">Afternoon (12PM - 5PM)</option>
-                                <option value="evening">Evening (5PM - 8PM)</option>
-                                <option value="any">Any time</option>
-                            </select>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary w-full text-lg py-4 btn-glow btn-ripple">
-                            Request Demo
-                        </button>
-                    </form>
-                </div>
+            <div class="card text-center">
+                <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-secondary/10 flex items-center justify-center text-accent-secondary font-bold text-lg">2</div>
+                <h4 class="text-lg font-semibold mb-sm">Configure</h4>
+                <p class="text-sm text-secondary">Customize the AI behavior to match your specific requirements.</p>
+            </div>
+            <div class="card text-center">
+                <div class="w-12 h-12 mx-auto mb-lg rounded-xl bg-cyan-500/10 flex items-center justify-center text-accent-cyan font-bold text-lg">3</div>
+                <h4 class="text-lg font-semibold mb-sm">Deploy</h4>
+                <p class="text-sm text-secondary">Launch to production with our scalable, reliable infrastructure.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- =====================================================
-     PRICING CTA
-     ===================================================== -->
-<section class="cta-section relative">
-    <div class="cta-glow"></div>
-    
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-bg">
+        <div class="cta-gradient"></div>
+    </div>
     <div class="cta-content" data-animate>
-        <h2 class="cta-title">Ready to Get Started?</h2>
-        <p class="cta-subtitle">{{ product.pricing }}</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            <a href="{{ url_for('contact') }}" class="btn btn-primary magnetic-btn btn-glow btn-ripple text-lg px-10 py-4">
-                <span class="btn-content flex items-center gap-2">
-                    Start Free Trial
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </span>
+        <h2 class="cta-title">
+            Ready to <span class="gradient-text">Get Started</span>?
+        </h2>
+        <p class="cta-subtitle">
+            Schedule a demo to see {{ product.name }} in action.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                Request Demo
             </a>
-            <a href="{{ url_for('contact') }}" class="btn btn-secondary magnetic-btn text-lg px-10 py-4">
-                <span class="btn-content">Talk to Sales</span>
+            <a href="{{ url_for('products') }}" class="btn btn-secondary btn-lg">
+                View All Products
             </a>
         </div>
     </div>
 </section>
-{% endblock %}
 
-{% block extra_scripts %}
-<script>
-document.getElementById('demo-form')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    
-    try {
-        const response = await fetch('{{ url_for("request_demo") }}', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            Swal.fire({
-                title: 'Success!',
-                text: result.message,
-                icon: 'success',
-                background: '#0a0f1c',
-                color: '#fff',
-                confirmButtonColor: '#6366F1'
-            });
-            e.target.reset();
-        } else {
-            Swal.fire({
-                title: 'Error',
-                text: result.message,
-                icon: 'error',
-                background: '#0a0f1c',
-                color: '#fff',
-                confirmButtonColor: '#6366F1'
-            });
-        }
-    } catch (error) {
-        Swal.fire({
-            title: 'Error',
-            text: 'Something went wrong. Please try again.',
-            icon: 'error',
-            background: '#0a0f1c',
-            color: '#fff',
-            confirmButtonColor: '#6366F1'
-        });
-    }
-});
-</script>
+<style>
+.product-icon-lg {
+    width: 80px;
+    height: 80px;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
 {% endblock %}
