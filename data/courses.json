@@ -1,0 +1,338 @@
+[
+  {
+    "id": "python-ai",
+    "name": "Python for AI",
+    "icon": "code",
+    "color": "#3B82F6",
+    "level": "Beginner",
+    "duration": "6 weeks",
+    "modules": 8,
+    "description": "Master Python programming fundamentals with a focus on AI and data science applications. Learn the essential skills needed for AI development.",
+    "outcomes": [
+      "Write clean, efficient Python code",
+      "Work with data structures and algorithms",
+      "Use NumPy and Pandas for data manipulation",
+      "Create visualizations with Matplotlib",
+      "Build basic machine learning models",
+      "Understand AI development workflows"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "Python Fundamentals", "topics": ["Variables and data types", "Control flow", "Functions", "Modules and packages"]},
+      {"module": 2, "title": "Object-Oriented Programming", "topics": ["Classes and objects", "Inheritance", "Polymorphism", "Design patterns"]},
+      {"module": 3, "title": "Data Structures", "topics": ["Lists, tuples, and sets", "Dictionaries", "Stacks and queues", "Trees and graphs"]},
+      {"module": 4, "title": "NumPy Essentials", "topics": ["Array operations", "Broadcasting", "Linear algebra", "Random number generation"]},
+      {"module": 5, "title": "Pandas for Data Analysis", "topics": ["DataFrames", "Data cleaning", "Grouping and aggregation", "Time series data"]},
+      {"module": 6, "title": "Data Visualization", "topics": ["Matplotlib basics", "Statistical plots", "Interactive visualizations", "Dashboard creation"]},
+      {"module": 7, "title": "File Handling & APIs", "topics": ["Reading/writing files", "JSON and CSV", "REST APIs", "Web scraping"]},
+      {"module": 8, "title": "AI Development Setup", "topics": ["Jupyter notebooks", "Virtual environments", "Git basics", "AI project structure"]}
+    ]
+  },
+  {
+    "id": "machine-learning",
+    "name": "Machine Learning",
+    "icon": "brain",
+    "color": "#10B981",
+    "level": "Intermediate",
+    "duration": "10 weeks",
+    "modules": 12,
+    "description": "Comprehensive machine learning course covering supervised, unsupervised, and reinforcement learning with hands-on projects.",
+    "outcomes": [
+      "Implement supervised learning algorithms",
+      "Build unsupervised learning models",
+      "Evaluate and optimize model performance",
+      "Handle feature engineering and selection",
+      "Deploy ML models to production",
+      "Understand ML best practices"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "ML Fundamentals", "topics": ["What is ML?", "Types of learning", "ML workflow", "Python ecosystem"]},
+      {"module": 2, "title": "Linear Regression", "topics": ["Simple linear regression", "Multiple regression", "Regularization", "Gradient descent"]},
+      {"module": 3, "title": "Classification", "topics": ["Logistic regression", "Decision trees", "Random forests", "Evaluation metrics"]},
+      {"module": 4, "title": "Support Vector Machines", "topics": ["SVM theory", "Kernel methods", "Hyperparameter tuning", "Practical applications"]},
+      {"module": 5, "title": "Ensemble Methods", "topics": ["Bagging and boosting", "XGBoost", "Stacking", "Model selection"]},
+      {"module": 6, "title": "Dimensionality Reduction", "topics": ["PCA", "t-SNE", "Feature selection", "LDA"]},
+      {"module": 7, "title": "Clustering", "topics": ["K-means", "Hierarchical clustering", "DBSCAN", "Evaluation"]},
+      {"module": 8, "title": "Recommendation Systems", "topics": ["Collaborative filtering", "Content-based", "Hybrid approaches", "Deep learning recommenders"]},
+      {"module": 9, "title": "Model Evaluation", "topics": ["Cross-validation", "Metrics selection", "Bias-variance tradeoff", "Error analysis"]},
+      {"module": 10, "title": "Feature Engineering", "topics": ["Feature transformation", "Encoding", "Scaling", "Automated feature engineering"]},
+      {"module": 11, "title": "ML Pipelines", "topics": ["Pipeline design", "Automation", "Model selection", "Hyperparameter optimization"]},
+      {"module": 12, "title": "Production Deployment", "topics": ["Model serialization", "API development", "Monitoring", "A/B testing"]}
+    ]
+  },
+  {
+    "id": "deep-learning",
+    "name": "Deep Learning",
+    "icon": "layers",
+    "color": "#F59E0B",
+    "level": "Advanced",
+    "duration": "12 weeks",
+    "modules": 14,
+    "description": "Master deep learning fundamentals through hands-on projects with neural networks, CNNs, RNNs, and transformers.",
+    "outcomes": [
+      "Build and train neural networks from scratch",
+      "Implement CNNs for image analysis",
+      "Create RNNs and LSTMs for sequence data",
+      "Use transformer architectures",
+      "Apply transfer learning effectively",
+      "Debug and optimize deep learning models"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "Neural Network Basics", "topics": ["Perceptrons", "Activation functions", "Forward propagation", "Backpropagation"]},
+      {"module": 2, "title": "Deep Learning Frameworks", "topics": ["PyTorch fundamentals", "Tensor operations", "Automatic differentiation", "GPU acceleration"]},
+      {"module": 3, "title": "Convolutional Neural Networks", "topics": ["Convolution layers", "Pooling", "CNN architectures", "Image classification"]},
+      {"module": 4, "title": "CNN Applications", "topics": ["Object detection", "Semantic segmentation", "Transfer learning", "Fine-tuning"]},
+      {"module": 5, "title": "Recurrent Neural Networks", "topics": ["Sequence modeling", "Vanishing gradients", "LSTMs and GRUs", "Time series forecasting"]},
+      {"module": 6, "title": "Natural Language Processing", "topics": ["Text preprocessing", "Word embeddings", "Sequence-to-sequence", "Attention mechanism"]},
+      {"module": 7, "title": "Transformers Architecture", "topics": ["Self-attention", "Multi-head attention", "BERT and GPT", "Position encoding"]},
+      {"module": 8, "title": "Generative Models", "topics": ["VAEs", "GANs", "DCGANs", "Style transfer"]},
+      {"module": 9, "title": "Optimization Techniques", "topics": ["Adam, SGD variants", "Learning rate schedules", "Batch normalization", "Dropout"]},
+      {"module": 10, "title": "Regularization", "topics": ["L1/L2 regularization", "Data augmentation", "Early stopping", "Label smoothing"]},
+      {"module": 11, "title": "Model Debugging", "topics": ["Gradient analysis", "Loss landscape", "Interpretability", "Common pitfalls"]},
+      {"module": 12, "title": "Distributed Training", "topics": ["Multi-GPU training", "Model parallelism", "Mixed precision", "Efficient data loading"]},
+      {"module": 13, "title": "Reinforcement Learning", "topics": ["MDPs", "Q-learning", "Policy gradients", "Deep Q-networks"]},
+      {"module": 14, "title": "Production DL Systems", "topics": ["Model serving", "ONNX", "Inference optimization", "Monitoring"]}
+    ]
+  },
+  {
+    "id": "generative-ai",
+    "name": "Generative AI",
+    "icon": "sparkles",
+    "color": "#EC4899",
+    "level": "Advanced",
+    "duration": "8 weeks",
+    "modules": 10,
+    "description": "Learn to create AI systems that generate original content including text, images, code, and more using state-of-the-art generative models.",
+    "outcomes": [
+      "Understand generative AI fundamentals",
+      "Build text generation models",
+      "Create image generation systems",
+      "Implement code generation tools",
+      "Fine-tune generative models",
+      "Evaluate generative outputs"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "Generative AI Fundamentals", "topics": ["What is generative AI?", "Types of generative models", "Applications overview", "Ethical considerations"]},
+      {"module": 2, "title": "Large Language Models", "topics": ["Transformer recap", "GPT architecture", "LLM capabilities", "Prompting basics"]},
+      {"module": 3, "title": "Prompt Engineering", "topics": ["Effective prompts", "Chain-of-thought", "Few-shot learning", "Prompt templates"]},
+      {"module": 4, "title": "Fine-tuning LLMs", "topics": ["LoRA and QLoRA", "Instruction tuning", "RLHF basics", "Domain adaptation"]},
+      {"module": 5, "title": "Text Generation", "topics": ["Text completion APIs", "Creative writing", "Code generation", "Conversation systems"]},
+      {"module": 6, "title": "Image Generation", "topics": ["Diffusion models", "Stable Diffusion", "Image-to-image", "Inpainting and outpainting"]},
+      {"module": 7, "title": "Multimodal AI", "topics": ["Vision-language models", "Image captioning", "Visual QA", "Multimodal agents"]},
+      {"module": 8, "title": "RAG Systems", "topics": ["Retrieval-augmented generation", "Vector databases", "Embedding models", "Hybrid search"]},
+      {"module": 9, "title": "AI Agents", "topics": ["Agent architectures", "Tool use", "Memory systems", "Multi-agent collaboration"]},
+      {"module": 10, "title": "Building GenAI Applications", "topics": ["Application architecture", "API integration", "Safety and alignment", "Production considerations"]}
+    ]
+  },
+  {
+    "id": "llm-engineering",
+    "name": "LLM Engineering",
+    "icon": "cpu",
+    "color": "#8B5CF6",
+    "level": "Advanced",
+    "duration": "10 weeks",
+    "modules": 12,
+    "description": "Master the art of engineering large language model applications from prompt design to production deployment and optimization.",
+    "outcomes": [
+      "Design effective LLM pipelines",
+      "Implement RAG systems",
+      "Build multi-agent frameworks",
+      "Optimize LLM performance",
+      "Handle LLM limitations",
+      "Deploy and scale LLM applications"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "LLM Fundamentals", "topics": ["How LLMs work", "Model architectures", "Training processes", "Capability assessment"]},
+      {"module": 2, "title": "Prompt Engineering Deep Dive", "topics": ["Advanced prompting", "Prompt templates", "Output parsing", "Error handling"]},
+      {"module": 3, "title": "LLM APIs and SDKs", "topics": ["OpenAI API", "Anthropic API", "Open-source models", "SDK best practices"]},
+      {"module": 4, "title": "Retrieval-Augmented Generation", "topics": ["Vector stores", "Embedding models", "Chunking strategies", "Hybrid retrieval"]},
+      {"module": 5, "title": "Memory and Context", "topics": ["Conversation memory", "Summary memory", "Entity tracking", "Long-context handling"]},
+      {"module": 6, "title": "Tool Use and Plugins", "topics": ["Function calling", "API integration", "Custom tools", "Tool selection"]},
+      {"module": 7, "title": "Multi-Agent Systems", "topics": ["Agent design", "Role-based agents", "Collaboration patterns", "Conflict resolution"]},
+      {"module": 8, "title": "Evaluation and Testing", "topics": ["LLM evaluation metrics", "Benchmark datasets", "A/B testing", "Human evaluation"]},
+      {"module": 9, "title": "Safety and Alignment", "topics": ["Content filtering", "Jailbreak prevention", "Output validation", "Ethical guidelines"]},
+      {"module": 10, "title": "Cost Optimization", "topics": ["Token optimization", "Caching strategies", "Model selection", "Batch processing"]},
+      {"module": 11, "title": "Production Deployment", "topics": ["API design", "Scaling", "Monitoring", "Incident response"]},
+      {"module": 12, "title": "Capstone Project", "topics": ["Full LLM application", "Integration testing", "Performance optimization", "Documentation"]}
+    ]
+  },
+  {
+    "id": "prompt-engineering",
+    "name": "Prompt Engineering",
+    "icon": "edit",
+    "color": "#14B8A6",
+    "level": "Beginner",
+    "duration": "4 weeks",
+    "modules": 6,
+    "description": "Learn the art and science of crafting effective prompts to get the best results from AI language models.",
+    "outcomes": [
+      "Write clear, effective prompts",
+      "Apply advanced prompting techniques",
+      "Debug prompt issues",
+      "Optimize prompts for specific tasks",
+      "Create reusable prompt templates",
+      "Measure prompt effectiveness"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "Prompting Fundamentals", "topics": ["How prompts work", "Basic prompt structure", "Context and instructions", "Examples and templates"]},
+      {"module": 2, "title": "Advanced Techniques", "topics": ["Chain-of-thought", "Zero-shot and few-shot", "Role prompting", "Format control"]},
+      {"module": 3, "title": "Task-Specific Prompts", "topics": ["Code generation", "Creative writing", "Analysis and reasoning", "Summarization"]},
+      {"module": 4, "title": "Iterative Refinement", "topics": ["Testing prompts", "Error analysis", "A/B testing", "Continuous improvement"]},
+      {"module": 5, "title": "Prompt Templates", "topics": ["Template design", "Parameterization", "Version control", "Documentation"]},
+      {"module": 6, "title": "Production Prompts", "topics": ["System prompts", "User prompts", "Safety guidelines", "Monitoring"]}
+    ]
+  },
+  {
+    "id": "ai-agents-course",
+    "name": "AI Agents",
+    "icon": "bot",
+    "color": "#F97316",
+    "level": "Advanced",
+    "duration": "8 weeks",
+    "modules": 10,
+    "description": "Build autonomous AI agents that can perceive, reason, plan, and act independently to accomplish complex tasks.",
+    "outcomes": [
+      "Design AI agent architectures",
+      "Implement agent reasoning systems",
+      "Build tool-using agents",
+      "Create multi-agent systems",
+      "Handle agent failures gracefully",
+      "Deploy agents to production"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "AI Agent Fundamentals", "topics": ["What are AI agents?", "Agent architectures", "Perception-action loops", "Agent vs assistants"]},
+      {"module": 2, "title": "Agent Reasoning", "topics": ["Planning algorithms", "Goal decomposition", "Replanning", "Tree of thoughts"]},
+      {"module": 3, "title": "Memory Systems", "topics": ["Short-term memory", "Long-term memory", "Vector memory", "Experience replay"]},
+      {"module": 4, "title": "Tool Use", "topics": ["Function calling", "API integration", "Custom tools", "Tool selection strategies"]},
+      {"module": 5, "title": "Multi-Modal Agents", "topics": ["Vision for agents", "Audio processing", "Combined modalities", "Perception pipelines"]},
+      {"module": 6, "title": "Multi-Agent Systems", "topics": ["Agent communication", "Collaboration patterns", "Competition", "Swarm intelligence"]},
+      {"module": 7, "title": "Safety and Control", "topics": ["Guardrails", "Human oversight", "Fallback mechanisms", "Audit logging"]},
+      {"module": 8, "title": "Agent Frameworks", "topics": ["LangChain agents", "AutoGPT patterns", "Custom frameworks", "Framework comparison"]},
+      {"module": 9, "title": "Evaluation", "topics": ["Agent benchmarks", "Task completion metrics", "Safety evaluation", "Human preference"]},
+      {"module": 10, "title": "Production Agents", "topics": ["Deployment patterns", "Scaling", "Monitoring", "Continuous learning"]}
+    ]
+  },
+  {
+    "id": "data-science-course",
+    "name": "Data Science",
+    "icon": "database",
+    "color": "#06B6D4",
+    "level": "Intermediate",
+    "duration": "12 weeks",
+    "modules": 14,
+    "description": "Comprehensive data science training covering statistical analysis, machine learning, and data visualization with real-world projects.",
+    "outcomes": [
+      "Perform exploratory data analysis",
+      "Apply statistical methods",
+      "Build predictive models",
+      "Create compelling visualizations",
+      "Communicate data insights",
+      "Follow data science workflows"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "Data Science Overview", "topics": ["The data science process", "Tools and environments", "Types of analysis", "Career paths"]},
+      {"module": 2, "title": "Data Collection", "topics": ["APIs and web scraping", "Databases", "File formats", "Data quality"]},
+      {"module": 3, "title": "Data Cleaning", "topics": ["Missing values", "Outliers", "Inconsistencies", "Python libraries"]},
+      {"module": 4, "title": "Exploratory Analysis", "topics": ["Descriptive statistics", "Distributions", "Correlations", "Visual exploration"]},
+      {"module": 5, "title": "Statistical Inference", "topics": ["Hypothesis testing", "Confidence intervals", "P-values", "Statistical power"]},
+      {"module": 6, "title": "Regression Analysis", "topics": ["Linear regression", "Logistic regression", "Model diagnostics", "Interpretation"]},
+      {"module": 7, "title": "Classification", "topics": ["Decision trees", "Logistic regression", "SVM", "Model evaluation"]},
+      {"module": 8, "title": "Clustering", "topics": ["K-means", "Hierarchical", "DBSCAN", "Evaluation metrics"]},
+      {"module": 9, "title": "Dimensionality Reduction", "topics": ["PCA", "t-SNE", "Feature selection", "Interpretation"]},
+      {"module": 10, "title": "Time Series", "topics": ["Trends and seasonality", "Forecasting methods", "ARIMA", "Prophet"]},
+      {"module": 11, "title": "Data Visualization", "topics": ["Matplotlib", "Seaborn", "Interactive plots", "Storytelling"]},
+      {"module": 12, "title": "Big Data", "topics": ["Spark basics", "Distributed computing", "Data lakes", "Processing pipelines"]},
+      {"module": 13, "title": "Communication", "topics": ["Presentations", "Reports", "Dashboards", "Stakeholder management"]},
+      {"module": 14, "title": "Capstone Project", "topics": ["End-to-end project", "Real dataset", "Presentation", "Peer review"]}
+    ]
+  },
+  {
+    "id": "power-bi-course",
+    "name": "Power BI",
+    "icon": "pie-chart",
+    "color": "#F59E0B",
+    "level": "Beginner",
+    "duration": "6 weeks",
+    "modules": 8,
+    "description": "Master Microsoft Power BI for business intelligence, from data modeling to interactive dashboards and reports.",
+    "outcomes": [
+      "Connect to various data sources",
+      "Transform and model data",
+      "Create DAX calculations",
+      "Build interactive dashboards",
+      "Share and collaborate on reports",
+      "Implement best practices"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "Power BI Introduction", "topics": ["Power BI ecosystem", "Power BI Desktop", "Power BI Service", "Getting started"]},
+      {"module": 2, "title": "Data Import", "topics": ["Connecting to sources", "Web scraping", "PDF and Excel", "Data refresh"]},
+      {"module": 3, "title": "Data Transformation", "topics": ["Power Query", "Data cleaning", "Merging queries", "Parameters"]},
+      {"module": 4, "title": "Data Modeling", "topics": ["Relationships", "Star schema", "Calculated columns", "Best practices"]},
+      {"module": 5, "title": "DAX Fundamentals", "topics": ["DAX syntax", "Measures vs columns", "CALCULATE", "Context"]},
+      {"module": 6, "title": "Advanced DAX", "topics": ["Time intelligence", "Iterator functions", "Variables", "Performance"]},
+      {"module": 7, "title": "Visualizations", "topics": ["Visual types", "Interactions", "Bookmarks", "Drillthrough"]},
+      {"module": 8, "title": "Publishing and Sharing", "topics": ["Power BI Service", "Workspaces", "Row-level security", "Apps"]}
+    ]
+  },
+  {
+    "id": "flask-development",
+    "name": "Flask Development",
+    "icon": "server",
+    "color": "#10B981",
+    "level": "Intermediate",
+    "duration": "8 weeks",
+    "modules": 10,
+    "description": "Build modern web applications with Flask, including AI integration, REST APIs, authentication, and deployment.",
+    "outcomes": [
+      "Build Flask applications from scratch",
+      "Create RESTful APIs",
+      "Implement authentication",
+      "Integrate AI models",
+      "Deploy to production",
+      "Follow Flask best practices"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "Flask Fundamentals", "topics": ["Flask setup", "Routing", "Templates", "Static files"]},
+      {"module": 2, "title": "Templates and Jinja2", "topics": ["Template inheritance", "Control structures", "Filters", "Macros"]},
+      {"module": 3, "title": "Forms and Validation", "topics": ["WTForms", "Validation", "Flash messages", "CSRF protection"]},
+      {"module": 4, "title": "Databases", "topics": ["SQLAlchemy", "Migrations", "Relationships", "Querying"]},
+      {"module": 5, "title": "REST APIs", "topics": ["API design", "JSON responses", "Request parsing", "Error handling"]},
+      {"module": 6, "title": "Authentication", "topics": ["User management", "Password hashing", "Sessions", "OAuth"]},
+      {"module": 7, "title": "AI Integration", "topics": ["OpenAI API", "LangChain", "Vector stores", "Chat interfaces"]},
+      {"module": 8, "title": "Deployment", "topics": ["Production config", "Gunicorn", "Nginx", "Docker"]},
+      {"module": 9, "title": "Testing", "topics": ["Unit tests", "Integration tests", "Test fixtures", "CI/CD"]},
+      {"module": 10, "title": "Best Practices", "topics": ["Project structure", "Security", "Performance", "Monitoring"]}
+    ]
+  },
+  {
+    "id": "mlops-course",
+    "name": "MLOps",
+    "icon": "settings",
+    "color": "#EF4444",
+    "level": "Advanced",
+    "duration": "10 weeks",
+    "modules": 12,
+    "description": "Learn to deploy, monitor, and maintain machine learning models in production with modern MLOps practices.",
+    "outcomes": [
+      "Build automated ML pipelines",
+      "Deploy models to cloud platforms",
+      "Monitor model performance",
+      "Implement CI/CD for ML",
+      "Handle model updates",
+      "Manage ML infrastructure"
+    ],
+    "curriculum": [
+      {"module": 1, "title": "MLOps Introduction", "topics": ["What is MLOps?", "ML lifecycle", "MLOps maturity", "Tool landscape"]},
+      {"module": 2, "title": "Experiment Tracking", "topics": ["MLflow", "Weights & Biases", "Experiment organization", "Artifact management"]},
+      {"module": 3, "title": "Data Pipelines", "topics": ["ETL pipelines", "Feature engineering", "Data validation", "Data versioning"]},
+      {"module": 4, "title": "Model Training Pipelines", "topics": ["Pipeline orchestration", "Hyperparameter tuning", "Distributed training", "Reproducibility"]},
+      {"module": 5, "title": "Model Registry", "topics": ["Model versioning", "Staging", "Promotion", "Metadata tracking"]},
+      {"module": 6, "title": "Model Serving", "topics": ["REST APIs", "Batch inference", "Streaming", "ONNX export"]},
+      {"module": 7, "title": "Containerization", "topics": ["Docker for ML", "GPU containers", "Model packaging", "Serverless"]},
+      {"module": 8, "title": "Cloud Deployment", "topics": ["AWS SageMaker", "Azure ML", "Google Vertex", "Kubernetes"]},
+      {"module": 9, "title": "Monitoring", "topics": ["Model metrics", "Data drift", "Concept drift", "Alerting"]},
+      {"module": 10, "title": "CI/CD for ML", "topics": ["Testing ML code", "Automated retraining", "A/B testing", "Rollbacks"]},
+      {"module": 11, "title": "Feature Stores", "topics": ["Feature engineering", "Feature serving", "Feature reuse", "Feast"]},
+      {"module": 12, "title": "MLOps Best Practices", "topics": ["Documentation", "Security", "Cost optimization", "Team collaboration"]}
+    ]
+  }
+]

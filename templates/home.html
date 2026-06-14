@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}HUMISENSE - Building the Future with AI{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+{% include 'components/hero.html' %}
+
+<!-- Stats -->
+{% include 'components/counters.html' %}
+
+<!-- Features Section -->
+<section class="section">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="text-primary-500 font-semibold text-sm uppercase tracking-wider">Why HUMISENSE</span>
+            <h2 class="section-title mt-4">Powerful AI Solutions for Modern Businesses</h2>
+            <p class="section-subtitle mx-auto">
+                We provide comprehensive AI tools and services that help you harness the full potential of artificial intelligence.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="card p-8 group">
+                <div class="w-14 h-14 rounded-2xl bg-primary-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Lightning Fast</h3>
+                <p class="text-gray-600 dark:text-gray-400">Deploy AI solutions in minutes, not months. Our pre-built APIs and tools accelerate your development cycle.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="card p-8 group">
+                <div class="w-14 h-14 rounded-2xl bg-accent-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Enterprise Security</h3>
+                <p class="text-gray-600 dark:text-gray-400">SOC2 compliant, GDPR ready, and built with security at its core. Your data stays protected at all times.</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="card p-8 group">
+                <div class="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3">99.9% Uptime</h3>
+                <p class="text-gray-600 dark:text-gray-400">Built on reliable infrastructure with global redundancy. Count on us when it matters most.</p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="card p-8 group">
+                <div class="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Easy Integration</h3>
+                <p class="text-gray-600 dark:text-gray-400">Simple REST APIs and SDKs for all major languages. Integrate AI into your existing workflow seamlessly.</p>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="card p-8 group">
+                <div class="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Expert Support</h3>
+                <p class="text-gray-600 dark:text-gray-400">Our team of AI experts is available 24/7 to help you build, deploy, and scale your AI solutions.</p>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="card p-8 group">
+                <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Continuous Innovation</h3>
+                <p class="text-gray-600 dark:text-gray-400">We constantly research and develop new AI capabilities to keep you ahead of the competition.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Preview -->
+<section class="section bg-gray-100 dark:bg-gray-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="text-primary-500 font-semibold text-sm uppercase tracking-wider">Our Products</span>
+            <h2 class="section-title mt-4">AI-Powered Solutions</h2>
+            <p class="section-subtitle mx-auto">
+                Explore our suite of AI products designed to transform how you work and serve your customers.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for product in products %}
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="card product-card p-6 group">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6" style="background-color: {{ product.color }}20;">
+                    <svg class="w-7 h-7" style="color: {{ product.color }};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {% if product.icon == 'mic' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                        {% elif product.icon == 'message-circle' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        {% elif product.icon == 'bot' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        {% elif product.icon == 'bar-chart-2' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        {% elif product.icon == 'book-open' %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        {% else %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        {% endif %}
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-primary-500 transition-colors">{{ product.name }}</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">{{ product.tagline }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 line-clamp-2">{{ product.description }}</p>
+                <div class="mt-4 flex items-center text-primary-500 font-medium">
+                    Learn more
+                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="{{ url_for('products') }}" class="btn btn-outline">
+                View All Products
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+{% include 'components/testimonials.html' %}
+
+<!-- CTA -->
+{% include 'components/cta.html' %}
+{% endblock %}

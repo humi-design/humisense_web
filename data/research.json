@@ -1,0 +1,74 @@
+[
+  {
+    "id": "agentic-ai-paper",
+    "title": "Autonomous Multi-Agent Coordination for Complex Task Execution",
+    "authors": ["Dr. Sarah Chen", "Dr. Emily Watson", "Michael Rodriguez"],
+    "institution": "HUMISENSE Research",
+    "year": 2024,
+    "abstract": "This paper presents a novel framework for coordinating multiple autonomous AI agents to execute complex, multi-step tasks. We introduce a hierarchical planning architecture that enables agents to decompose high-level goals, allocate subtasks dynamically, and collaborate effectively while maintaining safety guardrails. Our experiments demonstrate a 40% improvement in task completion rates compared to single-agent approaches on benchmark tasks.",
+    "keywords": ["multi-agent systems", "autonomous AI", "task planning", "coordination", "reinforcement learning"],
+    "research_area": "multi_agent",
+    "pdf_url": "#",
+    "citation": "Chen, S., Watson, E., & Rodriguez, M. (2024). Autonomous Multi-Agent Coordination for Complex Task Execution. HUMISENSE Research."
+  },
+  {
+    "id": "generative-ai-paper",
+    "title": "Controllable Text Generation with Constrained Language Models",
+    "authors": ["Dr. Emily Watson", "Dr. Priya Patel"],
+    "institution": "HUMISENSE Research",
+    "year": 2024,
+    "abstract": "We present a novel approach to controllable text generation that enables fine-grained control over generated content attributes while maintaining coherence and quality. Our method combines constraint satisfaction with language model fine-tuning to produce outputs that reliably adhere to specified constraints. We demonstrate effectiveness across multiple domains including sentiment, topic, and style control.",
+    "keywords": ["text generation", "controllable generation", "language models", "constraint satisfaction"],
+    "research_area": "generative_ai",
+    "pdf_url": "#",
+    "citation": "Watson, E., & Patel, P. (2024). Controllable Text Generation with Constrained Language Models. HUMISENSE Research."
+  },
+  {
+    "id": "xai-paper",
+    "title": "Interpretable Deep Learning for Healthcare Diagnostics",
+    "authors": ["Dr. Priya Patel", "Dr. Sarah Chen", "James Kim"],
+    "institution": "HUMISENSE Research",
+    "year": 2024,
+    "abstract": "We propose an interpretable deep learning framework for healthcare diagnostic applications that provides clinically meaningful explanations for predictions. Our approach combines attention mechanisms with concept bottleneck models to produce human-readable justifications. Evaluation on medical imaging datasets shows that our method maintains high accuracy while significantly improving interpretability for clinical decision support.",
+    "keywords": ["explainable AI", "healthcare AI", "interpretability", "deep learning", "medical imaging"],
+    "research_area": "explainable_ai",
+    "pdf_url": "#",
+    "citation": "Patel, P., Chen, S., & Kim, J. (2024). Interpretable Deep Learning for Healthcare Diagnostics. HUMISENSE Research."
+  },
+  {
+    "id": "nlp-paper",
+    "title": "Efficient Fine-Tuning of Large Language Models for Domain-Specific Applications",
+    "authors": ["Michael Rodriguez", "Dr. Emily Watson"],
+    "institution": "HUMISENSE Research",
+    "year": 2023,
+    "abstract": "This paper presents efficient techniques for fine-tuning large language models for domain-specific applications with limited computational resources. We introduce a parameter-efficient fine-tuning approach combining adapter layers with strategic initialization that reduces compute requirements by 90% while maintaining model performance. Our method enables organizations to customize LLMs for specialized use cases.",
+    "keywords": ["fine-tuning", "parameter-efficient", "LLM", "domain adaptation", "low-rank adaptation"],
+    "research_area": "nlp",
+    "pdf_url": "#",
+    "citation": "Rodriguez, M., & Watson, E. (2023). Efficient Fine-Tuning of Large Language Models for Domain-Specific Applications. HUMISENSE Research."
+  },
+  {
+    "id": "cv-paper",
+    "title": "Real-Time Object Detection with Optimized Neural Architectures",
+    "authors": ["James Kim", "Dr. Sarah Chen"],
+    "institution": "HUMISENSE Research",
+    "year": 2023,
+    "abstract": "We present an optimized neural architecture search approach for real-time object detection that balances accuracy and inference speed. Our method automatically discovers efficient architectures that achieve state-of-the-art performance while meeting strict latency constraints. Experiments on edge devices demonstrate the practical applicability of our approach for deployment in resource-constrained environments.",
+    "keywords": ["object detection", "neural architecture search", "edge computing", "real-time inference", "optimization"],
+    "research_area": "computer_vision",
+    "pdf_url": "#",
+    "citation": "Kim, J., & Chen, S. (2023). Real-Time Object Detection with Optimized Neural Architectures. HUMISENSE Research."
+  },
+  {
+    "id": "accessibility-paper",
+    "title": "AI-Powered Accessibility: Enhancing Digital Experiences for Users with Disabilities",
+    "authors": ["Dr. Priya Patel", "Alex Thompson"],
+    "institution": "HUMISENSE Research",
+    "year": 2023,
+    "abstract": "This paper explores how AI technologies can be leveraged to enhance digital accessibility for users with various disabilities. We present a comprehensive framework for integrating AI-powered features including automatic alt text generation, real-time sign language translation, and adaptive interfaces. User studies demonstrate significant improvements in accessibility and user satisfaction.",
+    "keywords": ["accessibility", "inclusive design", "assistive AI", "universal design", "user studies"],
+    "research_area": "ai_accessibility",
+    "pdf_url": "#",
+    "citation": "Patel, P., & Thompson, A. (2023). AI-Powered Accessibility: Enhancing Digital Experiences for Users with Disabilities. HUMISENSE Research."
+  }
+]
