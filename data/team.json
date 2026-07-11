@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Dr. Sarah Chen",
+    "role": "CEO & Co-Founder",
+    "bio": "Former AI Research Lead at Google with 15+ years experience in machine learning and natural language processing."
+  },
+  {
+    "name": "Michael Rodriguez",
+    "role": "CTO & Co-Founder",
+    "bio": "Ex-Stanford ML researcher specializing in multi-agent systems and autonomous AI agents."
+  },
+  {
+    "name": "Dr. Emily Watson",
+    "role": "Chief Scientist",
+    "bio": "Leading expert in generative AI and neural architecture design with numerous publications."
+  },
+  {
+    "name": "James Kim",
+    "role": "VP of Engineering",
+    "bio": "Built AI infrastructure at scale for Fortune 500 companies for over a decade."
+  },
+  {
+    "name": "Dr. Priya Patel",
+    "role": "Head of Research",
+    "bio": "Published researcher in explainable AI and AI safety with PhD from MIT."
+  },
+  {
+    "name": "Alex Thompson",
+    "role": "VP of Product",
+    "bio": "Product leader with experience launching AI products used by millions."
+  }
+]

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel - HUMISENSE{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-link { transition: all 0.2s; }
+        .sidebar-link:hover { background: rgba(255,255,255,0.1); }
+        .sidebar-link.active { background: rgba(255,255,255,0.2); }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gradient-to-b from-indigo-700 to-purple-800 text-white flex-shrink-0 flex flex-col">
+            <div class="p-4 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <span class="text-indigo-600 text-xl font-bold">H</span>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg">HUMISENSE</h1>
+                        <p class="text-xs text-white/60">Admin Panel</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 py-4 overflow-y-auto">
+                <div class="px-4 mb-2 text-xs uppercase text-white/40 font-semibold tracking-wider">Main</div>
+                <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                    <i class="fas fa-home w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="px-4 mt-6 mb-2 text-xs uppercase text-white/40 font-semibold tracking-wider">Content</div>
+                <a href="{{ url_for('admin_products') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'products' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-box w-5"></i>
+                    <span>Products</span>
+                </a>
+                <a href="{{ url_for('admin_services') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'services' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-cogs w-5"></i>
+                    <span>Services</span>
+                </a>
+                <a href="{{ url_for('admin_courses') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'courses' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-graduation-cap w-5"></i>
+                    <span>Courses</span>
+                </a>
+                <a href="{{ url_for('admin_research') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if request.endpoint in ['admin_research', 'admin_research_add', 'admin_research_edit'] %}active{% endif %}">
+                    <i class="fas fa-flask w-5"></i>
+                    <span>Research</span>
+                </a>
+                <a href="{{ url_for('admin_testimonials') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'testimonials' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-quote-left w-5"></i>
+                    <span>Testimonials</span>
+                </a>
+                <a href="{{ url_for('admin_team') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'team' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-users w-5"></i>
+                    <span>Team</span>
+                </a>
+
+                <div class="px-4 mt-6 mb-2 text-xs uppercase text-white/40 font-semibold tracking-wider">Submissions</div>
+                <a href="{{ url_for('admin_contacts') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'contacts' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-envelope w-5"></i>
+                    <span>Contacts</span>
+                    {% if contacts_count and contacts_count > 0 %}
+                    <span class="ml-auto bg-red-500 text-xs px-2 py-0.5 rounded-full">{{ contacts_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('admin_newsletter') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'newsletter' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-newspaper w-5"></i>
+                    <span>Newsletter</span>
+                </a>
+                <a href="{{ url_for('admin_enrollments') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'enrollments' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-user-graduate w-5"></i>
+                    <span>Enrollments</span>
+                </a>
+                <a href="{{ url_for('admin_research_submissions') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'research_submissions' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-paper-plane w-5"></i>
+                    <span>Research Sub.</span>
+                </a>
+
+                <div class="px-4 mt-6 mb-2 text-xs uppercase text-white/40 font-semibold tracking-wider">System</div>
+                <a href="{{ url_for('admin_settings') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'settings' in request.endpoint or 'create_user' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-cog w-5"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">{{ session.get('admin_username', 'Admin') }}</p>
+                        <a href="{{ url_for('admin_logout') }}" class="text-xs text-white/60 hover:text-white">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">{% block page_title %}Dashboard{% endblock %}</h2>
+                    <p class="text-sm text-gray-500">{% block page_subtitle %}Manage your website content{% endblock %}</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    {% block header_actions %}{% endblock %}
+                    <a href="{{ url_for('home') }}" target="_blank" class="text-gray-500 hover:text-indigo-600" title="View Website">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-6">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                    <div class="p-4 rounded-lg mb-2 {% if category == 'error' %}bg-red-100 text-red-700 border border-red-200{% elif category == 'success' %}bg-green-100 text-green-700 border border-green-200{% else %}bg-blue-100 text-blue-700 border border-blue-200{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

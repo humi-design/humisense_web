@@ -1,0 +1,177 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Dashboard - HUMISENSE Admin{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Overview of your website content{% endblock %}
+
+{% block content %}
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Products</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ products_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-box text-indigo-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_products') }}" class="text-sm text-indigo-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Services</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ services_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-cogs text-emerald-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_services') }}" class="text-sm text-emerald-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Courses</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ courses_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-graduation-cap text-amber-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_courses') }}" class="text-sm text-amber-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Research</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ research_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-flask text-purple-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_research') }}" class="text-sm text-purple-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Testimonials</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ testimonials_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-quote-left text-pink-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_testimonials') }}" class="text-sm text-pink-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Contacts</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ contacts_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-envelope text-cyan-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_contacts') }}" class="text-sm text-cyan-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Newsletter</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ newsletter_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-newspaper text-teal-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_newsletter') }}" class="text-sm text-teal-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-500">Enrollments</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">{{ enrollments_count }}</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user-graduate text-orange-600 text-xl"></i>
+            </div>
+        </div>
+        <a href="{{ url_for('admin_enrollments') }}" class="text-sm text-orange-600 hover:underline mt-3 inline-block">Manage →</a>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <a href="{{ url_for('admin_product_add') }}" class="flex items-center gap-3 p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">
+                <i class="fas fa-plus text-indigo-600"></i>
+                <span class="text-sm font-medium text-indigo-900">Add Product</span>
+            </a>
+            <a href="{{ url_for('admin_service_add') }}" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fas fa-plus text-emerald-600"></i>
+                <span class="text-sm font-medium text-emerald-900">Add Service</span>
+            </a>
+            <a href="{{ url_for('admin_course_add') }}" class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
+                <i class="fas fa-plus text-amber-600"></i>
+                <span class="text-sm font-medium text-amber-900">Add Course</span>
+            </a>
+            <a href="{{ url_for('admin_research_add') }}" class="flex items-center gap-3 p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition">
+                <i class="fas fa-plus text-purple-600"></i>
+                <span class="text-sm font-medium text-purple-900">Add Research</span>
+            </a>
+            <a href="{{ url_for('admin_testimonial_add') }}" class="flex items-center gap-3 p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition">
+                <i class="fas fa-plus text-pink-600"></i>
+                <span class="text-sm font-medium text-pink-900">Add Testimonial</span>
+            </a>
+            <a href="{{ url_for('admin_team_add') }}" class="flex items-center gap-3 p-4 bg-cyan-50 rounded-lg hover:bg-cyan-100 transition">
+                <i class="fas fa-plus text-cyan-600"></i>
+                <span class="text-sm font-medium text-cyan-900">Add Team Member</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Contacts -->
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Recent Contacts</h3>
+            <a href="{{ url_for('admin_contacts') }}" class="text-sm text-indigo-600 hover:underline">View All</a>
+        </div>
+        {% if recent_contacts %}
+        <div class="space-y-3">
+            {% for contact in recent_contacts %}
+            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                    <span class="text-indigo-600 font-semibold text-sm">{{ contact.name[0] }}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-800 truncate">{{ contact.name }}</p>
+                    <p class="text-xs text-gray-500 truncate">{{ contact.subject or contact.email }}</p>
+                </div>
+                <span class="px-2 py-1 text-xs rounded-full {% if contact.status == 'new' %}bg-blue-100 text-blue-700{% elif contact.status == 'read' %}bg-gray-100 text-gray-700{% else %}bg-green-100 text-green-700{% endif %}">
+                    {{ contact.status }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center py-8">No contacts yet</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

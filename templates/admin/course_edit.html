@@ -1,0 +1,156 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ action }} Course - Admin Panel{% endblock %}
+{% block page_title %}{{ action }} Course{% endblock %}
+{% block page_subtitle %}{{ 'Edit' if course else 'Add a new' }} course{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl">
+    <form method="POST" class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Basic Information</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Course ID (URL slug)</label>
+                    <input type="text" name="id" value="{{ course.id if course else '' }}" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., python-ai" {{ 'readonly' if course else '' }}>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                    <input type="text" name="name" value="{{ course.name if course else '' }}" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                           placeholder="Course name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Icon</label>
+                    <input type="text" name="icon" value="{{ course.icon if course else 'book' }}" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                           placeholder="code, brain, layers, sparkles">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Color (Hex)</label>
+                    <input type="text" name="color" value="{{ course.color if course else '#6366F1' }}" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                           placeholder="#6366F1">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Level</label>
+                    <select name="level" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <option value="Beginner" {% if course and course.level == 'Beginner' %}selected{% endif %}>Beginner</option>
+                        <option value="Intermediate" {% if course and course.level == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                        <option value="Advanced" {% if course and course.level == 'Advanced' %}selected{% endif %}>Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                    <input type="text" name="duration" value="{{ course.duration if course else '' }}" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., 6 weeks">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Number of Modules</label>
+                    <input type="number" name="modules" value="{{ course.modules if course else '8' }}" min="1"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea name="description" rows="3" required
+                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">{{ course.description if course else '' }}</textarea>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Learning Outcomes (One per line)</h3>
+            <textarea name="outcomes" rows="6" 
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Write clean, efficient Python code&#10;Work with data structures and algorithms">{% if course %}{% for o in course.outcomes %}{{ o }}
+{% endfor %}{% endif %}</textarea>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Curriculum</h3>
+            <div id="curriculum-container">
+                {% if course and course.curriculum %}
+                {% for module in course.curriculum %}
+                <div class="curriculum-row border border-gray-200 rounded-lg p-4 mb-4">
+                    <div class="flex gap-4 mb-3">
+                        <input type="number" name="module_num" value="{{ module.module }}" placeholder="#" min="1"
+                               class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <input type="text" name="module_title" value="{{ module.title }}" placeholder="Module Title"
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <button type="button" onclick="removeModule(this)" class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <textarea name="module_topics" rows="3" placeholder="Topics (one per line)"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm">{% for t in module.topics %}{{ t }}
+{% endfor %}</textarea>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="curriculum-row border border-gray-200 rounded-lg p-4 mb-4">
+                    <div class="flex gap-4 mb-3">
+                        <input type="number" name="module_num" value="1" placeholder="#" min="1"
+                               class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <input type="text" name="module_title" placeholder="Module Title"
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <button type="button" onclick="removeModule(this)" class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <textarea name="module_topics" rows="3" placeholder="Topics (one per line)"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"></textarea>
+                </div>
+                {% endif %}
+            </div>
+            <button type="button" onclick="addModule()" class="mt-3 text-amber-600 hover:text-amber-800 text-sm">
+                <i class="fas fa-plus mr-1"></i> Add Module
+            </button>
+        </div>
+
+        <div class="flex gap-4">
+            <button type="submit" class="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition">
+                <i class="fas fa-save mr-2"></i> {{ action }} Course
+            </button>
+            <a href="{{ url_for('admin_courses') }}" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+let moduleCounter = {{ course.curriculum|length if course else 1 }};
+function addModule() {
+    moduleCounter++;
+    const container = document.getElementById('curriculum-container');
+    const row = document.createElement('div');
+    row.className = 'curriculum-row border border-gray-200 rounded-lg p-4 mb-4';
+    row.innerHTML = `
+        <div class="flex gap-4 mb-3">
+            <input type="number" name="module_num" value="${moduleCounter}" placeholder="#" min="1"
+                   class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+            <input type="text" name="module_title" placeholder="Module Title"
+                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+            <button type="button" onclick="removeModule(this)" class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <textarea name="module_topics" rows="3" placeholder="Topics (one per line)"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"></textarea>
+    `;
+    container.appendChild(row);
+}
+
+function removeModule(btn) {
+    const rows = document.querySelectorAll('.curriculum-row');
+    if (rows.length > 1) {
+        btn.closest('.curriculum-row').remove();
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Services - Admin Panel{% endblock %}
+{% block page_title %}Services{% endblock %}
+{% block page_subtitle %}Manage AI services{% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('admin_service_add') }}" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition">
+    <i class="fas fa-plus mr-2"></i>Add Service
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for service in services %}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: {{ service.color }}20; color: {{ service.color }}">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="flex gap-2">
+                    <a href="{{ url_for('admin_service_edit', service_id=service.id) }}" class="text-emerald-600 hover:text-emerald-800">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form method="POST" action="{{ url_for('admin_service_delete', service_id=service.id) }}" class="inline" onsubmit="return confirm('Are you sure?');">
+                        <button type="submit" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ service.name }}</h3>
+            <p class="text-sm text-gray-500 mb-4">{{ service.short_description[:80] }}...</p>
+            <div class="flex items-center justify-between text-xs text-gray-400">
+                <span>{{ service.features|length }} features</span>
+                <span class="px-2 py-1 bg-gray-100 rounded">{{ service.level|default('Service') }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if not services %}
+<div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+    <i class="fas fa-cogs text-gray-300 text-4xl mb-3"></i>
+    <p class="text-gray-500">No services found. Add your first service!</p>
+</div>
+{% endif %}
+{% endblock %}
