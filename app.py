@@ -35,6 +35,10 @@ app.config.from_object(config[os.environ.get('FLASK_ENV', 'default')])
 # Initialize extensions
 db = init_extensions(app)
 
+# Create all database tables if they don't exist
+with app.app_context():
+    db.create_all()
+
 # Load data files
 def load_data(filename):
     """Load JSON data from data directory."""
