@@ -1,6 +1,6 @@
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session, abort
 from flask_sqlalchemy import SQLAlchemy
@@ -299,7 +299,7 @@ def admin_login():
         if admin and admin.check_password(password):
             session['admin_id'] = admin.id
             session['admin_username'] = admin.username
-            admin.last_login = datetime.utcnow()
+            admin.last_login = datetime.now(timezone.utc)
             db.session.commit()
             flash('Welcome to the admin panel!', 'success')
             return redirect(url_for('admin_dashboard'))
