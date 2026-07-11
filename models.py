@@ -1,9 +1,13 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import extensions
 
 db = extensions.db
+
+def utc_now():
+    """Return current UTC time."""
+    return datetime.now(timezone.utc)
 
 
 class Admin(db.Model):
@@ -15,7 +19,7 @@ class Admin(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(120))
     is_active = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utc_now)
     last_login = db.Column(db.DateTime)
     
     def set_password(self, password):
@@ -38,7 +42,7 @@ class User(db.Model):
     company = db.Column(db.String(100))
     phone = db.Column(db.String(20))
     message = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utc_now)
     is_subscribed = db.Column(db.Boolean, default=True)
     
     def __repr__(self):
@@ -57,7 +61,7 @@ class Contact(db.Model):
     subject = db.Column(db.String(200))
     message = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(20), default='new')  # new, read, responded
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utc_now)
     
     def __repr__(self):
         return f'<Contact {self.subject}>'
@@ -69,7 +73,7 @@ class Newsletter(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
-    subscribed_at = db.Column(db.DateTime, default=datetime.utcnow)
+    subscribed_at = db.Column(db.DateTime, default=utc_now)
     is_active = db.Column(db.Boolean, default=True)
     
     def __repr__(self):
@@ -89,7 +93,7 @@ class CourseEnrollment(db.Model):
     experience_level = db.Column(db.String(50))
     goals = db.Column(db.Text)
     status = db.Column(db.String(20), default='pending')  # pending, confirmed, completed
-    enrolled_at = db.Column(db.DateTime, default=datetime.utcnow)
+    enrolled_at = db.Column(db.DateTime, default=utc_now)
     
     def __repr__(self):
         return f'<CourseEnrollment {self.course_id}>'
@@ -108,7 +112,7 @@ class ResearchSubmission(db.Model):
     abstract = db.Column(db.Text, nullable=False)
     keywords = db.Column(db.String(500))
     status = db.Column(db.String(20), default='submitted')  # submitted, reviewing, accepted, rejected
-    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    submitted_at = db.Column(db.DateTime, default=utc_now)
     
     def __repr__(self):
         return f'<ResearchSubmission {self.title[:50]}>'

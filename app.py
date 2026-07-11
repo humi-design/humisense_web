@@ -51,6 +51,23 @@ courses_data = load_data('courses')
 research_data = load_data('research')
 testimonials_data = load_data('testimonials')
 
+# Initialize admin user if not exists
+def init_admin_user():
+    """Create default admin user if not exists."""
+    with app.app_context():
+        admin = Admin.query.filter_by(username='admin').first()
+        if not admin:
+            admin = Admin(username='admin', email='admin@humisense.com', is_active=True)
+            admin.set_password('admin123')
+            db.session.add(admin)
+            db.session.commit()
+            print("Admin user created: admin / admin123")
+        else:
+            print("Admin user already exists")
+
+# Call initialization after app is set up
+init_admin_user()
+
 
 # Page Routes
 @app.route('/')
