@@ -1,0 +1,55 @@
+# Passenger configuration for cPanel
+PassengerAppRoot /home/cpUSER/yourapp
+PassengerPython /home/cpUSER/yourapp/venv/bin/python3.11
+
+# Set environment variables
+SetEnv FLASK_ENV production
+SetEnv DATABASE_URL mysql://CPANEL_USER_humisense:YOUR_PASSWORD@localhost/CPANEL_USER_humisense_db?charset=utf8mb4
+
+# Serve static files directly
+<Directory "/home/cpUSER/yourapp/static">
+    Options -Indexes +FollowSymLinks
+    Require all granted
+</Directory>
+
+# Serve static files
+Alias /static /home/cpUSER/yourapp/static
+
+# Rewrite rules
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Serve static files directly
+    RewriteCond %{REQUEST_URI} ^/static/
+    RewriteRule ^static/(.*)$ /static/$1 [L]
+    
+    # Serve maintenance page during deployment
+    RewriteCond %{REQUEST_URI} !^/maintenance\.html$
+    RewriteCond %{REQUEST_URI} !^/static/
+    RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+    RewriteRule ^(.*)$ /maintenance.html [L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/json application/javascript text/xml application/xml text/javascript
+</IfModule>
+
+# Cache static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/* "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# Directory listing off
+Options -Indexes
