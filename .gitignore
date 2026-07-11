@@ -118,4 +118,4 @@ uploads/*
 static/css/*.css
 static/js/*.js
 static/images/*
-!static/images/.gitkeep
+!static/images/.gitkeepcookies.txt
