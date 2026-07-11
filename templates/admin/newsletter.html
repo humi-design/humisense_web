@@ -1,0 +1,80 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Newsletter - Admin Panel{% endblock %}
+{% block page_title %}Newsletter Subscribers{% endblock %}
+{% block page_subtitle %}Manage email subscribers{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+        <p class="text-sm text-gray-500">{{ subscribers|length }} total subscribers</p>
+        <button onclick="exportSubscribers()" class="text-sm text-indigo-600 hover:text-indigo-800">
+            <i class="fas fa-download mr-1"></i> Export CSV
+        </button>
+    </div>
+    <table class="w-full">
+        <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Email</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Subscribed</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Status</th>
+                <th class="text-right px-6 py-4 text-sm font-semibold text-gray-600">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for subscriber in subscribers %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
+                            <span class="text-teal-600 font-semibold text-sm">{{ subscriber.email[0].upper() }}</span>
+                        </div>
+                        <span class="text-gray-800">{{ subscriber.email }}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-gray-500 text-sm">{{ subscriber.subscribed_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td class="px-6 py-4">
+                    <span class="px-3 py-1 rounded-full text-sm {% if subscriber.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                        {{ 'Active' if subscriber.is_active else 'Inactive' }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <form method="POST" action="{{ url_for('admin_newsletter_toggle', subscriber_id=subscriber.id) }}" class="inline">
+                        <button type="submit" class="text-amber-600 hover:text-amber-800 mr-3" title="{{ 'Deactivate' if subscriber.is_active else 'Activate' }}">
+                            <i class="fas fa-{% if subscriber.is_active %}ban{% else %}check{% endif %}"></i>
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ url_for('admin_newsletter_delete', subscriber_id=subscriber.id) }}" class="inline" onsubmit="return confirm('Are you sure?');">
+                        <button type="submit" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if not subscribers %}
+    <div class="text-center py-12">
+        <i class="fas fa-newspaper text-gray-300 text-4xl mb-3"></i>
+        <p class="text-gray-500">No subscribers yet</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function exportSubscribers() {
+    const subscribers = {{ subscribers|tojson }};
+    let csv = 'Email,Subscribed,Status\n';
+    subscribers.forEach(s => {
+        csv += `${s.email},${s.subscribed_at},${s.is_active ? 'Active' : 'Inactive'}\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'newsletter_subscribers.csv';
+    a.click();
+}
+</script>
+{% endblock %}

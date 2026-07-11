@@ -1,0 +1,87 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ action }} Service - Admin Panel{% endblock %}
+{% block page_title %}{{ action }} Service{% endblock %}
+{% block page_subtitle %}{{ 'Edit' if service else 'Add a new' }} AI service{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl">
+    <form method="POST" class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Basic Information</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Service ID (URL slug)</label>
+                    <input type="text" name="id" value="{{ service.id if service else '' }}" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                           placeholder="e.g., web-development" {{ 'readonly' if service else '' }}>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                    <input type="text" name="name" value="{{ service.name if service else '' }}" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                           placeholder="Service name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Icon</label>
+                    <input type="text" name="icon" value="{{ service.icon if service else 'settings' }}" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                           placeholder="globe, smartphone, cpu, bot, brain, database">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Color (Hex)</label>
+                    <input type="text" name="color" value="{{ service.color if service else '#6366F1' }}" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                           placeholder="#6366F1">
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
+                <input type="text" name="short_description" value="{{ service.short_description if service else '' }}" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                       placeholder="Brief description for cards">
+            </div>
+
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Full Description</label>
+                <textarea name="description" rows="4" 
+                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          placeholder="Full service description">{{ service.description if service else '' }}</textarea>
+            </div>
+
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price</label>
+                <input type="text" name="starting_price" value="{{ service.starting_price if service else '' }}" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                       placeholder="Starting at $15,000">
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Features (One per line)</h3>
+            <textarea name="features" rows="8" 
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="Custom web application development&#10;Progressive Web Apps (PWA)&#10;AI chatbot integration">{% if service %}{% for f in service.features %}{{ f }}
+{% endfor %}{% endif %}</textarea>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Technologies (Comma separated)</h3>
+            <input type="text" name="technologies" value="{{ service.technologies|join(', ') if service else '' }}" 
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                   placeholder="React, Next.js, Vue.js, Flask">
+        </div>
+
+        <div class="flex gap-4">
+            <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition">
+                <i class="fas fa-save mr-2"></i> {{ action }} Service
+            </button>
+            <a href="{{ url_for('admin_services') }}" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

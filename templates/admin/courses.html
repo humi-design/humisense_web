@@ -1,0 +1,67 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Courses - Admin Panel{% endblock %}
+{% block page_title %}Courses{% endblock %}
+{% block page_subtitle %}Manage education courses{% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('admin_course_add') }}" class="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
+    <i class="fas fa-plus mr-2"></i>Add Course
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <table class="w-full">
+        <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Course</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Level</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Duration</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Modules</th>
+                <th class="text-right px-6 py-4 text-sm font-semibold text-gray-600">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for course in courses %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: {{ course.color }}20; color: {{ course.color }}">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800">{{ course.name }}</p>
+                            <p class="text-sm text-gray-500">{{ course.description[:60] }}...</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="px-3 py-1 rounded-full text-sm {% if course.level == 'Beginner' %}bg-green-100 text-green-700{% elif course.level == 'Intermediate' %}bg-amber-100 text-amber-700{% else %}bg-red-100 text-red-700{% endif %}">
+                        {{ course.level }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-gray-600">{{ course.duration }}</td>
+                <td class="px-6 py-4 text-gray-600">{{ course.modules }} modules</td>
+                <td class="px-6 py-4 text-right">
+                    <a href="{{ url_for('admin_course_edit', course_id=course.id) }}" class="text-amber-600 hover:text-amber-800 mr-3">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form method="POST" action="{{ url_for('admin_course_delete', course_id=course.id) }}" class="inline" onsubmit="return confirm('Are you sure?');">
+                        <button type="submit" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if not courses %}
+    <div class="text-center py-12">
+        <i class="fas fa-graduation-cap text-gray-300 text-4xl mb-3"></i>
+        <p class="text-gray-500">No courses found. Add your first course!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

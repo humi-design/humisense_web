@@ -1,0 +1,120 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Contacts - Admin Panel{% endblock %}
+{% block page_title %}Contact Submissions{% endblock %}
+{% block page_subtitle %}Manage contact form submissions{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <table class="w-full">
+        <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Contact</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Subject</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Date</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">Status</th>
+                <th class="text-right px-6 py-4 text-sm font-semibold text-gray-600">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for contact in contacts %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center">
+                            <span class="text-cyan-600 font-semibold text-sm">{{ contact.name[0] }}</span>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800">{{ contact.name }}</p>
+                            <p class="text-sm text-gray-500">{{ contact.email }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-gray-600">{{ contact.subject or 'No subject' }}</td>
+                <td class="px-6 py-4 text-gray-500 text-sm">{{ contact.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td class="px-6 py-4">
+                    <form method="POST" action="{{ url_for('admin_contact_status', contact_id=contact.id) }}" class="inline">
+                        <select name="status" onchange="this.form.submit()" 
+                                class="text-sm px-3 py-1 rounded-full border-0 cursor-pointer {% if contact.status == 'new' %}bg-blue-100 text-blue-700{% elif contact.status == 'read' %}bg-gray-100 text-gray-700{% else %}bg-green-100 text-green-700{% endif %}">
+                            <option value="new" {% if contact.status == 'new' %}selected{% endif %}>New</option>
+                            <option value="read" {% if contact.status == 'read' %}selected{% endif %}>Read</option>
+                            <option value="responded" {% if contact.status == 'responded' %}selected{% endif %}>Responded</option>
+                        </select>
+                    </form>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <button onclick="viewContact({{ contact.id }}, '{{ contact.name|e }}', '{{ contact.email|e }}', '{{ contact.subject|e if contact.subject else '' }}', `{{ contact.message|e }}`)" 
+                            class="text-indigo-600 hover:text-indigo-800 mr-3">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <form method="POST" action="{{ url_for('admin_contact_delete', contact_id=contact.id) }}" class="inline" onsubmit="return confirm('Are you sure?');">
+                        <button type="submit" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if not contacts %}
+    <div class="text-center py-12">
+        <i class="fas fa-envelope text-gray-300 text-4xl mb-3"></i>
+        <p class="text-gray-500">No contact submissions yet</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modal -->
+<div id="contactModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl max-w-lg w-full mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Contact Details</h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script>
+function viewContact(id, name, email, subject, message) {
+    document.getElementById('modalContent').innerHTML = `
+        <div class="space-y-4">
+            <div>
+                <label class="text-sm font-medium text-gray-500">Name</label>
+                <p class="text-gray-800">${name}</p>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-500">Email</label>
+                <p class="text-gray-800">${email}</p>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-500">Subject</label>
+                <p class="text-gray-800">${subject || 'No subject'}</p>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-500">Message</label>
+                <p class="text-gray-800 whitespace-pre-wrap">${message}</p>
+            </div>
+            <div class="flex gap-3 pt-4">
+                <a href="mailto:${email}" class="flex-1 bg-indigo-600 text-white text-center py-2 rounded-lg hover:bg-indigo-700">
+                    <i class="fas fa-reply mr-2"></i>Reply
+                </a>
+                <button onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    `;
+    document.getElementById('contactModal').classList.remove('hidden');
+    document.getElementById('contactModal').classList.add('flex');
+}
+
+function closeModal() {
+    document.getElementById('contactModal').classList.add('hidden');
+    document.getElementById('contactModal').classList.remove('flex');
+}
+</script>
+{% endblock %}

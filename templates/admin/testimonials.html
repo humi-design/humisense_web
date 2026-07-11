@@ -1,0 +1,53 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Testimonials - Admin Panel{% endblock %}
+{% block page_title %}Testimonials{% endblock %}
+{% block page_subtitle %}Manage customer testimonials{% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('admin_testimonial_add') }}" class="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition">
+    <i class="fas fa-plus mr-2"></i>Add Testimonial
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {% for testimonial in testimonials %}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                    <span class="text-pink-600 font-semibold">{{ testimonial.avatar }}</span>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-800">{{ testimonial.name }}</p>
+                    <p class="text-sm text-gray-500">{{ testimonial.role }}, {{ testimonial.company }}</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1">
+                {% for i in range(testimonial.rating) %}
+                <i class="fas fa-star text-amber-400 text-sm"></i>
+                {% endfor %}
+            </div>
+        </div>
+        <blockquote class="text-gray-600 italic mb-4">"{{ testimonial.quote }}"</blockquote>
+        <div class="flex justify-end gap-2 border-t pt-4">
+            <a href="{{ url_for('admin_testimonial_edit', testimonial_id=testimonial.id) }}" class="text-pink-600 hover:text-pink-800">
+                <i class="fas fa-edit"></i>
+            </a>
+            <form method="POST" action="{{ url_for('admin_testimonial_delete', testimonial_id=testimonial.id) }}" class="inline" onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="text-red-600 hover:text-red-800">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if not testimonials %}
+<div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+    <i class="fas fa-quote-left text-gray-300 text-4xl mb-3"></i>
+    <p class="text-gray-500">No testimonials found. Add your first testimonial!</p>
+</div>
+{% endif %}
+{% endblock %}

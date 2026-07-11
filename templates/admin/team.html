@@ -1,0 +1,42 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Team - Admin Panel{% endblock %}
+{% block page_title %}Team Members{% endblock %}
+{% block page_subtitle %}Manage team members (About page){% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('admin_team_add') }}" class="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition">
+    <i class="fas fa-plus mr-2"></i>Add Member
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for member in team %}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center">
+        <div class="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-white text-2xl font-bold">{{ member.name[0] }}</span>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800">{{ member.name }}</h3>
+        <p class="text-sm text-indigo-600 mb-3">{{ member.role }}</p>
+        <p class="text-sm text-gray-500 mb-4">{{ member.bio[:100] }}...</p>
+        <div class="flex justify-center gap-3">
+            <a href="{{ url_for('admin_team_edit', member_index=loop.index0) }}" class="text-cyan-600 hover:text-cyan-800">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <form method="POST" action="{{ url_for('admin_team_delete', member_index=loop.index0) }}" class="inline" onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="text-red-600 hover:text-red-800">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if not team %}
+<div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+    <i class="fas fa-users text-gray-300 text-4xl mb-3"></i>
+    <p class="text-gray-500">No team members found. Add your first team member!</p>
+</div>
+{% endif %}
+{% endblock %}
