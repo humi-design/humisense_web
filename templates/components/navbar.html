@@ -1,5 +1,5 @@
-<!-- Premium Navigation Bar with Headroom.js -->
-<nav id="navbar" class="navbar transparent">
+<!-- Premium Navigation Bar -->
+<nav id="navbar" class="navbar">
     <div class="navbar-container">
         <!-- Logo -->
         <a href="{{ url_for('home') }}" class="nav-logo">
@@ -8,7 +8,7 @@
         </a>
         
         <!-- Desktop Navigation -->
-        <div class="hide-mobile">
+        <div class="nav-menu-desktop">
             <ul class="nav-links">
                 <li><a href="{{ url_for('products') }}" class="nav-link {% if request.endpoint == 'products' or request.endpoint == 'product_detail' %}active{% endif %}">Products</a></li>
                 <li><a href="{{ url_for('services') }}" class="nav-link {% if request.endpoint == 'services' %}active{% endif %}">Services</a></li>
@@ -18,112 +18,82 @@
             </ul>
         </div>
         
-        <!-- CTA Buttons -->
-        <div class="nav-actions">
-            <!-- Theme Toggle -->
+        <!-- Desktop CTA -->
+        <div class="nav-actions-desktop">
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <!-- Sun Icon (shown in dark mode) -->
                 <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="4"/>
-                    <path d="M12 2v2"/>
-                    <path d="M12 20v2"/>
-                    <path d="m4.93 4.93 1.41 1.41"/>
-                    <path d="m17.66 17.66 1.41 1.41"/>
-                    <path d="M2 12h2"/>
-                    <path d="M20 12h2"/>
-                    <path d="m6.34 17.66-1.41 1.41"/>
-                    <path d="m19.07 4.93-1.41 1.41"/>
+                    <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
                 </svg>
-                <!-- Moon Icon (shown in light mode) -->
                 <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
                 </svg>
             </button>
-            
-            <a href="{{ url_for('contact') }}" class="btn btn-secondary hide-mobile">
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary">
                 Contact
             </a>
             <a href="{{ url_for('contact') }}" class="btn btn-primary">
-                <span class="flex items-center gap-2">
-                    Get Started
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14"/>
-                        <path d="m12 5 7 7-7 7"/>
-                    </svg>
-                </span>
+                Get Started
             </a>
-            
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
         </div>
+        
+        <!-- Mobile Menu Toggle (Always visible on mobile) -->
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
     </div>
 </nav>
 
-<!-- Mobile Menu Overlay -->
-<div class="menu-overlay" id="menuOverlay"></div>
+<!-- Mobile Drawer Overlay -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
 
-<!-- Mobile Menu Panel -->
-<div class="mobile-menu" id="mobileMenu">
-    <div class="mobile-menu-header">
-        <a href="{{ url_for('home') }}" class="nav-logo">
+<!-- Mobile Drawer Menu -->
+<div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+        <a href="{{ url_for('home') }}" class="nav-logo" onclick="closeDrawer()">
             <div class="nav-logo-icon">H</div>
             <span class="nav-logo-text">HUMISENSE</span>
         </a>
-        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
+        <button class="drawer-close" id="drawerClose" aria-label="Close menu">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 6 6 18"/>
-                <path d="m6 6 12 12"/>
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
             </svg>
         </button>
     </div>
     
-    <ul class="mobile-nav-links">
-        <li><a href="{{ url_for('products') }}" class="mobile-nav-link">Products</a></li>
-        <li><a href="{{ url_for('services') }}" class="mobile-nav-link">Services</a></li>
-        <li><a href="{{ url_for('research') }}" class="mobile-nav-link">Research</a></li>
-        <li><a href="{{ url_for('courses') }}" class="mobile-nav-link">Academy</a></li>
-        <li><a href="{{ url_for('about') }}" class="mobile-nav-link">About</a></li>
-        <li><a href="{{ url_for('contact') }}" class="mobile-nav-link">Contact</a></li>
-    </ul>
-    
-    <div class="mobile-menu-footer">
-        <button class="btn btn-secondary w-full justify-center" id="mobileThemeToggle">
-            <svg class="mr-2 sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="4"/>
-                <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
-            </svg>
-            <svg class="mr-2 moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-            </svg>
-            Toggle Theme
-        </button>
-        <a href="{{ url_for('contact') }}" class="btn btn-primary w-full justify-center">
-            Get Started
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-            </svg>
-        </a>
+    <div class="drawer-content">
+        <ul class="drawer-nav">
+            <li><a href="{{ url_for('products') }}" class="drawer-link" onclick="closeDrawer()">Products</a></li>
+            <li><a href="{{ url_for('services') }}" class="drawer-link" onclick="closeDrawer()">Services</a></li>
+            <li><a href="{{ url_for('research') }}" class="drawer-link" onclick="closeDrawer()">Research</a></li>
+            <li><a href="{{ url_for('courses') }}" class="drawer-link" onclick="closeDrawer()">Academy</a></li>
+            <li><a href="{{ url_for('about') }}" class="drawer-link" onclick="closeDrawer()">About</a></li>
+            <li><a href="{{ url_for('contact') }}" class="drawer-link" onclick="closeDrawer()">Contact</a></li>
+        </ul>
+        
+        <div class="drawer-footer">
+            <button class="btn btn-secondary w-full" id="drawerThemeToggle">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+                </svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                </svg>
+                Toggle Theme
+            </button>
+            <a href="{{ url_for('contact') }}" class="btn btn-primary w-full" onclick="closeDrawer()">
+                Get Started
+            </a>
+        </div>
     </div>
 </div>
 
 <script>
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', function() {
-    'use strict';
-    
-    // ============================================
-    // Theme Toggle - Default to LIGHT
-    // ============================================
-    const themeToggle = document.getElementById('themeToggle');
-    const mobileThemeToggle = document.getElementById('mobileThemeToggle');
-    
-    // Check for saved theme preference - default to LIGHT theme
+// Theme - Default to LIGHT
+(function() {
     const savedTheme = localStorage.getItem('theme');
-    // Default to light theme - only add dark class if explicitly saved
     if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
     }
@@ -132,158 +102,72 @@ document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.classList.toggle('dark');
         const isDark = document.documentElement.classList.contains('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        document.documentElement.classList.add('theme-transitioning');
-        setTimeout(() => {
-            document.documentElement.classList.remove('theme-transitioning');
-        }, 300);
     }
     
-    if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-    if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+    document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+    document.getElementById('drawerThemeToggle')?.addEventListener('click', toggleTheme);
+})();
+
+// Mobile Drawer
+(function() {
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const drawerClose = document.getElementById('drawerClose');
     
-    // ============================================
-    // Headroom.js - Sticky Navigation
-    // ============================================
-    const navbar = document.getElementById('navbar');
-    if (navbar && typeof Headroom !== 'undefined') {
-        const headroom = new Headroom(navbar, {
-            offset: 100,
-            tolerance: 5,
-            classes: {
-                initial: 'navbar',
-                pinned: 'scrolled',
-                unpinned: 'transparent',
-                top: 'at-top',
-                notTop: 'scrolled'
-            }
-        });
-        headroom.init();
-    } else {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar?.classList.add('scrolled');
-                navbar?.classList.remove('transparent');
-            } else {
-                navbar?.classList.remove('scrolled');
-                navbar?.classList.add('transparent');
-            }
-        });
-    }
-    
-    // ============================================
-    // Mobile Menu - Fixed for Touch Devices
-    // ============================================
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const mobileMenuClose = document.getElementById('mobileMenuClose');
-    const menuOverlay = document.getElementById('menuOverlay');
-    
-    if (!mobileMenuBtn || !mobileMenu) {
-        console.warn('Mobile menu elements not found');
-        return;
-    }
-    
-    let isMenuOpen = false;
-    
-    function openMenu() {
-        isMenuOpen = true;
-        mobileMenu.classList.add('active');
-        if (menuOverlay) menuOverlay.classList.add('active');
+    function openDrawer() {
+        mobileDrawer.classList.add('open');
+        drawerOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-        document.body.classList.add('menu-open');
-        
-        // Animate hamburger to X using CSS class
-        mobileMenuBtn.classList.add('is-active');
-        
-        // Focus trap for accessibility
-        if (mobileMenuClose) mobileMenuClose.focus();
+        mobileToggle.classList.add('is-active');
+        drawerClose.focus();
     }
     
-    function closeMenu() {
-        isMenuOpen = false;
-        mobileMenu.classList.remove('active');
-        if (menuOverlay) menuOverlay.classList.remove('active');
+    function closeDrawer() {
+        mobileDrawer.classList.remove('open');
+        drawerOverlay.classList.remove('active');
         document.body.style.overflow = '';
-        document.body.classList.remove('menu-open');
-        
-        // Animate X to hamburger
-        mobileMenuBtn.classList.remove('is-active');
-        
-        // Return focus to hamburger button
-        mobileMenuBtn.focus();
+        mobileToggle.classList.remove('is-active');
+        mobileToggle.focus();
     }
     
-    function toggleMenu(e) {
+    // Toggle drawer
+    mobileToggle?.addEventListener('click', function(e) {
         e.preventDefault();
-        e.stopPropagation();
-        if (isMenuOpen) {
-            closeMenu();
+        if (mobileDrawer.classList.contains('open')) {
+            closeDrawer();
         } else {
-            openMenu();
+            openDrawer();
         }
-    }
-    
-    // Click events - use both click and touchend for better mobile support
-    mobileMenuBtn.addEventListener('click', toggleMenu);
-    mobileMenuBtn.addEventListener('touchend', function(e) {
-        // Prevent ghost click
-        e.preventDefault();
-        toggleMenu(e);
     });
     
-    if (mobileMenuClose) {
-        mobileMenuClose.addEventListener('click', closeMenu);
-        mobileMenuClose.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            closeMenu();
-        });
-    }
+    // Close on overlay click
+    drawerOverlay?.addEventListener('click', closeDrawer);
     
-    if (menuOverlay) {
-        menuOverlay.addEventListener('click', closeMenu);
-    }
+    // Close on X button
+    drawerClose?.addEventListener('click', closeDrawer);
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileDrawer.classList.contains('open')) {
+            closeDrawer();
+        }
+    });
     
     // Close on link click
-    const mobileNavLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
-    mobileNavLinks.forEach(link => {
-        link.addEventListener('click', closeMenu);
+    mobileDrawer?.querySelectorAll('.drawer-link, .drawer-footer a').forEach(function(link) {
+        link.addEventListener('click', closeDrawer);
     });
     
-    // Touch swipe to close (for iOS/Android)
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    mobileMenu.addEventListener('touchstart', function(e) {
-        touchStartX = e.changedTouches[0].screenX;
+    // Swipe to close
+    let startX = 0;
+    mobileDrawer?.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
     }, { passive: true });
     
-    mobileMenu.addEventListener('touchend', function(e) {
-        touchEndX = e.changedTouches[0].screenX;
-        // Swipe left to close (more than 50px)
-        if (touchStartX - touchEndX > 50 && isMenuOpen) {
-            closeMenu();
-        }
+    mobileDrawer?.addEventListener('touchend', function(e) {
+        const diffX = startX - e.changedTouches[0].clientX;
+        if (diffX > 80) closeDrawer();
     }, { passive: true });
-    
-    // Close on escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && isMenuOpen) {
-            closeMenu();
-        }
-    });
-    
-    // Handle resize - close menu if switching to desktop
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 1024 && isMenuOpen) {
-            closeMenu();
-        }
-    });
-    
-    // Prevent scroll on iOS when menu is open
-    document.body.addEventListener('touchmove', function(e) {
-        if (isMenuOpen && e.target.closest('.mobile-menu') === null) {
-            e.preventDefault();
-        }
-    }, { passive: false });
-});
+})();
 </script>
