@@ -18,8 +18,8 @@
             </ul>
         </div>
         
-        <!-- CTA Buttons -->
-        <div class="nav-actions">
+        <!-- CTA Buttons - Desktop Only -->
+        <div class="nav-actions-desktop hide-mobile">
             <!-- Theme Toggle -->
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                 <!-- Sun Icon (shown in dark mode) -->
@@ -40,7 +40,7 @@
                 </svg>
             </button>
             
-            <a href="{{ url_for('contact') }}" class="btn btn-secondary hide-mobile">
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary">
                 Contact
             </a>
             <a href="{{ url_for('contact') }}" class="btn btn-primary">
@@ -52,14 +52,14 @@
                     </svg>
                 </span>
             </a>
-            
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </div>
+        
+        <!-- Mobile Menu Toggle - Always visible on mobile -->
+        <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
 </nav>
 
