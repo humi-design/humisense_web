@@ -308,55 +308,84 @@ HUMISENSE Team''')
     @classmethod
     def create_lead(cls, form_type, data, source_page=None):
         """Create a new lead from form data."""
-        try:
-            ip_address = cls.get_client_ip()
-            
-            # Check rate limit
-            if not cls.check_rate_limit(ip_address):
-                return None, "Please wait before submitting again."
-            
-            # Extract standard fields
-            lead = Lead(
-                form_type=form_type,
-                name=cls.sanitize_input(data.get('name', '')),
-                email=cls.sanitize_input(data.get('email', '')),
-                phone=cls.sanitize_input(data.get('phone', '')),
-                company=cls.sanitize_input(data.get('company', '')),
-                message=cls.sanitize_input(data.get('message', '')),
-                source_page=source_page or (request.url if request else None),
-                ip_address=ip_address,
-                user_agent=request.headers.get('User-Agent', '') if request else None
-            )
-            
-            # Store additional form data
-            standard_fields = ['name', 'email', 'phone', 'company', 'message']
-            additional_data = {k: v for k, v in data.items() if k not in standard_fields}
-            if additional_data:
-                lead.form_data = json.dumps(additional_data)
-            
-            db.session.add(lead)
-            db.session.commit()
-            
-            # Log successful submission
-            cls.log_action(form_type, 'submitted', f"New submission from {lead.email}", {
-                'lead_id': lead.id,
-                'ip': ip_address
-            })
-            
-            # Send admin notification
-            if cls.get_setting('email_notifications_enabled', True):
-                cls.send_admin_notification(lead)
-            
-            # Send auto-reply
-            if cls.get_setting('auto_reply_enabled', True):
-                cls.send_auto_reply(lead)
-            
-            return lead, None
-            
-        except Exception as e:
-            cls.log_action(form_type, 'error', str(e))
-            db.session.rollback()
-            return None, str(e)
+        # Retry logic for database connection issues
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                ip_address = cls.get_client_ip()
+                
+                # Check rate limit
+                if not cls.check_rate_limit(ip_address):
+                    return None, "Please wait before submitting again."
+                
+                # Extract standard fields
+                lead = Lead(
+                    form_type=form_type,
+                    name=cls.sanitize_input(data.get('name', '')),
+                    email=cls.sanitize_input(data.get('email', '')),
+                    phone=cls.sanitize_input(data.get('phone', '')),
+                    company=cls.sanitize_input(data.get('company', '')),
+                    message=cls.sanitize_input(data.get('message', '')),
+                    source_page=source_page or (request.url if request else None),
+                    ip_address=ip_address,
+                    user_agent=request.headers.get('User-Agent', '') if request else None
+                )
+                
+                # Store additional form data
+                standard_fields = ['name', 'email', 'phone', 'company', 'message']
+                additional_data = {k: v for k, v in data.items() if k not in standard_fields}
+                if additional_data:
+                    lead.form_data = json.dumps(additional_data)
+                
+                db.session.add(lead)
+                db.session.commit()
+                
+                # Log successful submission
+                try:
+                    cls.log_action(form_type, 'submitted', f"New submission from {lead.email}", {
+                        'lead_id': lead.id,
+                        'ip': ip_address
+                    })
+                except:
+                    pass  # Don't fail if logging fails
+                
+                # Send admin notification (non-blocking)
+                try:
+                    if cls.get_setting('email_notifications_enabled', True):
+                        cls.send_admin_notification(lead)
+                except:
+                    pass  # Don't fail if email fails
+                
+                # Send auto-reply (non-blocking)
+                try:
+                    if cls.get_setting('auto_reply_enabled', True):
+                        cls.send_auto_reply(lead)
+                except:
+                    pass  # Don't fail if email fails
+                
+                return lead, None
+                
+            except Exception as e:
+                db.session.rollback()
+                error_msg = str(e)
+                
+                # Check if it's a connection error and retry
+                if ('gone away' in error_msg.lower() or 
+                    'lost connection' in error_msg.lower() or
+                    'connection' in error_msg.lower()):
+                    
+                    if attempt < max_retries - 1:
+                        import time
+                        time.sleep(0.5 * (attempt + 1))  # Exponential backoff
+                        continue
+                
+                # Log the error if we can
+                try:
+                    cls.log_action(form_type, 'error', error_msg)
+                except:
+                    pass
+                
+                return None, "There was an error processing your request. Please try again."
     
     @classmethod
     def submit_contact(cls, data, source_page=None):

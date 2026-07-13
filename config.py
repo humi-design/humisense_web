@@ -8,6 +8,15 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///humisense.db')
     
+    # SQLAlchemy engine options - fixes MySQL "server has gone away" error
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_pre_ping': True,      # Verify connections before using
+        'pool_recycle': 2800,       # Recycle connections after 2800 seconds (less than MySQL timeout)
+        'pool_timeout': 30,         # Wait up to 30 seconds for a connection
+        'pool_size': 10,            # Number of connections to maintain
+        'max_overflow': 20,         # Allow up to 20 overflow connections
+    }
+    
     # Session configuration
     PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     SESSION_COOKIE_SECURE = True
