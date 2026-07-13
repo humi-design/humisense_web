@@ -111,20 +111,20 @@
 </div>
 
 <script>
-(function() {
+// Wait for DOM to be ready
+document.addEventListener('DOMContentLoaded', function() {
     'use strict';
     
     // ============================================
-    // Theme Toggle
+    // Theme Toggle - Default to LIGHT
     // ============================================
     const themeToggle = document.getElementById('themeToggle');
     const mobileThemeToggle = document.getElementById('mobileThemeToggle');
     
-    // Check for saved theme preference or default to light
+    // Check for saved theme preference - default to LIGHT theme
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    // Default to light theme - only add dark class if explicitly saved
+    if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
     }
     
@@ -192,16 +192,11 @@
         document.body.style.overflow = 'hidden';
         document.body.classList.add('menu-open');
         
-        // Animate hamburger to X
-        const lines = mobileMenuBtn.querySelectorAll('.hamburger-line');
-        if (lines.length === 3) {
-            lines[0].classList.add('hamburger-active-top');
-            lines[1].classList.add('hamburger-active-middle');
-            lines[2].classList.add('hamburger-active-bottom');
-        }
+        // Animate hamburger to X using CSS class
+        mobileMenuBtn.classList.add('is-active');
         
         // Focus trap for accessibility
-        mobileMenuClose?.focus();
+        if (mobileMenuClose) mobileMenuClose.focus();
     }
     
     function closeMenu() {
@@ -212,18 +207,15 @@
         document.body.classList.remove('menu-open');
         
         // Animate X to hamburger
-        const lines = mobileMenuBtn.querySelectorAll('.hamburger-line');
-        if (lines.length === 3) {
-            lines[0].classList.remove('hamburger-active-top');
-            lines[1].classList.remove('hamburger-active-middle');
-            lines[2].classList.remove('hamburger-active-bottom');
-        }
+        mobileMenuBtn.classList.remove('is-active');
         
         // Return focus to hamburger button
         mobileMenuBtn.focus();
     }
     
-    function toggleMenu() {
+    function toggleMenu(e) {
+        e.preventDefault();
+        e.stopPropagation();
         if (isMenuOpen) {
             closeMenu();
         } else {
@@ -231,11 +223,20 @@
         }
     }
     
-    // Click events
+    // Click events - use both click and touchend for better mobile support
     mobileMenuBtn.addEventListener('click', toggleMenu);
+    mobileMenuBtn.addEventListener('touchend', function(e) {
+        // Prevent ghost click
+        e.preventDefault();
+        toggleMenu(e);
+    });
     
     if (mobileMenuClose) {
         mobileMenuClose.addEventListener('click', closeMenu);
+        mobileMenuClose.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            closeMenu();
+        });
     }
     
     if (menuOverlay) {
@@ -271,18 +272,18 @@
         }
     });
     
-    // Prevent scroll on iOS when menu is open
-    mobileMenu.addEventListener('touchmove', function(e) {
-        if (isMenuOpen) {
-            e.preventDefault();
-        }
-    }, { passive: false });
-    
     // Handle resize - close menu if switching to desktop
     window.addEventListener('resize', function() {
         if (window.innerWidth > 1024 && isMenuOpen) {
             closeMenu();
         }
     });
-})();
+    
+    // Prevent scroll on iOS when menu is open
+    document.body.addEventListener('touchmove', function(e) {
+        if (isMenuOpen && e.target.closest('.mobile-menu') === null) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+});
 </script>
