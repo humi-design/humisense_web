@@ -1,24 +1,57 @@
 /**
  * HUMISENSE - Premium JavaScript
  * GSAP Animations, Lenis Smooth Scroll, and Interactions
+ * Fixed: Browser back button blank page issue
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // ============================================
-    // Loading Screen
-    // ============================================
+// Store references for proper reinitialization
+let lenisInstance = null;
+
+/**
+ * Initialize all components - called on DOMContentLoaded and pageshow (bfcache restore)
+ */
+function initApp() {
+    // Always ensure body opacity is reset (fixes bfcache issue)
+    document.body.style.opacity = '1';
+    
+    // Hide loader immediately on page load
     const loader = document.getElementById('loader');
     if (loader) {
-        setTimeout(() => {
-            loader.classList.add('hidden');
-        }, 1500);
+        loader.classList.add('hidden');
     }
+    
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+    
+    initLenis();
+    initAnimations();
+    initFAQ();
+    initTabs();
+    initScrollTop();
+    initMagneticButtons();
+    initCodeCopy();
+    initFormValidation();
+    initParallax();
+    initLinkHover();
+    initHeroAnimation();
+    initGradientAnimation();
+    initButtons();
+    initSwiper();
+    
+    console.log('HUMISENSE Premium JS initialized');
+}
 
-    // ============================================
-    // Lenis Smooth Scroll
-    // ============================================
-    if (typeof Lenis !== 'undefined') {
-        const lenis = new Lenis({
+/**
+ * Initialize Lenis smooth scroll
+ */
+function initLenis() {
+    if (typeof Lenis !== 'undefined' && typeof gsap !== 'undefined') {
+        // Destroy existing instance if any
+        if (lenisInstance) {
+            lenisInstance.destroy();
+        }
+        
+        lenisInstance = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: 'vertical',
@@ -30,24 +63,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function raf(time) {
-            lenis.raf(time);
+            lenisInstance.raf(time);
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
 
         // Integrate with GSAP ScrollTrigger
-        lenis.on('scroll', ScrollTrigger.update);
+        lenisInstance.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => {
-            lenis.raf(time * 1000);
+            lenisInstance.raf(time * 1000);
         });
         gsap.ticker.lagSmoothing(0);
     }
+}
 
-    // ============================================
-    // GSAP Animations
-    // ============================================
+/**
+ * Initialize GSAP animations
+ */
+function initAnimations() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    
     gsap.registerPlugin(ScrollTrigger);
-
+    
     // Animate elements on scroll
     const animateElements = document.querySelectorAll('[data-animate]');
     animateElements.forEach((el) => {
@@ -98,9 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
-    // ============================================
     // Counter Animations
-    // ============================================
     const counters = document.querySelectorAll('.counter');
     counters.forEach((counter) => {
         const target = parseInt(counter.dataset.target);
@@ -123,10 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
             once: true
         });
     });
+}
 
-    // ============================================
-    // FAQ Accordion
-    // ============================================
+/**
+ * Initialize FAQ accordion
+ */
+function initFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach((item) => {
         const question = item.querySelector('.faq-question');
@@ -171,10 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+}
 
-    // ============================================
-    // Tabs
-    // ============================================
+/**
+ * Initialize tabs
+ */
+function initTabs() {
     const tabContainers = document.querySelectorAll('.tabs');
     tabContainers.forEach((container) => {
         const tabs = container.querySelectorAll('.tab');
@@ -185,11 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.addEventListener('click', () => {
                 const targetId = tab.dataset.tab;
                 
-                // Update active tab
                 tabs.forEach((t) => t.classList.remove('active'));
                 tab.classList.add('active');
                 
-                // Show corresponding content
                 contents?.forEach((content) => {
                     if (content.id === targetId) {
                         content.classList.add('active');
@@ -204,10 +241,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+}
 
-    // ============================================
-    // Scroll to Top Button
-    // ============================================
+/**
+ * Initialize scroll to top button
+ */
+function initScrollTop() {
     const scrollTopBtn = document.getElementById('scrollTop');
     
     if (scrollTopBtn) {
@@ -220,17 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         scrollTopBtn.addEventListener('click', () => {
-            if (typeof Lenis !== 'undefined') {
-                lenis.scrollTo(0, { duration: 1.5 });
+            if (lenisInstance) {
+                lenisInstance.scrollTo(0, { duration: 1.5 });
             } else {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
     }
+}
 
-    // ============================================
-    // Magnetic Button Effect
-    // ============================================
+/**
+ * Initialize magnetic button effect
+ */
+function initMagneticButtons() {
     const magneticButtons = document.querySelectorAll('.magnetic-btn');
     
     magneticButtons.forEach((btn) => {
@@ -256,33 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+}
 
-    // ============================================
-    // Card Hover Effects
-    // ============================================
-    const cards = document.querySelectorAll('.product-card, .service-card, .course-card, .agent-card, .testimonial-card');
-    
-    cards.forEach((card) => {
-        card.addEventListener('mouseenter', () => {
-            gsap.to(card, {
-                y: -8,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            gsap.to(card, {
-                y: 0,
-                duration: 0.5,
-                ease: 'elastic.out(1, 0.5)'
-            });
-        });
-    });
-
-    // ============================================
-    // Code Copy Button
-    // ============================================
+/**
+ * Initialize code copy buttons
+ */
+function initCodeCopy() {
     const copyButtons = document.querySelectorAll('.code-copy');
     
     copyButtons.forEach((btn) => {
@@ -303,60 +323,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+}
 
-    // ============================================
-    // Form Validation with JustValidate
-    // ============================================
+/**
+ * Initialize form validation
+ */
+function initFormValidation() {
     if (typeof JustValidate !== 'undefined') {
         const contactForm = document.querySelector('#contact-form');
         
         if (contactForm) {
             new JustValidate(contactForm, {
                 rules: {
-                    name: {
-                        required: true,
-                        minLength: 2
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    subject: {
-                        required: true
-                    },
-                    message: {
-                        required: true,
-                        minLength: 10
-                    }
+                    name: { required: true, minLength: 2 },
+                    email: { required: true, email: true },
+                    subject: { required: true },
+                    message: { required: true, minLength: 10 }
                 },
                 messages: {
-                    name: {
-                        required: 'Name is required',
-                        minLength: 'Name must be at least 2 characters'
-                    },
-                    email: {
-                        required: 'Email is required',
-                        email: 'Please enter a valid email'
-                    },
-                    subject: {
-                        required: 'Please select a subject'
-                    },
-                    message: {
-                        required: 'Message is required',
-                        minLength: 'Message must be at least 10 characters'
-                    }
+                    name: { required: 'Name is required', minLength: 'Name must be at least 2 characters' },
+                    email: { required: 'Email is required', email: 'Please enter a valid email' },
+                    subject: { required: 'Please select a subject' },
+                    message: { required: 'Message is required', minLength: 'Message must be at least 10 characters' }
                 },
-                submitHandler: function(form, values) {
-                    // Form submission will be handled by Flask
+                submitHandler: function(form) {
                     form.submit();
                 }
             });
         }
     }
+}
 
-    // ============================================
-    // Parallax Effects
-    // ============================================
+/**
+ * Initialize parallax effects
+ */
+function initParallax() {
     const parallaxElements = document.querySelectorAll('.hero-gradient, .cta-gradient');
     
     parallaxElements.forEach((el) => {
@@ -371,65 +372,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+}
 
-    // ============================================
-    // Link Hover Effects
-    // ============================================
+/**
+ * Initialize link hover effects
+ */
+function initLinkHover() {
     const links = document.querySelectorAll('.product-link, .nav-link');
     
     links.forEach((link) => {
         link.addEventListener('mouseenter', () => {
-            gsap.to(link, {
-                x: 4,
-                duration: 0.2,
-                ease: 'power2.out'
-            });
+            gsap.to(link, { x: 4, duration: 0.2, ease: 'power2.out' });
         });
         
         link.addEventListener('mouseleave', () => {
-            gsap.to(link, {
-                x: 0,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
+            gsap.to(link, { x: 0, duration: 0.3, ease: 'power2.out' });
         });
     });
+}
 
-    // ============================================
-    // Page Transition
-    // ============================================
-    const links_internal = document.querySelectorAll('a[href^="/"]');
-    
-    links_internal.forEach((link) => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (href && !href.startsWith('#')) {
-                e.preventDefault();
-                
-                gsap.to('body', {
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: 'power2.inOut',
-                    onComplete: () => {
-                        window.location.href = href;
-                    }
-                });
-            }
-        });
-    });
-
-    // ============================================
-    // Hero Text Animation
-    // ============================================
+/**
+ * Initialize hero text animation
+ */
+function initHeroAnimation() {
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
         const lines = heroTitle.querySelectorAll('.hero-title-line');
         
         gsap.fromTo(lines, 
-            { 
-                opacity: 0, 
-                y: 50 
-            },
+            { opacity: 0, y: 50 },
             {
                 opacity: 1,
                 y: 0,
@@ -440,17 +411,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     }
+}
 
-    // ============================================
-    // Gradient Text Animation
-    // ============================================
+/**
+ * Initialize gradient text animation
+ */
+function initGradientAnimation() {
     const gradientTexts = document.querySelectorAll('.gradient-text');
     
     gradientTexts.forEach((text) => {
         gsap.fromTo(text, 
-            { 
-                backgroundPosition: '0% 50%' 
-            },
+            { backgroundPosition: '0% 50%' },
             {
                 backgroundPosition: '100% 50%',
                 duration: 3,
@@ -460,10 +431,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     });
+}
 
-    // ============================================
-    // Button Ripple Effect
-    // ============================================
+/**
+ * Initialize button effects
+ */
+function initButtons() {
     const buttons = document.querySelectorAll('.btn');
     
     buttons.forEach((btn) => {
@@ -494,16 +467,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 opacity: 0,
                 duration: 0.6,
                 ease: 'power2.out',
-                onComplete: () => {
-                    ripple.remove();
-                }
+                onComplete: () => ripple.remove()
             });
         });
     });
+}
 
-    // ============================================
-    // Swiper Carousel (if needed)
-    // ============================================
+/**
+ * Initialize Swiper carousel
+ */
+function initSwiper() {
     if (typeof Swiper !== 'undefined') {
         const testimonialSwiper = new Swiper('.testimonial-swiper', {
             slidesPerView: 1,
@@ -522,15 +495,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 prevEl: '.swiper-button-prev',
             },
             breakpoints: {
-                640: {
-                    slidesPerView: 2,
-                },
-                1024: {
-                    slidesPerView: 3,
-                },
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
             },
         });
     }
+}
 
-    console.log('HUMISENSE Premium JS initialized');
+// ============================================
+// Event Listeners
+// ============================================
+
+// Initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initApp);
+
+// Fix for browser back/forward button (bfcache in Firefox, page cache in Chrome)
+window.addEventListener('pageshow', (event) => {
+    // If page is being restored from cache (back/forward button)
+    if (event.persisted) {
+        // Reset body opacity
+        document.body.style.opacity = '1';
+        
+        // Reinitialize everything
+        initApp();
+        
+        // Force ScrollTrigger to recalculate
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+        }
+    }
+});
+
+// Handle pagehide for iOS Safari bfcache
+window.addEventListener('pagehide', () => {
+    // Clean up before page is cached
+    if (lenisInstance) {
+        lenisInstance.destroy();
+        lenisInstance = null;
+    }
+});
+
+// Prevent back/forward cache issues
+window.addEventListener('beforeunload', () => {
+    // Reset body opacity before leaving
+    document.body.style.opacity = '1';
 });
