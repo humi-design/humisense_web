@@ -9,8 +9,9 @@ from werkzeug.utils import secure_filename
 
 from config import config
 from extensions import db, init_extensions
-from models import Contact, Newsletter, CourseEnrollment, ResearchSubmission, User, Admin
+from models import Contact, Newsletter, CourseEnrollment, ResearchSubmission, User, Admin, Lead, SiteSettings
 from forms import ContactForm, NewsletterForm, EnrollmentForm, ResearchSubmissionForm, DemoRequestForm
+from services.form_service import FormService
 
 
 # Admin authentication decorator
@@ -152,19 +153,25 @@ def about():
 def contact():
     """Contact page with form."""
     form = ContactForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        contact = Contact(
-            name=form.name.data,
-            email=form.email.data,
-            phone=form.phone.data,
-            company=form.company.data,
-            subject=form.subject.data,
-            message=form.message.data
-        )
-        db.session.add(contact)
-        db.session.commit()
-        flash('Thank you for your message! We will get back to you within 24 hours.', 'success')
+    if request.method == 'POST':
+        data = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'phone': request.form.get('phone'),
+            'company': request.form.get('company'),
+            'subject': request.form.get('subject'),
+            'message': request.form.get('message')
+        }
+        
+        lead, error = FormService.submit_contact(data, request.url)
+        
+        if error:
+            flash(error, 'error')
+        else:
+            flash('Thank you for your message! We will get back to you within 24 hours.', 'success')
+        
         return redirect(url_for('contact'))
+    
     return render_template('contact.html', form=form)
 
 
@@ -172,80 +179,96 @@ def contact():
 @app.route('/api/newsletter', methods=['POST'])
 def subscribe_newsletter():
     """Newsletter subscription endpoint."""
-    form = NewsletterForm()
-    if form.validate_on_submit():
-        existing = Newsletter.query.filter_by(email=form.email.data).first()
-        if existing:
-            if existing.is_active:
-                return jsonify({'success': True, 'message': 'Already subscribed!'})
-            existing.is_active = True
-            db.session.commit()
-        else:
-            subscriber = Newsletter(email=form.email.data)
-            db.session.add(subscriber)
-            db.session.commit()
-        return jsonify({'success': True, 'message': 'Successfully subscribed!'})
-    return jsonify({'success': False, 'message': 'Invalid email address'}), 400
+    email = request.form.get('email') or (request.json.get('email') if request.is_json else None)
+    
+    if not email:
+        return jsonify({'success': False, 'message': 'Email is required'}), 400
+    
+    data = {'email': email}
+    lead, error = FormService.submit_newsletter(data, request.url)
+    
+    if error:
+        return jsonify({'success': False, 'message': error}), 400
+    
+    return jsonify({'success': True, 'message': 'Successfully subscribed!'})
 
 
 @app.route('/api/enroll', methods=['POST'])
 def enroll_course():
     """Course enrollment endpoint."""
-    form = EnrollmentForm()
-    if form.validate_on_submit():
-        enrollment = CourseEnrollment(
-            name=form.name.data,
-            email=form.email.data,
-            phone=form.phone.data,
-            company=form.company.data,
-            course_id=request.json.get('course_id') if request.is_json else None,
-            experience_level=form.experience_level.data,
-            goals=form.goals.data
-        )
-        db.session.add(enrollment)
-        db.session.commit()
-        return jsonify({'success': True, 'message': 'Enrollment submitted! We will contact you shortly.'})
-    return jsonify({'success': False, 'message': 'Please check your information and try again'}), 400
+    data = {}
+    
+    if request.is_json:
+        data = request.json
+    else:
+        data = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'phone': request.form.get('phone'),
+            'company': request.form.get('company'),
+            'course_id': request.form.get('course_id'),
+            'experience_level': request.form.get('experience_level'),
+            'goals': request.form.get('goals')
+        }
+    
+    lead, error = FormService.submit_enrollment(data, request.url)
+    
+    if error:
+        return jsonify({'success': False, 'message': error}), 400
+    
+    return jsonify({'success': True, 'message': 'Enrollment submitted! We will contact you shortly.'})
 
 
 @app.route('/api/research', methods=['POST'])
 def submit_research():
     """Research submission endpoint."""
-    form = ResearchSubmissionForm()
-    if form.validate_on_submit():
-        submission = ResearchSubmission(
-            title=form.title.data,
-            authors=form.authors.data,
-            email=form.email.data,
-            institution=form.institution.data,
-            research_area=form.research_area.data,
-            abstract=form.abstract.data,
-            keywords=form.keywords.data
-        )
-        db.session.add(submission)
-        db.session.commit()
-        return jsonify({'success': True, 'message': 'Research submitted successfully!'})
-    return jsonify({'success': False, 'message': 'Please check your information and try again'}), 400
+    data = {}
+    
+    if request.is_json:
+        data = request.json
+    else:
+        data = {
+            'title': request.form.get('title'),
+            'authors': request.form.get('authors'),
+            'email': request.form.get('email'),
+            'institution': request.form.get('institution'),
+            'research_area': request.form.get('research_area'),
+            'abstract': request.form.get('abstract'),
+            'keywords': request.form.get('keywords')
+        }
+    
+    lead, error = FormService.submit_research(data, request.url)
+    
+    if error:
+        return jsonify({'success': False, 'message': error}), 400
+    
+    return jsonify({'success': True, 'message': 'Research submitted successfully!'})
 
 
 @app.route('/api/demo', methods=['POST'])
 def request_demo():
     """Demo request endpoint."""
-    form = DemoRequestForm()
-    if form.validate_on_submit():
-        # Store demo request
-        contact = Contact(
-            name=form.name.data,
-            email=form.email.data,
-            company=form.company.data,
-            phone=form.phone.data,
-            subject=f'Demo Request: {form.product.data}',
-            message=f"Use Case: {form.use_case.data}\nPreferred Time: {form.preferred_time.data}"
-        )
-        db.session.add(contact)
-        db.session.commit()
-        return jsonify({'success': True, 'message': 'Demo request received! Our team will contact you soon.'})
-    return jsonify({'success': False, 'message': 'Please check your information and try again'}), 400
+    data = {}
+    
+    if request.is_json:
+        data = request.json
+    else:
+        data = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'company': request.form.get('company'),
+            'phone': request.form.get('phone'),
+            'product': request.form.get('product'),
+            'use_case': request.form.get('use_case'),
+            'preferred_time': request.form.get('preferred_time')
+        }
+    
+    lead, error = FormService.submit_demo(data, request.url)
+    
+    if error:
+        return jsonify({'success': False, 'message': error}), 400
+    
+    return jsonify({'success': True, 'message': 'Demo request submitted! We will contact you shortly.'})
 
 
 # Sitemap and SEO
@@ -353,6 +376,7 @@ def admin_dashboard():
     newsletter_count = Newsletter.query.count()
     enrollments_count = CourseEnrollment.query.count()
     research_submissions_count = ResearchSubmission.query.count()
+    unread_leads_count = Lead.query.filter_by(is_archived=False, is_read=False).count()
     
     # Get recent contacts
     recent_contacts = Contact.query.order_by(Contact.created_at.desc()).limit(5).all()
@@ -367,7 +391,238 @@ def admin_dashboard():
                          newsletter_count=newsletter_count,
                          enrollments_count=enrollments_count,
                          research_submissions_count=research_submissions_count,
-                         recent_contacts=recent_contacts)
+                         recent_contacts=recent_contacts,
+                         unread_leads_count=unread_leads_count)
+
+
+# =====================================================
+# ADMIN: LEADS MANAGEMENT
+# =====================================================
+
+@app.route('/admin/leads')
+@admin_required
+def admin_leads():
+    """List all leads with filtering and search."""
+    # Get query parameters
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
+    form_type = request.args.get('form_type', '')
+    status = request.args.get('status', '')
+    search = request.args.get('search', '')
+    archived = request.args.get('archived', 'false').lower() == 'true'
+    
+    # Build query
+    query = Lead.query
+    
+    if form_type:
+        query = query.filter(Lead.form_type == form_type)
+    
+    if status:
+        query = query.filter(Lead.status == status)
+    
+    if search:
+        search_term = f'%{search}%'
+        query = query.filter(
+            db.or_(
+                Lead.name.ilike(search_term),
+                Lead.email.ilike(search_term),
+                Lead.company.ilike(search_term),
+                Lead.message.ilike(search_term)
+            )
+        )
+    
+    if archived:
+        query = query.filter(Lead.is_archived == True)
+    else:
+        query = query.filter(Lead.is_archived == False)
+    
+    # Order by newest first
+    query = query.order_by(Lead.created_at.desc())
+    
+    # Paginate
+    pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+    leads = pagination.items
+    
+    # Stats
+    total_leads = Lead.query.filter_by(is_archived=False).count()
+    unread_leads = Lead.query.filter_by(is_archived=False, is_read=False).count()
+    new_leads = Lead.query.filter_by(is_archived=False, status='new').count()
+    
+    # Count by form type
+    contact_count = Lead.query.filter_by(form_type='contact', is_archived=False).count()
+    newsletter_count = Lead.query.filter_by(form_type='newsletter', is_archived=False).count()
+    enrollment_count = Lead.query.filter_by(form_type='enrollment', is_archived=False).count()
+    demo_count = Lead.query.filter_by(form_type='demo', is_archived=False).count()
+    research_count = Lead.query.filter_by(form_type='research', is_archived=False).count()
+    
+    return render_template('admin/leads.html',
+                         leads=leads,
+                         pagination=pagination,
+                         total_leads=total_leads,
+                         unread_leads=unread_leads,
+                         new_leads=new_leads,
+                         contact_count=contact_count,
+                         newsletter_count=newsletter_count,
+                         enrollment_count=enrollment_count,
+                         demo_count=demo_count,
+                         research_count=research_count,
+                         current_form_type=form_type,
+                         current_status=status,
+                         current_search=search,
+                         show_archived=archived)
+
+
+@app.route('/admin/leads/<int:lead_id>')
+@admin_required
+def admin_lead_detail(lead_id):
+    """View lead details."""
+    lead = Lead.query.get_or_404(lead_id)
+    
+    # Mark as read
+    if not lead.is_read:
+        lead.is_read = True
+        db.session.commit()
+    
+    return render_template('admin/lead_detail.html', lead=lead)
+
+
+@app.route('/admin/leads/<int:lead_id>/status', methods=['POST'])
+@admin_required
+def admin_lead_status(lead_id):
+    """Update lead status."""
+    lead = Lead.query.get_or_404(lead_id)
+    lead.status = request.form.get('status', 'new')
+    db.session.commit()
+    flash('Lead status updated!', 'success')
+    return redirect(url_for('admin_lead_detail', lead_id=lead_id))
+
+
+@app.route('/admin/leads/<int:lead_id>/archive', methods=['POST'])
+@admin_required
+def admin_lead_archive(lead_id):
+    """Archive lead."""
+    lead = Lead.query.get_or_404(lead_id)
+    lead.is_archived = True
+    lead.status = 'archived'
+    db.session.commit()
+    flash('Lead archived!', 'success')
+    return redirect(url_for('admin_leads'))
+
+
+@app.route('/admin/leads/<int:lead_id>/unarchive', methods=['POST'])
+@admin_required
+def admin_lead_unarchive(lead_id):
+    """Unarchive lead."""
+    lead = Lead.query.get_or_404(lead_id)
+    lead.is_archived = False
+    lead.status = 'new'
+    db.session.commit()
+    flash('Lead restored!', 'success')
+    return redirect(url_for('admin_leads', archived='true'))
+
+
+@app.route('/admin/leads/<int:lead_id>/delete', methods=['POST'])
+@admin_required
+def admin_lead_delete(lead_id):
+    """Delete lead."""
+    lead = Lead.query.get_or_404(lead_id)
+    db.session.delete(lead)
+    db.session.commit()
+    flash('Lead deleted!', 'success')
+    return redirect(url_for('admin_leads'))
+
+
+@app.route('/admin/leads/<int:lead_id>/notes', methods=['POST'])
+@admin_required
+def admin_lead_notes(lead_id):
+    """Update lead notes."""
+    lead = Lead.query.get_or_404(lead_id)
+    lead.notes = request.form.get('notes', '')
+    db.session.commit()
+    flash('Notes updated!', 'success')
+    return redirect(url_for('admin_lead_detail', lead_id=lead_id))
+
+
+@app.route('/admin/leads/export')
+@admin_required
+def admin_leads_export():
+    """Export leads to CSV."""
+    import csv
+    from io import StringIO
+    from flask import Response
+    
+    leads = Lead.query.filter_by(is_archived=False).order_by(Lead.created_at.desc()).all()
+    
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Header
+    writer.writerow(['ID', 'Form Type', 'Name', 'Email', 'Phone', 'Company', 'Message', 'Status', 'Created At', 'Source Page', 'IP Address'])
+    
+    # Data
+    for lead in leads:
+        writer.writerow([
+            lead.id,
+            lead.form_type,
+            lead.name or '',
+            lead.email,
+            lead.phone or '',
+            lead.company or '',
+            lead.message or '',
+            lead.status,
+            lead.created_at.strftime('%Y-%m-%d %H:%M'),
+            lead.source_page or '',
+            lead.ip_address or ''
+        ])
+    
+    output.seek(0)
+    return Response(
+        output.getvalue(),
+        mimetype='text/csv',
+        headers={'Content-Disposition': 'attachment; filename=leads.csv'}
+    )
+
+
+@app.route('/admin/leads/mark-all-read', methods=['POST'])
+@admin_required
+def admin_leads_mark_all_read():
+    """Mark all leads as read."""
+    Lead.query.filter_by(is_archived=False, is_read=False).update({'is_read': True})
+    db.session.commit()
+    flash('All leads marked as read!', 'success')
+    return redirect(url_for('admin_leads'))
+
+
+# =====================================================
+# ADMIN: FORM LOGS
+# =====================================================
+
+@app.route('/admin/logs')
+@admin_required
+def admin_logs():
+    """View form submission logs."""
+    page = request.args.get('page', 1, type=int)
+    per_page = 50
+    form_type = request.args.get('form_type', '')
+    action = request.args.get('action', '')
+    
+    query = FormLog.query
+    
+    if form_type:
+        query = query.filter(FormLog.form_type == form_type)
+    
+    if action:
+        query = query.filter(FormLog.action == action)
+    
+    query = query.order_by(FormLog.created_at.desc())
+    pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+    logs = pagination.items
+    
+    return render_template('admin/logs.html',
+                         logs=logs,
+                         pagination=pagination,
+                         current_form_type=form_type,
+                         current_action=action)
 
 
 # =====================================================

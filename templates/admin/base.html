@@ -67,12 +67,16 @@
                 </a>
 
                 <div class="px-4 mt-6 mb-2 text-xs uppercase text-white/40 font-semibold tracking-wider">Submissions</div>
+                <a href="{{ url_for('admin_leads') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'leads' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-inbox w-5"></i>
+                    <span>All Leads</span>
+                    {% if unread_leads_count is defined and unread_leads_count > 0 %}
+                    <span class="ml-auto bg-red-500 text-xs px-2 py-0.5 rounded-full">{{ unread_leads_count }}</span>
+                    {% endif %}
+                </a>
                 <a href="{{ url_for('admin_contacts') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'contacts' in request.endpoint %}active{% endif %}">
                     <i class="fas fa-envelope w-5"></i>
                     <span>Contacts</span>
-                    {% if contacts_count is defined and contacts_count > 0 %}
-                    <span class="ml-auto bg-red-500 text-xs px-2 py-0.5 rounded-full">{{ contacts_count }}</span>
-                    {% endif %}
                 </a>
                 <a href="{{ url_for('admin_newsletter') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'newsletter' in request.endpoint %}active{% endif %}">
                     <i class="fas fa-newspaper w-5"></i>
@@ -85,6 +89,10 @@
                 <a href="{{ url_for('admin_research_submissions') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'research_submissions' in request.endpoint %}active{% endif %}">
                     <i class="fas fa-paper-plane w-5"></i>
                     <span>Research Sub.</span>
+                </a>
+                <a href="{{ url_for('admin_logs') }}" class="sidebar-link flex items-center gap-3 px-4 py-3 {% if 'logs' in request.endpoint %}active{% endif %}">
+                    <i class="fas fa-clipboard-list w-5"></i>
+                    <span>Logs</span>
                 </a>
 
                 <div class="px-4 mt-6 mb-2 text-xs uppercase text-white/40 font-semibold tracking-wider">System</div>
