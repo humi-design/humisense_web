@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 from config import config
 from extensions import db, init_extensions
-from models import Contact, Newsletter, CourseEnrollment, ResearchSubmission, User, Admin, Lead, SiteSettings
+from models import Contact, Newsletter, CourseEnrollment, ResearchSubmission, User, Admin, Lead, SiteSettings, FormLog
 from forms import ContactForm, NewsletterForm, EnrollmentForm, ResearchSubmissionForm, DemoRequestForm
 from services.form_service import FormService
 
