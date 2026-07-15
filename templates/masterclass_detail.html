@@ -10,6 +10,16 @@
 {% if masterclass.canonical_url %}
 <link rel="canonical" href="{{ masterclass.canonical_url }}">
 {% endif %}
+<style>
+/* Prevent scroll jump when focusing form elements in sticky container */
+#register input:focus, #register select:focus, #register textarea:focus {
+    scroll-margin-top: 0;
+}
+/* Allow proper scrolling within the page */
+html {
+    scroll-behavior: smooth;
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -276,10 +286,10 @@
             </div>
             
             <!-- Sidebar -->
-            <div class="mt-12 lg:mt-0">
-                <div class="sticky top-24">
+            <div class="mt-12 lg:mt-0" id="register">
+                <div class="lg:sticky lg:top-24">
                     <!-- Registration Card -->
-                    <div id="register" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                         {% if registration_open and seats_available %}
                         <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
                             <h3 class="text-white font-bold text-lg">Reserve Your Seat</h3>
