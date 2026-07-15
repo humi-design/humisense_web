@@ -1722,6 +1722,8 @@ def admin_masterclass_bulk_email(masterclass_id):
     </html>
     """
     
+    location_line = f"Location: {masterclass.location}" if masterclass.location else ""
+    
     text_content = f"""
 {masterclass.title}
 
@@ -1731,7 +1733,7 @@ def admin_masterclass_bulk_email(masterclass_id):
 Event Details:
 Date: {event_date_str}
 Time: {event_time_str}
-{f'Location: {masterclass.location}' if masterclass.location else ''}
+{location_line}
 
 You're receiving this email because you registered for {masterclass.title}.
     """
@@ -1983,7 +1985,6 @@ def masterclass_register(slug):
             phone=data.get('phone', '').strip() if data.get('phone') else None,
             company=data.get('company', '').strip() if data.get('company') else None,
             form_type='masterclass',
-            source='website',
             status='new',
             ip_address=request.remote_addr
         )
