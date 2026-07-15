@@ -1,0 +1,446 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if masterclass else 'Create' }} Masterclass - HUMISENSE Admin{% endblock %}
+{% block page_title %}{{ 'Edit' if masterclass else 'Create' }} Masterclass{% endblock %}
+{% block page_subtitle %}{{ masterclass.title if masterclass else 'Create a new masterclass event' }}{% endblock %}
+
+{% block header_actions %}
+{% if masterclass %}
+<a href="{{ url_for('masterclass_detail', slug=masterclass.slug) }}" target="_blank" class="text-gray-500 hover:text-indigo-600 mr-4" title="View">
+    <i class="fas fa-external-link-alt"></i>
+</a>
+<a href="{{ url_for('admin_masterclass_registrations', masterclass_id=masterclass.id) }}" class="text-green-600 hover:text-green-800 mr-4">
+    <i class="fas fa-users mr-1"></i> Registrations ({{ masterclass.registered_count }})
+</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data" id="masterclassForm">
+    <!-- Tabs -->
+    <div class="bg-white rounded-lg shadow mb-6">
+        <div class="border-b border-gray-200">
+            <nav class="flex -mb-px" aria-label="Tabs">
+                <button type="button" class="tab-btn active border-indigo-500 text-indigo-600" data-tab="general">
+                    <i class="fas fa-info-circle mr-2"></i>General
+                </button>
+                <button type="button" class="tab-btn border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="schedule">
+                    <i class="fas fa-calendar-alt mr-2"></i>Schedule
+                </button>
+                <button type="button" class="tab-btn border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="instructor">
+                    <i class="fas fa-user-tie mr-2"></i>Instructor
+                </button>
+                <button type="button" class="tab-btn border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="seats">
+                    <i class="fas fa-chair mr-2"></i>Seats & Status
+                </button>
+                <button type="button" class="tab-btn border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="content">
+                    <i class="fas fa-file-alt mr-2"></i>Content
+                </button>
+                <button type="button" class="tab-btn border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="seo">
+                    <i class="fas fa-search mr-2"></i>SEO
+                </button>
+            </nav>
+        </div>
+        
+        <div class="p-6">
+            <!-- General Tab -->
+            <div class="tab-content active" id="tab-general">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                        <input type="text" name="title" value="{{ form.title.data or '' }}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+                        <input type="text" name="slug" value="{{ form.slug.data or '' }}" placeholder="auto-generated-from-title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <p class="text-xs text-gray-500 mt-1">Leave empty to auto-generate from title</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
+                    <input type="text" name="short_description" value="{{ form.short_description.data or '' }}" maxlength="500" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <p class="text-xs text-gray-500 mt-1">Brief description shown in cards (max 500 chars)</p>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Detailed Description</label>
+                    <textarea name="detailed_description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ form.detailed_description.data or '' }}</textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Banner Image URL</label>
+                        <input type="url" name="banner_image" value="{{ form.banner_image.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail URL</label>
+                        <input type="url" name="thumbnail" value="{{ form.thumbnail.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Featured Image URL</label>
+                        <input type="url" name="featured_image" value="{{ form.featured_image.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Schedule Tab -->
+            <div class="tab-content hidden" id="tab-schedule">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                        <input type="date" name="date" value="{{ form.date.data or (masterclass.date.strftime('%Y-%m-%d') if masterclass and masterclass.date else '') }}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Time *</label>
+                        <input type="time" name="time" value="{{ form.time.data or (masterclass.time.strftime('%H:%M') if masterclass and masterclass.time else '10:00') }}" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
+                        <select name="timezone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            {% for tz in ['UTC', 'US/Eastern', 'US/Pacific', 'Europe/London', 'Europe/Paris', 'Asia/Tokyo', 'Asia/Shanghai', 'Asia/Kolkata', 'Australia/Sydney'] %}
+                            <option value="{{ tz }}" {% if form.timezone.data == tz or (masterclass and masterclass.timezone == tz) %}selected{% endif %}>{{ tz }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+                        <input type="number" name="duration" value="{{ form.duration.data or (masterclass.duration if masterclass else 60) }}" min="15" max="480" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                        <select name="language" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            {% for lang in ['English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Hindi'] %}
+                            <option value="{{ lang }}" {% if form.language.data == lang or (masterclass and masterclass.language == lang) %}selected{% endif %}>{{ lang }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Registration Opens</label>
+                        <input type="datetime-local" name="registration_opens" value="{{ form.registration_opens.data or (masterclass.registration_opens.strftime('%Y-%m-%dT%H:%M') if masterclass and masterclass.registration_opens else '') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Registration Closes</label>
+                        <input type="datetime-local" name="registration_closes" value="{{ form.registration_closes.data or (masterclass.registration_closes.strftime('%Y-%m-%dT%H:%M') if masterclass and masterclass.registration_closes else '') }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mode</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center">
+                            <input type="radio" name="mode" value="online" {% if form.mode.data == 'online' or (masterclass and masterclass.mode == 'online') %}checked{% endif %} class="mr-2">
+                            Online
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="mode" value="offline" {% if form.mode.data == 'offline' or (masterclass and masterclass.mode == 'offline') %}checked{% endif %} class="mr-2">
+                            Offline
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="mode" value="hybrid" {% if form.mode.data == 'hybrid' or (masterclass and masterclass.mode == 'hybrid') %}checked{% endif %} class="mr-2">
+                            Hybrid
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instructor Tab -->
+            <div class="tab-content hidden" id="tab-instructor">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Instructor Name</label>
+                        <input type="text" name="instructor_name" value="{{ form.instructor_name.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Photo URL</label>
+                        <input type="url" name="instructor_photo" value="{{ form.instructor_photo.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Designation</label>
+                        <input type="text" name="instructor_designation" value="{{ form.instructor_designation.data or '' }}" placeholder="e.g., Senior AI Engineer" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                        <input type="text" name="instructor_company" value="{{ form.instructor_company.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                    <textarea name="instructor_bio" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ form.instructor_bio.data or '' }}</textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                        <input type="url" name="instructor_linkedin" value="{{ form.instructor_linkedin.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Twitter URL</label>
+                        <input type="url" name="instructor_twitter" value="{{ form.instructor_twitter.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
+                        <input type="url" name="instructor_website" value="{{ form.instructor_website.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seats & Status Tab -->
+            <div class="tab-content hidden" id="tab-seats">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Maximum Seats</label>
+                        <input type="number" name="max_seats" value="{{ form.max_seats.data or (masterclass.max_seats if masterclass else 500) }}" min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            {% for status in ['draft', 'published', 'registration_open', 'live', 'completed', 'cancelled'] %}
+                            <option value="{{ status }}" {% if form.status.data == status or (masterclass and masterclass.status == status) %}selected{% endif %}>{{ status.replace('_', ' ').title() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Visibility Options</label>
+                    <div class="space-y-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="is_featured" value="1" {% if form.is_featured.data or (masterclass and masterclass.is_featured) %}checked{% endif %} class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2">
+                            Featured Masterclass
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="show_floating_button" value="1" {% if form.show_floating_button.data or (masterclass and masterclass.show_floating_button) %}checked{% endif %} class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2">
+                            Show Floating CTA Button
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="show_popup" value="1" {% if form.show_popup.data or (masterclass and masterclass.show_popup) %}checked{% endif %} class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2">
+                            Show Exit Intent Popup
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="show_sticky_banner" value="1" {% if form.show_sticky_banner.data or (masterclass and masterclass.show_sticky_banner) %}checked{% endif %} class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2">
+                            Show Sticky Top Banner
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="show_homepage_promotion" value="1" {% if form.show_homepage_promotion.data or (masterclass and masterclass.show_homepage_promotion) %}checked{% endif %} class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2">
+                            Show on Homepage
+                        </label>
+                    </div>
+                </div>
+                
+                {% if masterclass %}
+                <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                    <h4 class="font-medium text-gray-700 mb-2">Current Stats</h4>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold text-indigo-600">{{ masterclass.registered_count }}</div>
+                            <div class="text-sm text-gray-500">Registrations</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-green-600">{{ masterclass.available_seats }}</div>
+                            <div class="text-sm text-gray-500">Available</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-gray-600">{{ masterclass.view_count }}</div>
+                            <div class="text-sm text-gray-500">Views</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Content Tab -->
+            <div class="tab-content hidden" id="tab-content">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">About Content (HTML allowed)</label>
+                    <textarea name="about_content" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ form.about_content.data or '' }}</textarea>
+                </div>
+                
+                <!-- What You'll Learn -->
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">What You'll Learn</label>
+                    <div id="whatYouLearnList" class="space-y-2">
+                        {% for item in what_you_learn %}
+                        <div class="flex gap-2">
+                            <input type="text" name="what_you_learn[]" value="{{ item }}" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+                            <button type="button" class="remove-item text-red-500 hover:text-red-700"><i class="fas fa-times"></i></button>
+                        </div>
+                        {% else %}
+                        <div class="flex gap-2">
+                            <input type="text" name="what_you_learn[]" placeholder="Enter a learning point" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+                            <button type="button" class="remove-item text-red-500 hover:text-red-700"><i class="fas fa-times"></i></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" onclick="addListItem('whatYouLearnList', 'what_you_learn[]')" class="mt-2 text-sm text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-plus mr-1"></i> Add Item
+                    </button>
+                </div>
+                
+                <!-- Who Should Attend -->
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Who Should Attend</label>
+                    <div id="whoShouldAttendList" class="space-y-2">
+                        {% for item in who_should_attend %}
+                        <div class="flex gap-2">
+                            <input type="text" name="who_should_attend[]" value="{{ item }}" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+                            <button type="button" class="remove-item text-red-500 hover:text-red-700"><i class="fas fa-times"></i></button>
+                        </div>
+                        {% else %}
+                        <div class="flex gap-2">
+                            <input type="text" name="who_should_attend[]" placeholder="Enter target audience" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+                            <button type="button" class="remove-item text-red-500 hover:text-red-700"><i class="fas fa-times"></i></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" onclick="addListItem('whoShouldAttendList', 'who_should_attend[]')" class="mt-2 text-sm text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-plus mr-1"></i> Add Item
+                    </button>
+                </div>
+                
+                <!-- FAQs -->
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">FAQs</label>
+                    <div id="faqList" class="space-y-4">
+                        {% for faq in faqs %}
+                        <div class="faq-item p-4 bg-gray-50 rounded-lg">
+                            <input type="text" name="faq_question[]" value="{{ faq.question }}" placeholder="Question" class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2">
+                            <textarea name="faq_answer[]" rows="2" placeholder="Answer" class="w-full px-3 py-2 border border-gray-300 rounded-lg">{{ faq.answer }}</textarea>
+                            <button type="button" class="remove-item text-red-500 hover:text-red-700 mt-2"><i class="fas fa-times mr-1"></i>Remove</button>
+                        </div>
+                        {% else %}
+                        <div class="faq-item p-4 bg-gray-50 rounded-lg">
+                            <input type="text" name="faq_question[]" placeholder="Question" class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2">
+                            <textarea name="faq_answer[]" rows="2" placeholder="Answer" class="w-full px-3 py-2 border border-gray-300 rounded-lg"></textarea>
+                            <button type="button" class="remove-item text-red-500 hover:text-red-700 mt-2"><i class="fas fa-times mr-1"></i>Remove</button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" onclick="addFaqItem()" class="mt-2 text-sm text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-plus mr-1"></i> Add FAQ
+                    </button>
+                </div>
+            </div>
+            
+            <!-- SEO Tab -->
+            <div class="tab-content hidden" id="tab-seo">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
+                    <input type="text" name="meta_title" value="{{ form.meta_title.data or '' }}" maxlength="200" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <p class="text-xs text-gray-500 mt-1">Recommended: 50-60 characters</p>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
+                    <textarea name="meta_description" rows="3" maxlength="500" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ form.meta_description.data or '' }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">Recommended: 150-160 characters</p>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords</label>
+                    <input type="text" name="meta_keywords" value="{{ form.meta_keywords.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <p class="text-xs text-gray-500 mt-1">Comma-separated keywords</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Open Graph Image</label>
+                        <input type="url" name="og_image" value="{{ form.og_image.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Canonical URL</label>
+                        <input type="url" name="canonical_url" value="{{ form.canonical_url.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+            <a href="{{ url_for('admin_masterclasses') }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+                Cancel
+            </a>
+            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                {{ 'Update' if masterclass else 'Create' }} Masterclass
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tab = this.dataset.tab;
+            
+            tabBtns.forEach(b => {
+                b.classList.remove('active', 'border-indigo-500', 'text-indigo-600');
+                b.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            this.classList.add('active', 'border-indigo-500', 'text-indigo-600');
+            this.classList.remove('border-transparent', 'text-gray-500');
+            
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('active');
+            });
+            
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('active');
+        });
+    });
+    
+    // Remove item functionality
+    document.querySelectorAll('.remove-item').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.closest('.flex, .faq-item').remove();
+        });
+    });
+});
+
+function addListItem(listId, inputName) {
+    const list = document.getElementById(listId);
+    const div = document.createElement('div');
+    div.className = 'flex gap-2';
+    div.innerHTML = `
+        <input type="text" name="${inputName}" placeholder="Enter item" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+        <button type="button" class="remove-item text-red-500 hover:text-red-700"><i class="fas fa-times"></i></button>
+    `;
+    list.appendChild(div);
+    
+    div.querySelector('.remove-item').addEventListener('click', function() {
+        div.remove();
+    });
+}
+
+function addFaqItem() {
+    const list = document.getElementById('faqList');
+    const div = document.createElement('div');
+    div.className = 'faq-item p-4 bg-gray-50 rounded-lg';
+    div.innerHTML = `
+        <input type="text" name="faq_question[]" placeholder="Question" class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2">
+        <textarea name="faq_answer[]" rows="2" placeholder="Answer" class="w-full px-3 py-2 border border-gray-300 rounded-lg"></textarea>
+        <button type="button" class="remove-item text-red-500 hover:text-red-700 mt-2"><i class="fas fa-times mr-1"></i>Remove</button>
+    `;
+    list.appendChild(div);
+    
+    div.querySelector('.remove-item').addEventListener('click', function() {
+        div.remove();
+    });
+}
+</script>
+{% endblock %}

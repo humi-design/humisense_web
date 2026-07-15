@@ -1,0 +1,185 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Masterclass Settings - HUMISENSE Admin{% endblock %}
+{% block page_title %}Masterclass Settings{% endblock %}
+{% block page_subtitle %}Configure the masterclass module settings{% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('admin_masterclasses') }}" class="text-gray-500 hover:text-indigo-600">
+    <i class="fas fa-arrow-left mr-1"></i> Back to Masterclasses
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl">
+    <form method="POST">
+        <!-- Module Settings -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Module Settings</h3>
+                <p class="text-sm text-gray-500 mt-1">Control the overall masterclass module behavior</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_module" value="1" id="enable_module" {% if form.enable_module.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_module" class="font-medium text-gray-700">Enable Masterclass Module</label>
+                        <p class="text-gray-500">Turn this off to completely disable the masterclass system</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Website Promotion Settings -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Website Promotion</h3>
+                <p class="text-sm text-gray-500 mt-1">Configure how masterclasses are promoted on your website</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_homepage_promotion" value="1" id="enable_homepage_promotion" {% if form.enable_homepage_promotion.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_homepage_promotion" class="font-medium text-gray-700">Enable Homepage Promotion</label>
+                        <p class="text-gray-500">Show upcoming masterclass section on the homepage</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_floating_cta" value="1" id="enable_floating_cta" {% if form.enable_floating_cta.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_floating_cta" class="font-medium text-gray-700">Enable Floating CTA Button</label>
+                        <p class="text-gray-500">Show floating "Reserve Seat" button on all pages</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_popup" value="1" id="enable_popup" {% if form.enable_popup.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_popup" class="font-medium text-gray-700">Enable Exit Intent Popup</label>
+                        <p class="text-gray-500">Show popup when user tries to leave the site</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_sticky_banner" value="1" id="enable_sticky_banner" {% if form.enable_sticky_banner.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_sticky_banner" class="font-medium text-gray-700">Enable Sticky Top Banner</label>
+                        <p class="text-gray-500">Show notification bar at the top of every page</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Feature Settings -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Features</h3>
+                <p class="text-sm text-gray-500 mt-1">Enable or disable specific features</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_countdown" value="1" id="enable_countdown" {% if form.enable_countdown.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_countdown" class="font-medium text-gray-700">Enable Countdown Timer</label>
+                        <p class="text-gray-500">Show live countdown to masterclass start</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_seat_counter" value="1" id="enable_seat_counter" {% if form.enable_seat_counter.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_seat_counter" class="font-medium text-gray-700">Enable Seat Counter</label>
+                        <p class="text-gray-500">Show real-time seat availability</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_reminder_emails" value="1" id="enable_reminder_emails" {% if form.enable_reminder_emails.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_reminder_emails" class="font-medium text-gray-700">Enable Reminder Emails</label>
+                        <p class="text-gray-500">Send automatic reminder emails (24h, 3h, 30min before)</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_calendar_integration" value="1" id="enable_calendar_integration" {% if form.enable_calendar_integration.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_calendar_integration" class="font-medium text-gray-700">Enable Calendar Integration</label>
+                        <p class="text-gray-500">Allow users to add events to their calendars</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_waitlist" value="1" id="enable_waitlist" {% if form.enable_waitlist.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_waitlist" class="font-medium text-gray-700">Enable Waitlist</label>
+                        <p class="text-gray-500">Allow users to join waitlist when seats are full</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_certificates" value="1" id="enable_certificates" {% if form.enable_certificates.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_certificates" class="font-medium text-gray-700">Enable Certificates</label>
+                        <p class="text-gray-500">Generate completion certificates after the event</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" name="enable_analytics" value="1" id="enable_analytics" {% if form.enable_analytics.data %}checked{% endif %} class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="enable_analytics" class="font-medium text-gray-700">Enable Analytics</label>
+                        <p class="text-gray-500">Track page views, registrations, and conversions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notification Settings -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Notifications</h3>
+                <p class="text-sm text-gray-500 mt-1">Configure email notification settings</p>
+            </div>
+            <div class="p-6">
+                <div>
+                    <label for="admin_email" class="block text-sm font-medium text-gray-700 mb-1">Admin Notification Email</label>
+                    <input type="email" name="admin_email" id="admin_email" value="{{ form.admin_email.data or '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="admin@example.com">
+                    <p class="text-xs text-gray-500 mt-1">Receive notifications for new registrations</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex justify-end">
+            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                Save Settings
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

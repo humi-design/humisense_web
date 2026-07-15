@@ -273,6 +273,103 @@
 </section>
 
 <!-- =====================================================
+     MASTERCLASS SECTION (Dynamic)
+     ===================================================== -->
+{% if active_masterclass and mc_homepage_promotion_enabled and active_masterclass.show_homepage_promotion %}
+<section id="masterclass" class="section bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 text-white relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-indigo-500 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="section-container relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-12" data-animate>
+            <span class="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white/10 text-indigo-200 mb-4">
+                <i class="fas fa-chalkboard-teacher mr-2"></i> Upcoming Masterclass
+            </span>
+            <h2 class="section-title text-white">{{ active_masterclass.title }}</h2>
+            <p class="section-subtitle text-indigo-200">
+                {{ active_masterclass.short_description }}
+            </p>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div data-animate>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+                    <!-- Event Details -->
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mr-4">
+                                <i class="fas fa-calendar-alt text-indigo-300"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-indigo-300">Date</div>
+                                <div class="font-medium">{{ active_masterclass.date.strftime('%B %d, %Y') }}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mr-4">
+                                <i class="fas fa-clock text-indigo-300"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-indigo-300">Time</div>
+                                <div class="font-medium">{{ active_masterclass.time.strftime('%I:%M %p') }} {{ active_masterclass.timezone }}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mr-4">
+                                <i class="fas fa-hourglass-half text-indigo-300"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-indigo-300">Duration</div>
+                                <div class="font-medium">{{ active_masterclass.duration }} minutes</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Instructor -->
+                    {% if active_masterclass.instructor_name %}
+                    <div class="flex items-center p-4 bg-white/5 rounded-xl mb-6">
+                        {% if active_masterclass.instructor_photo %}
+                        <img src="{{ active_masterclass.instructor_photo }}" alt="{{ active_masterclass.instructor_name }}" class="w-16 h-16 rounded-full object-cover border-2 border-indigo-400">
+                        {% else %}
+                        <div class="w-16 h-16 rounded-full bg-indigo-600 flex items-center justify-center text-2xl font-bold">
+                            {{ active_masterclass.instructor_name[0] }}
+                        </div>
+                        {% endif %}
+                        <div class="ml-4">
+                            <div class="text-sm text-indigo-300">Instructor</div>
+                            <div class="font-bold">{{ active_masterclass.instructor_name }}</div>
+                            {% if active_masterclass.instructor_company %}
+                            <div class="text-sm text-indigo-200">{{ active_masterclass.instructor_company }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('masterclass_detail', slug=active_masterclass.slug) }}" 
+                       class="block w-full bg-white text-indigo-900 text-center py-4 rounded-xl font-bold text-lg hover:bg-indigo-50 transition-colors">
+                        Reserve Your Free Seat
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center lg:text-left" data-animate>
+                {% if active_masterclass.banner_image %}
+                <img src="{{ active_masterclass.banner_image }}" alt="{{ active_masterclass.title }}" class="rounded-2xl shadow-2xl">
+                {% else %}
+                <div class="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-16 flex items-center justify-center">
+                    <i class="fas fa-chalkboard-teacher text-8xl text-white/30"></i>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- =====================================================
      STATISTICS SECTION
      ===================================================== -->
 <section id="stats" class="section bg-secondary">

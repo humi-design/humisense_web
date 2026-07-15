@@ -1,17 +1,23 @@
 import os
 import json
+import uuid
+import re
 from datetime import datetime, timezone
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
+from sqlalchemy import func
 
 from config import config
 from extensions import db, init_extensions
-from models import Contact, Newsletter, CourseEnrollment, ResearchSubmission, User, Admin, Lead, SiteSettings, FormLog
-from forms import ContactForm, NewsletterForm, EnrollmentForm, ResearchSubmissionForm, DemoRequestForm
+from models import (Contact, Newsletter, CourseEnrollment, ResearchSubmission, User, Admin, Lead, SiteSettings, FormLog,
+                    Masterclass, MasterclassRegistration, MasterclassAnalytics, MasterclassEmailLog)
+from forms import (ContactForm, NewsletterForm, EnrollmentForm, ResearchSubmissionForm, DemoRequestForm,
+                   MasterclassForm, MasterclassRegistrationForm, MasterclassSettingsForm)
 from services.form_service import FormService
+from services.email_service import EmailService
 
 
 # Admin authentication decorator
@@ -1330,6 +1336,648 @@ def admin_create_user():
             return redirect(url_for('admin_settings'))
     
     return render_template('admin/create_user.html')
+
+
+# =====================================================
+# ADMIN: MASTERCLASS MANAGEMENT
+# =====================================================
+
+def get_masterclass_setting(key, default=None):
+    """Get masterclass module setting from database."""
+    setting = SiteSettings.query.filter_by(key=key).first()
+    return setting.get_value() if setting else default
+
+
+def set_masterclass_setting(key, value, value_type='bool'):
+    """Set masterclass module setting in database."""
+    setting = SiteSettings.query.filter_by(key=key).first()
+    if not setting:
+        setting = SiteSettings(key=key, value_type=value_type)
+        db.session.add(setting)
+    setting.set_value(value)
+    db.session.commit()
+
+
+def generate_slug(title):
+    """Generate URL-friendly slug from title."""
+    slug = re.sub(r'[^\w\s-]', '', title.lower())
+    slug = re.sub(r'[\s_-]+', '-', slug)
+    slug = slug.strip('-')
+    
+    # Check for existing slug and make unique if needed
+    original_slug = slug
+    counter = 1
+    while Masterclass.query.filter_by(slug=slug).first():
+        slug = f"{original_slug}-{counter}"
+        counter += 1
+    return slug
+
+
+def get_active_masterclass():
+    """Get active masterclass for website promotion."""
+    if not get_masterclass_setting('masterclass_enable_module', True):
+        return None
+    
+    active_statuses = ['published', 'registration_open', 'live']
+    masterclass = Masterclass.query.filter(
+        Masterclass.status.in_(active_statuses),
+        Masterclass.show_floating_button == True
+    ).order_by(Masterclass.date.asc()).first()
+    
+    return masterclass
+
+
+@app.context_processor
+def inject_masterclass():
+    """Inject masterclass data into all templates."""
+    active_masterclass = get_active_masterclass()
+    return {
+        'active_masterclass': active_masterclass,
+        'mc_module_enabled': get_masterclass_setting('masterclass_enable_module', True),
+        'mc_floating_cta_enabled': get_masterclass_setting('masterclass_enable_floating_cta', True),
+        'mc_popup_enabled': get_masterclass_setting('masterclass_enable_popup', True),
+        'mc_sticky_banner_enabled': get_masterclass_setting('masterclass_enable_sticky_banner', True),
+        'mc_homepage_promotion_enabled': get_masterclass_setting('masterclass_enable_homepage_promotion', True),
+    }
+
+
+@app.route('/admin/masterclasses')
+@admin_required
+def admin_masterclasses():
+    """List all masterclasses."""
+    status_filter = request.args.get('status', '')
+    
+    query = Masterclass.query
+    
+    if status_filter:
+        query = query.filter_by(status=status_filter)
+    
+    masterclasses = query.order_by(Masterclass.date.desc()).all()
+    
+    # Count by status
+    status_counts = {
+        'draft': Masterclass.query.filter_by(status='draft').count(),
+        'published': Masterclass.query.filter_by(status='published').count(),
+        'registration_open': Masterclass.query.filter_by(status='registration_open').count(),
+        'live': Masterclass.query.filter_by(status='live').count(),
+        'completed': Masterclass.query.filter_by(status='completed').count(),
+        'cancelled': Masterclass.query.filter_by(status='cancelled').count(),
+    }
+    
+    return render_template('admin/masterclasses.html', 
+                         masterclasses=masterclasses, 
+                         status_counts=status_counts,
+                         status_filter=status_filter)
+
+
+@app.route('/admin/masterclasses/create', methods=['GET', 'POST'])
+@admin_required
+def admin_masterclass_create():
+    """Create new masterclass."""
+    form = MasterclassForm()
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            # Generate slug if not provided
+            slug = form.slug.data
+            if not slug:
+                slug = generate_slug(form.title.data)
+            
+            masterclass = Masterclass(
+                title=form.title.data,
+                slug=slug,
+                short_description=form.short_description.data,
+                detailed_description=form.detailed_description.data,
+                banner_image=form.banner_image.data,
+                thumbnail=form.thumbnail.data,
+                featured_image=form.featured_image.data,
+                timezone=form.timezone.data,
+                duration=int(form.duration.data) if form.duration.data else 60,
+                max_seats=int(form.max_seats.data) if form.max_seats.data else 500,
+                status=form.status.data,
+                is_featured=form.is_featured.data,
+                show_floating_button=form.show_floating_button.data,
+                show_popup=form.show_popup.data,
+                show_sticky_banner=form.show_sticky_banner.data,
+                show_homepage_promotion=form.show_homepage_promotion.data,
+                meta_title=form.meta_title.data,
+                meta_description=form.meta_description.data,
+                meta_keywords=form.meta_keywords.data,
+                og_image=form.og_image.data,
+                canonical_url=form.canonical_url.data,
+                about_content=form.about_content.data,
+                language=form.language.data,
+                mode=form.mode.data,
+                instructor_name=form.instructor_name.data,
+                instructor_photo=form.instructor_photo.data,
+                instructor_designation=form.instructor_designation.data,
+                instructor_company=form.instructor_company.data,
+                instructor_bio=form.instructor_bio.data,
+                instructor_linkedin=form.instructor_linkedin.data,
+                instructor_twitter=form.instructor_twitter.data,
+                instructor_website=form.instructor_website.data,
+            )
+            
+            # Parse date and time
+            try:
+                masterclass.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
+                masterclass.time = datetime.strptime(form.time.data, '%H:%M').time()
+            except ValueError:
+                flash('Invalid date or time format', 'error')
+                return render_template('admin/masterclass_edit.html', form=form, masterclass=None)
+            
+            # Parse registration opens/closes
+            if form.registration_opens.data:
+                try:
+                    masterclass.registration_opens = datetime.strptime(form.registration_opens.data, '%Y-%m-%d %H:%M')
+                except ValueError:
+                    pass
+            
+            if form.registration_closes.data:
+                try:
+                    masterclass.registration_closes = datetime.strptime(form.registration_closes.data, '%Y-%m-%d %H:%M')
+                except ValueError:
+                    pass
+            
+            db.session.add(masterclass)
+            db.session.commit()
+            
+            flash(f'Masterclass "{masterclass.title}" created successfully!', 'success')
+            return redirect(url_for('admin_masterclass_edit', masterclass_id=masterclass.id))
+    
+    return render_template('admin/masterclass_edit.html', form=form, masterclass=None)
+
+
+@app.route('/admin/masterclasses/<int:masterclass_id>/edit', methods=['GET', 'POST'])
+@admin_required
+def admin_masterclass_edit(masterclass_id):
+    """Edit existing masterclass."""
+    masterclass = Masterclass.query.get_or_404(masterclass_id)
+    form = MasterclassForm(obj=masterclass)
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            # Update fields
+            masterclass.title = form.title.data
+            masterclass.slug = form.slug.data if form.slug.data else generate_slug(form.title.data)
+            masterclass.short_description = form.short_description.data
+            masterclass.detailed_description = form.detailed_description.data
+            masterclass.banner_image = form.banner_image.data
+            masterclass.thumbnail = form.thumbnail.data
+            masterclass.featured_image = form.featured_image.data
+            masterclass.timezone = form.timezone.data
+            masterclass.duration = int(form.duration.data) if form.duration.data else 60
+            masterclass.max_seats = int(form.max_seats.data) if form.max_seats.data else 500
+            masterclass.status = form.status.data
+            masterclass.is_featured = form.is_featured.data
+            masterclass.show_floating_button = form.show_floating_button.data
+            masterclass.show_popup = form.show_popup.data
+            masterclass.show_sticky_banner = form.show_sticky_banner.data
+            masterclass.show_homepage_promotion = form.show_homepage_promotion.data
+            masterclass.meta_title = form.meta_title.data
+            masterclass.meta_description = form.meta_description.data
+            masterclass.meta_keywords = form.meta_keywords.data
+            masterclass.og_image = form.og_image.data
+            masterclass.canonical_url = form.canonical_url.data
+            masterclass.about_content = form.about_content.data
+            masterclass.language = form.language.data
+            masterclass.mode = form.mode.data
+            masterclass.instructor_name = form.instructor_name.data
+            masterclass.instructor_photo = form.instructor_photo.data
+            masterclass.instructor_designation = form.instructor_designation.data
+            masterclass.instructor_company = form.instructor_company.data
+            masterclass.instructor_bio = form.instructor_bio.data
+            masterclass.instructor_linkedin = form.instructor_linkedin.data
+            masterclass.instructor_twitter = form.instructor_twitter.data
+            masterclass.instructor_website = form.instructor_website.data
+            
+            # Parse date and time
+            try:
+                masterclass.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
+                masterclass.time = datetime.strptime(form.time.data, '%H:%M').time()
+            except ValueError:
+                flash('Invalid date or time format', 'error')
+                return render_template('admin/masterclass_edit.html', form=form, masterclass=masterclass)
+            
+            # Parse registration opens/closes
+            if form.registration_opens.data:
+                try:
+                    masterclass.registration_opens = datetime.strptime(form.registration_opens.data, '%Y-%m-%d %H:%M')
+                except ValueError:
+                    pass
+            
+            if form.registration_closes.data:
+                try:
+                    masterclass.registration_closes = datetime.strptime(form.registration_closes.data, '%Y-%m-%d %H:%M')
+                except ValueError:
+                    pass
+            
+            db.session.commit()
+            flash(f'Masterclass "{masterclass.title}" updated successfully!', 'success')
+    
+    # Get JSON fields for display
+    what_you_learn = masterclass.get_json_field('what_you_learn')
+    who_should_attend = masterclass.get_json_field('who_should_attend')
+    prerequisites = masterclass.get_json_field('prerequisites')
+    benefits = masterclass.get_json_field('benefits')
+    agenda = masterclass.get_json_field('agenda')
+    faqs = masterclass.get_json_field('faqs')
+    testimonials = masterclass.get_json_field('testimonials')
+    reminder_settings = masterclass.get_json_field('reminder_settings')
+    
+    return render_template('admin/masterclass_edit.html', 
+                         form=form, 
+                         masterclass=masterclass,
+                         what_you_learn=what_you_learn,
+                         who_should_attend=who_should_attend,
+                         prerequisites=prerequisites,
+                         benefits=benefits,
+                         agenda=agenda,
+                         faqs=faqs,
+                         testimonials=testimonials,
+                         reminder_settings=reminder_settings)
+
+
+@app.route('/admin/masterclasses/<int:masterclass_id>/content', methods=['POST'])
+@admin_required
+def admin_masterclass_content(masterclass_id):
+    """Update masterclass rich content sections."""
+    masterclass = Masterclass.query.get_or_404(masterclass_id)
+    
+    # Update JSON fields
+    masterclass.set_json_field('what_you_learn', request.json.get('what_you_learn', []))
+    masterclass.set_json_field('who_should_attend', request.json.get('who_should_attend', []))
+    masterclass.set_json_field('prerequisites', request.json.get('prerequisites', []))
+    masterclass.set_json_field('benefits', request.json.get('benefits', []))
+    masterclass.set_json_field('agenda', request.json.get('agenda', []))
+    masterclass.set_json_field('faqs', request.json.get('faqs', []))
+    masterclass.set_json_field('testimonials', request.json.get('testimonials', []))
+    masterclass.set_json_field('reminder_settings', request.json.get('reminder_settings', {}))
+    
+    db.session.commit()
+    return jsonify({'success': True, 'message': 'Content updated successfully'})
+
+
+@app.route('/admin/masterclasses/<int:masterclass_id>/delete', methods=['POST'])
+@admin_required
+def admin_masterclass_delete(masterclass_id):
+    """Delete masterclass."""
+    masterclass = Masterclass.query.get_or_404(masterclass_id)
+    title = masterclass.title
+    db.session.delete(masterclass)
+    db.session.commit()
+    flash(f'Masterclass "{title}" deleted successfully!', 'success')
+    return redirect(url_for('admin_masterclasses'))
+
+
+@app.route('/admin/masterclasses/<int:masterclass_id>/status', methods=['POST'])
+@admin_required
+def admin_masterclass_status(masterclass_id):
+    """Update masterclass status."""
+    masterclass = Masterclass.query.get_or_404(masterclass_id)
+    new_status = request.form.get('status')
+    if new_status in ['draft', 'published', 'registration_open', 'live', 'completed', 'cancelled']:
+        masterclass.status = new_status
+        db.session.commit()
+        flash(f'Status updated to "{new_status}"', 'success')
+    return redirect(url_for('admin_masterclasses'))
+
+
+@app.route('/admin/masterclasses/<int:masterclass_id>/registrations')
+@admin_required
+def admin_masterclass_registrations(masterclass_id):
+    """View registrations for a masterclass."""
+    masterclass = Masterclass.query.get_or_404(masterclass_id)
+    registrations = masterclass.registrations.order_by(MasterclassRegistration.created_at.desc()).all()
+    
+    return render_template('admin/masterclass_registrations.html',
+                         masterclass=masterclass,
+                         registrations=registrations)
+
+
+@app.route('/admin/masterclasses/<int:masterclass_id>/analytics')
+@admin_required
+def admin_masterclass_analytics(masterclass_id):
+    """View analytics for a masterclass."""
+    masterclass = Masterclass.query.get_or_404(masterclass_id)
+    
+    # Get analytics data
+    page_views = MasterclassAnalytics.query.filter_by(
+        masterclass_id=masterclass_id, 
+        event_type='page_view'
+    ).count()
+    
+    total_registrations = masterclass.registrations.count()
+    confirmed_registrations = masterclass.registrations.filter_by(status='confirmed').count()
+    
+    # Daily registrations for the last 30 days
+    thirty_days_ago = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+    daily_stats = db.session.query(
+        func.date(MasterclassRegistration.created_at).label('date'),
+        func.count(MasterclassRegistration.id).label('count')
+    ).filter(
+        MasterclassRegistration.masterclass_id == masterclass_id,
+        MasterclassRegistration.created_at >= thirty_days_ago
+    ).group_by(func.date(MasterclassRegistration.created_at)).all()
+    
+    # Country distribution
+    country_stats = db.session.query(
+        MasterclassRegistration.country,
+        func.count(MasterclassRegistration.id).label('count')
+    ).filter(
+        MasterclassRegistration.masterclass_id == masterclass_id
+    ).group_by(MasterclassRegistration.country).all()
+    
+    # Device distribution
+    device_stats = db.session.query(
+        MasterclassRegistration.device,
+        func.count(MasterclassRegistration.id).label('count')
+    ).filter(
+        MasterclassRegistration.masterclass_id == masterclass_id
+    ).group_by(MasterclassRegistration.device).all()
+    
+    # Recent activity
+    recent_analytics = MasterclassAnalytics.query.filter_by(
+        masterclass_id=masterclass_id
+    ).order_by(MasterclassAnalytics.created_at.desc()).limit(50).all()
+    
+    return render_template('admin/masterclass_analytics.html',
+                         masterclass=masterclass,
+                         page_views=page_views,
+                         total_registrations=total_registrations,
+                         confirmed_registrations=confirmed_registrations,
+                         daily_stats=daily_stats,
+                         country_stats=country_stats,
+                         device_stats=device_stats,
+                         recent_analytics=recent_analytics)
+
+
+# =====================================================
+# PUBLIC MASTERCLASS ROUTES
+# =====================================================
+
+@app.route('/masterclass/<slug>')
+def masterclass_detail(slug):
+    """Public masterclass detail page."""
+    masterclass = Masterclass.query.filter_by(slug=slug).first_or_404()
+    
+    # Increment view count
+    masterclass.view_count += 1
+    db.session.commit()
+    
+    # Track analytics
+    try:
+        analytics = MasterclassAnalytics(
+            masterclass_id=masterclass.id,
+            event_type='page_view',
+            ip_address=request.remote_addr,
+            user_agent=request.user_agent.string,
+            device='mobile' if request.user_agent.is_mobile else 'desktop',
+            utm_source=request.args.get('utm_source'),
+            utm_medium=request.args.get('utm_medium'),
+            utm_campaign=request.args.get('utm_campaign')
+        )
+        db.session.add(analytics)
+        db.session.commit()
+    except Exception:
+        pass
+    
+    # Check if registration is open
+    now = datetime.now(timezone.utc)
+    registration_open = True
+    
+    if masterclass.registration_closes:
+        registration_open = now < masterclass.registration_closes
+    
+    if masterclass.registration_opens:
+        registration_open = registration_open and now >= masterclass.registration_opens
+    
+    seats_available = masterclass.available_seats > 0
+    
+    # Get JSON fields
+    what_you_learn = masterclass.get_json_field('what_you_learn')
+    who_should_attend = masterclass.get_json_field('who_should_attend')
+    prerequisites = masterclass.get_json_field('prerequisites')
+    benefits = masterclass.get_json_field('benefits')
+    agenda = masterclass.get_json_field('agenda')
+    faqs = masterclass.get_json_field('faqs')
+    testimonials = masterclass.get_json_field('testimonials')
+    
+    form = MasterclassRegistrationForm()
+    
+    return render_template('masterclass_detail.html',
+                         masterclass=masterclass,
+                         form=form,
+                         registration_open=registration_open,
+                         seats_available=seats_available,
+                         what_you_learn=what_you_learn,
+                         who_should_attend=who_should_attend,
+                         prerequisites=prerequisites,
+                         benefits=benefits,
+                         agenda=agenda,
+                         faqs=faqs,
+                         testimonials=testimonials)
+
+
+@app.route('/masterclass/<slug>/register', methods=['POST'])
+def masterclass_register(slug):
+    """Handle masterclass registration."""
+    masterclass = Masterclass.query.filter_by(slug=slug).first_or_404()
+    form = MasterclassRegistrationForm()
+    
+    # Check if registration is open
+    now = datetime.now(timezone.utc)
+    registration_open = True
+    
+    if masterclass.registration_closes:
+        registration_open = now < masterclass.registration_closes
+    
+    if masterclass.registration_opens:
+        registration_open = registration_open and now >= masterclass.registration_opens
+    
+    if not registration_open:
+        return jsonify({'success': False, 'message': 'Registration is closed'}), 400
+    
+    # Check seat availability
+    if masterclass.available_seats <= 0:
+        return jsonify({'success': False, 'message': 'All seats are taken'}), 400
+    
+    # Check for duplicate registration
+    existing = MasterclassRegistration.query.filter_by(
+        masterclass_id=masterclass.id,
+        email=form.email.data.lower()
+    ).first()
+    
+    if existing:
+        return jsonify({'success': False, 'message': 'You have already registered for this masterclass'}), 400
+    
+    if form.validate_on_submit():
+        # Generate unique registration ID
+        registration_id = f"MC-{masterclass.id}-{uuid.uuid4().hex[:6].upper()}"
+        
+        registration = MasterclassRegistration(
+            masterclass_id=masterclass.id,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            email=form.email.data.lower(),
+            phone=form.phone.data,
+            country=form.country.data,
+            company=form.company.data,
+            job_title=form.job_title.data,
+            experience=form.experience.data,
+            industry=form.industry.data,
+            linkedin=form.linkedin.data,
+            receive_updates=form.receive_updates.data,
+            registration_id=registration_id,
+            status='confirmed',
+            source_page=request.referrer,
+            ip_address=request.remote_addr,
+            user_agent=request.user_agent.string,
+            device='mobile' if request.user_agent.is_mobile else 'desktop',
+            utm_source=request.args.get('utm_source'),
+            utm_medium=request.args.get('utm_medium'),
+            utm_campaign=request.args.get('utm_campaign')
+        )
+        
+        db.session.add(registration)
+        
+        # Track analytics
+        try:
+            analytics = MasterclassAnalytics(
+                masterclass_id=masterclass.id,
+                event_type='registration',
+                event_data=json.dumps({'registration_id': registration_id}),
+                ip_address=request.remote_addr,
+                device='mobile' if request.user_agent.is_mobile else 'desktop'
+            )
+            db.session.add(analytics)
+        except Exception:
+            pass
+        
+        db.session.commit()
+        
+        # Send confirmation email
+        try:
+            EmailService.send_masterclass_confirmation(registration, masterclass)
+        except Exception as e:
+            print(f"Failed to send confirmation email: {e}")
+        
+        # Notify admin
+        try:
+            EmailService.send_masterclass_admin_notification(registration, masterclass)
+        except Exception as e:
+            print(f"Failed to send admin notification: {e}")
+        
+        return jsonify({
+            'success': True, 
+            'message': 'Registration successful!',
+            'registration_id': registration_id
+        })
+    
+    # Return validation errors
+    errors = {field: str(error) for field, error in form.errors.items()}
+    return jsonify({'success': False, 'message': 'Validation failed', 'errors': errors}), 400
+
+
+@app.route('/api/masterclass/<slug>/seats')
+def api_masterclass_seats(slug):
+    """Get real-time seat availability."""
+    masterclass = Masterclass.query.filter_by(slug=slug).first_or_404()
+    
+    return jsonify({
+        'available_seats': masterclass.available_seats,
+        'max_seats': masterclass.max_seats,
+        'registered_count': masterclass.registered_count,
+        'seats_percentage': masterclass.seats_percentage
+    })
+
+
+@app.route('/api/masterclass/countdown/<slug>')
+def api_masterclass_countdown(slug):
+    """Get countdown data for masterclass."""
+    masterclass = Masterclass.query.filter_by(slug=slug).first_or_404()
+    
+    # Calculate target datetime
+    target_dt = datetime.combine(masterclass.date, masterclass.time)
+    
+    return jsonify({
+        'target_timestamp': int(target_dt.timestamp()),
+        'title': masterclass.title,
+        'status': masterclass.status
+    })
+
+
+@app.route('/api/masterclass/active')
+def api_masterclass_active():
+    """Get active masterclass for website promotion."""
+    active_masterclass = get_active_masterclass()
+    
+    if not active_masterclass:
+        return jsonify({'active': False})
+    
+    return jsonify({
+        'active': True,
+        'id': active_masterclass.id,
+        'title': active_masterclass.title,
+        'slug': active_masterclass.slug,
+        'short_description': active_masterclass.short_description,
+        'date': active_masterclass.date.isoformat(),
+        'time': active_masterclass.time.isoformat(),
+        'available_seats': active_masterclass.available_seats,
+        'show_floating_button': active_masterclass.show_floating_button,
+        'show_popup': active_masterclass.show_popup,
+        'show_sticky_banner': active_masterclass.show_sticky_banner,
+        'show_homepage_promotion': active_masterclass.show_homepage_promotion
+    })
+
+
+# =====================================================
+# MASTERCLASS SETTINGS
+# =====================================================
+
+@app.route('/admin/masterclass-settings', methods=['GET', 'POST'])
+@admin_required
+def admin_masterclass_settings():
+    """Masterclass module settings."""
+    form = MasterclassSettingsForm()
+    
+    if request.method == 'POST':
+        settings_mapping = [
+            ('masterclass_enable_module', form.enable_module.data),
+            ('masterclass_enable_homepage_promotion', form.enable_homepage_promotion.data),
+            ('masterclass_enable_floating_cta', form.enable_floating_cta.data),
+            ('masterclass_enable_popup', form.enable_popup.data),
+            ('masterclass_enable_sticky_banner', form.enable_sticky_banner.data),
+            ('masterclass_enable_reminder_emails', form.enable_reminder_emails.data),
+            ('masterclass_enable_calendar_integration', form.enable_calendar_integration.data),
+            ('masterclass_enable_waitlist', form.enable_waitlist.data),
+            ('masterclass_enable_certificates', form.enable_certificates.data),
+            ('masterclass_enable_analytics', form.enable_analytics.data),
+        ]
+        
+        for key, value in settings_mapping:
+            set_masterclass_setting(key, value)
+        
+        if form.admin_email.data:
+            set_masterclass_setting('masterclass_admin_email', form.admin_email.data, 'string')
+        
+        flash('Settings saved successfully!', 'success')
+        return redirect(url_for('admin_masterclass_settings'))
+    
+    # Load current settings
+    form.enable_module.data = get_masterclass_setting('masterclass_enable_module', True)
+    form.enable_homepage_promotion.data = get_masterclass_setting('masterclass_enable_homepage_promotion', True)
+    form.enable_floating_cta.data = get_masterclass_setting('masterclass_enable_floating_cta', True)
+    form.enable_popup.data = get_masterclass_setting('masterclass_enable_popup', False)
+    form.enable_sticky_banner.data = get_masterclass_setting('masterclass_enable_sticky_banner', False)
+    form.enable_reminder_emails.data = get_masterclass_setting('masterclass_enable_reminder_emails', True)
+    form.enable_calendar_integration.data = get_masterclass_setting('masterclass_enable_calendar_integration', True)
+    form.enable_waitlist.data = get_masterclass_setting('masterclass_enable_waitlist', False)
+    form.enable_certificates.data = get_masterclass_setting('masterclass_enable_certificates', False)
+    form.enable_analytics.data = get_masterclass_setting('masterclass_enable_analytics', True)
+    form.admin_email.data = get_masterclass_setting('masterclass_admin_email', '')
+    
+    return render_template('admin/masterclass_settings.html', form=form)
 
 
 if __name__ == '__main__':
