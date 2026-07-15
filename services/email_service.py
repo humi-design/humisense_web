@@ -117,6 +117,11 @@ class EmailService:
                     
                     <p>Hi {registration.first_name},</p>
                     <p>Thank you for registering for <strong>{masterclass.title}</strong>. We're thrilled to have you join us!</p>
+                    {f'''
+                    <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 15px; margin: 20px 0; border-radius: 4px;">
+                        <p style="margin: 0; color: #166534;">{masterclass.confirmation_message}</p>
+                    </div>
+                    ''' if masterclass.confirmation_message else ''}
                     
                     <div class="details-card">
                         <h3 style="margin-top: 0; color: #4f46e5;">📅 Event Details</h3>
@@ -173,6 +178,7 @@ class EmailService:
         Hi {registration.first_name},
         
         Your seat has been confirmed for {masterclass.title}!
+        {f'\n{masterclass.confirmation_message}' if masterclass.confirmation_message else ''}
         
         EVENT DETAILS:
         Date: {event_date_str}

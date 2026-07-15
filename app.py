@@ -460,6 +460,7 @@ def admin_leads():
     enrollment_count = Lead.query.filter_by(form_type='enrollment', is_archived=False).count()
     demo_count = Lead.query.filter_by(form_type='demo', is_archived=False).count()
     research_count = Lead.query.filter_by(form_type='research', is_archived=False).count()
+    masterclass_count = Lead.query.filter_by(form_type='masterclass', is_archived=False).count()
     
     return render_template('admin/leads.html',
                          leads=leads,
@@ -472,6 +473,7 @@ def admin_leads():
                          enrollment_count=enrollment_count,
                          demo_count=demo_count,
                          research_count=research_count,
+                         masterclass_count=masterclass_count,
                          current_form_type=form_type,
                          current_status=status,
                          current_search=search,
@@ -1542,6 +1544,7 @@ def admin_masterclass_edit(masterclass_id):
             masterclass.about_content = form.about_content.data
             masterclass.language = form.language.data
             masterclass.mode = form.mode.data
+            masterclass.confirmation_message = request.form.get('confirmation_message', '').strip()
             masterclass.instructor_name = form.instructor_name.data
             masterclass.instructor_photo = form.instructor_photo.data
             masterclass.instructor_designation = form.instructor_designation.data
@@ -1653,6 +1656,108 @@ def admin_masterclass_registrations(masterclass_id):
     return render_template('admin/masterclass_registrations.html',
                          masterclass=masterclass,
                          registrations=registrations)
+
+
+@app.route('/admin/masterclasses/<int:masterclass_id>/bulk-email', methods=['POST'])
+@admin_required
+def admin_masterclass_bulk_email(masterclass_id):
+    """Send bulk email to all registrants."""
+    masterclass = Masterclass.query.get_or_404(masterclass_id)
+    
+    subject = request.form.get('subject', '').strip()
+    message = request.form.get('message', '').strip()
+    include_masterclass_info = request.form.get('include_masterclass_info') == 'on'
+    
+    if not subject or not message:
+        flash('Subject and message are required.', 'error')
+        return redirect(url_for('admin_masterclass_registrations', masterclass_id=masterclass_id))
+    
+    registrations = masterclass.registrations.filter_by(status='confirmed').all()
+    
+    if not registrations:
+        flash('No confirmed registrations to send emails to.', 'warning')
+        return redirect(url_for('admin_masterclass_registrations', masterclass_id=masterclass_id))
+    
+    # Build email content
+    event_datetime = datetime.combine(masterclass.date, masterclass.time)
+    event_date_str = event_datetime.strftime('%B %d, %Y')
+    event_time_str = masterclass.time.strftime('%I:%M %p')
+    
+    footer_html = ""
+    if include_masterclass_info:
+        footer_html = f"""
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <h4 style="color: #4f46e5; margin-bottom: 10px;">{masterclass.title}</h4>
+            <p style="margin: 5px 0;"><strong>Date:</strong> {event_date_str}</p>
+            <p style="margin: 5px 0;"><strong>Time:</strong> {event_time_str}</p>
+            {f'<p style="margin: 5px 0;"><strong>Location:</strong> {masterclass.location}</p>' if masterclass.location else ''}
+        </div>
+        """
+    
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }}
+            .header {{ background: linear-gradient(135deg, #4f46e5, #8b5cf6); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }}
+            .content {{ background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; }}
+            .footer {{ background: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-radius: 0 0 8px 8px; }}
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h2>{masterclass.title}</h2>
+        </div>
+        <div class="content">
+            <p>{message.replace('\n', '<br>')}</p>
+            {footer_html}
+        </div>
+        <div class="footer">
+            <p>You're receiving this email because you registered for {masterclass.title}.</p>
+            <p>Registration ID: {registrations[0].registration_id if registrations else 'N/A'}</p>
+        </div>
+    </body>
+    </html>
+    """
+    
+    text_content = f"""
+{masterclass.title}
+
+{message}
+
+---
+Event Details:
+Date: {event_date_str}
+Time: {event_time_str}
+{f'Location: {masterclass.location}' if masterclass.location else ''}
+
+You're receiving this email because you registered for {masterclass.title}.
+    """
+    
+    # Send emails
+    sent_count = 0
+    failed_count = 0
+    
+    for reg in registrations:
+        try:
+            result = EmailService.send_email(
+                reg.email,
+                subject,
+                html_content,
+                text_content
+            )
+            if result:
+                sent_count += 1
+            else:
+                failed_count += 1
+        except Exception as e:
+            print(f"Failed to send email to {reg.email}: {e}")
+            failed_count += 1
+    
+    flash(f'Bulk email sent to {sent_count} registrants. {failed_count} failed.', 'success' if failed_count == 0 else 'warning')
+    return redirect(url_for('admin_masterclass_registrations', masterclass_id=masterclass_id))
 
 
 @app.route('/admin/masterclasses/<int:masterclass_id>/analytics')

@@ -5,11 +5,14 @@
 {% block page_subtitle %}{{ masterclass.title }}{% endblock %}
 
 {% block header_actions %}
+<button onclick="openBulkEmailModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg mr-4">
+    <i class="fas fa-envelope mr-1"></i> Send Bulk Email
+</button>
 <a href="{{ url_for('admin_masterclasses') }}" class="text-gray-500 hover:text-indigo-600 mr-4">
-    <i class="fas fa-arrow-left mr-1"></i> Back to Masterclasses
+    <i class="fas fa-arrow-left mr-1"></i> Back
 </a>
 <a href="{{ url_for('admin_masterclass_edit', masterclass_id=masterclass.id) }}" class="text-gray-500 hover:text-indigo-600">
-    <i class="fas fa-edit mr-1"></i> Edit Masterclass
+    <i class="fas fa-edit mr-1"></i> Edit
 </a>
 {% endblock %}
 
@@ -33,6 +36,17 @@
         <div class="text-2xl font-bold text-gray-700">{{ masterclass.registered_count }}/{{ masterclass.max_seats }}</div>
     </div>
 </div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+    <div class="mb-4 p-4 rounded-lg {% if category == 'success' %}bg-green-100 text-green-700{% elif category == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
 <!-- Registrations Table -->
 <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -105,4 +119,49 @@
         </table>
     </div>
 </div>
+
+<!-- Bulk Email Modal -->
+<div id="bulkEmailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+            <h3 class="text-lg font-semibold">Send Bulk Email to {{ registrations|length }} Registrants</h3>
+            <button onclick="closeBulkEmailModal()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <form action="{{ url_for('admin_masterclass_bulk_email', masterclass_id=masterclass.id) }}" method="POST" class="p-6">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
+                    <input type="text" name="subject" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="Email subject...">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Message *</label>
+                    <textarea name="message" rows="8" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="Write your message to all registrants..."></textarea>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" name="include_masterclass_info" id="includeMasterclassInfo" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                    <label for="includeMasterclassInfo" class="ml-2 text-sm text-gray-600">
+                        Include masterclass details at the bottom
+                    </label>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="button" onclick="closeBulkEmailModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <i class="fas fa-paper-plane mr-1"></i> Send to All ({{ registrations|length }})
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openBulkEmailModal() {
+    document.getElementById('bulkEmailModal').classList.remove('hidden');
+}
+function closeBulkEmailModal() {
+    document.getElementById('bulkEmailModal').classList.add('hidden');
+}
+</script>
 {% endblock %}

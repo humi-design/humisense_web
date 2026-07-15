@@ -293,6 +293,9 @@ class Masterclass(db.Model):
     # Reminder Settings (JSON)
     reminder_settings = db.Column(db.Text)  # JSON: {send_24h: true, send_3h: true, send_30m: true}
     
+    # Confirmation Email Message
+    confirmation_message = db.Column(db.Text)  # Custom message to include in confirmation email
+    
     # Analytics
     view_count = db.Column(db.Integer, default=0)
     
