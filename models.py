@@ -217,3 +217,238 @@ class SiteSettings(db.Model):
             self.value = json.dumps(value)
         else:
             self.value = str(value)
+
+
+# =====================================================
+# MASTERCLASS MODELS
+# =====================================================
+
+class Masterclass(db.Model):
+    """Masterclass model for managing online masterclasses."""
+    __tablename__ = 'masterclasses'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # General Info
+    title = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(220), unique=True, nullable=False, index=True)
+    short_description = db.Column(db.String(500))
+    detailed_description = db.Column(db.Text)
+    
+    # Images
+    banner_image = db.Column(db.String(500))
+    thumbnail = db.Column(db.String(500))
+    featured_image = db.Column(db.String(500))
+    
+    # Schedule
+    date = db.Column(db.Date, nullable=False)
+    time = db.Column(db.Time, nullable=False)
+    timezone = db.Column(db.String(50), default='UTC')
+    duration = db.Column(db.Integer, default=60)  # minutes
+    registration_opens = db.Column(db.DateTime)
+    registration_closes = db.Column(db.DateTime)
+    
+    # Instructor
+    instructor_name = db.Column(db.String(100))
+    instructor_photo = db.Column(db.String(500))
+    instructor_designation = db.Column(db.String(100))
+    instructor_company = db.Column(db.String(100))
+    instructor_bio = db.Column(db.Text)
+    instructor_linkedin = db.Column(db.String(500))
+    instructor_twitter = db.Column(db.String(500))
+    instructor_website = db.Column(db.String(500))
+    
+    # Seats
+    max_seats = db.Column(db.Integer, default=500)
+    
+    # Status & Visibility
+    status = db.Column(db.String(20), default='draft')  # draft, published, registration_open, live, completed, cancelled
+    is_featured = db.Column(db.Boolean, default=False)
+    show_floating_button = db.Column(db.Boolean, default=True)
+    show_popup = db.Column(db.Boolean, default=False)
+    show_sticky_banner = db.Column(db.Boolean, default=False)
+    show_homepage_promotion = db.Column(db.Boolean, default=False)
+    
+    # SEO
+    meta_title = db.Column(db.String(200))
+    meta_description = db.Column(db.String(500))
+    meta_keywords = db.Column(db.String(500))
+    og_image = db.Column(db.String(500))
+    canonical_url = db.Column(db.String(500))
+    
+    # Rich Content (JSON fields)
+    about_content = db.Column(db.Text)  # Rich text HTML
+    what_you_learn = db.Column(db.Text)  # JSON array
+    who_should_attend = db.Column(db.Text)  # JSON array
+    prerequisites = db.Column(db.Text)  # JSON array
+    benefits = db.Column(db.Text)  # JSON array
+    agenda = db.Column(db.Text)  # JSON array of timeline items
+    faqs = db.Column(db.Text)  # JSON array of {question, answer}
+    testimonials = db.Column(db.Text)  # JSON array of {name, role, company, quote, photo}
+    
+    # Settings
+    language = db.Column(db.String(20), default='English')
+    mode = db.Column(db.String(20), default='online')  # online, offline, hybrid
+    
+    # Reminder Settings (JSON)
+    reminder_settings = db.Column(db.Text)  # JSON: {send_24h: true, send_3h: true, send_30m: true}
+    
+    # Analytics
+    view_count = db.Column(db.Integer, default=0)
+    
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=utc_now)
+    updated_at = db.Column(db.DateTime, default=utc_now, onupdate=utc_now)
+    
+    # Relationships
+    registrations = db.relationship('MasterclassRegistration', backref='masterclass', lazy='dynamic')
+    
+    def __repr__(self):
+        return f'<Masterclass {self.title}>'
+    
+    @property
+    def registered_count(self):
+        """Get number of confirmed registrations."""
+        return self.registrations.filter_by(status='confirmed').count()
+    
+    @property
+    def available_seats(self):
+        """Calculate available seats."""
+        return max(0, self.max_seats - self.registered_count)
+    
+    @property
+    def seats_percentage(self):
+        """Calculate seats filled percentage."""
+        if self.max_seats == 0:
+            return 0
+        return round((self.registered_count / self.max_seats) * 100, 1)
+    
+    def get_json_field(self, field_name):
+        """Parse JSON field to list."""
+        import json
+        data = getattr(self, field_name)
+        if data:
+            try:
+                return json.loads(data)
+            except:
+                return []
+        return []
+    
+    def set_json_field(self, field_name, value):
+        """Set JSON field from list."""
+        import json
+        setattr(self, field_name, json.dumps(value) if value else None)
+
+
+class MasterclassRegistration(db.Model):
+    """Registration for masterclasses."""
+    __tablename__ = 'masterclass_registrations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    masterclass_id = db.Column(db.Integer, db.ForeignKey('masterclasses.id'), nullable=False, index=True)
+    
+    # Personal Info
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), nullable=False, index=True)
+    phone = db.Column(db.String(20))
+    
+    # Professional Info
+    country = db.Column(db.String(100))
+    company = db.Column(db.String(100))
+    job_title = db.Column(db.String(100))
+    experience = db.Column(db.String(50))  # beginner, intermediate, advanced, expert
+    industry = db.Column(db.String(100))
+    linkedin = db.Column(db.String(500))
+    
+    # Preferences
+    receive_updates = db.Column(db.Boolean, default=True)
+    
+    # Status
+    status = db.Column(db.String(20), default='pending')  # pending, confirmed, cancelled, attended
+    registration_id = db.Column(db.String(50), unique=True)  # Human-readable ID
+    
+    # Email tracking
+    confirmation_sent = db.Column(db.Boolean, default=False)
+    confirmation_sent_at = db.Column(db.DateTime)
+    reminder_24h_sent = db.Column(db.Boolean, default=False)
+    reminder_3h_sent = db.Column(db.Boolean, default=False)
+    reminder_30m_sent = db.Column(db.Boolean, default=False)
+    
+    # Source tracking
+    source_page = db.Column(db.String(200))
+    ip_address = db.Column(db.String(45))
+    user_agent = db.Column(db.String(500))
+    utm_source = db.Column(db.String(100))
+    utm_medium = db.Column(db.String(100))
+    utm_campaign = db.Column(db.String(100))
+    device = db.Column(db.String(50))  # desktop, mobile, tablet
+    
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=utc_now, index=True)
+    updated_at = db.Column(db.DateTime, default=utc_now, onupdate=utc_now)
+    
+    def __repr__(self):
+        return f'<MasterclassRegistration {self.registration_id}>'
+    
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    @property
+    def masterclass_title(self):
+        if self.masterclass:
+            return self.masterclass.title
+        return "Unknown"
+
+
+class MasterclassAnalytics(db.Model):
+    """Analytics tracking for masterclasses."""
+    __tablename__ = 'masterclass_analytics'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    masterclass_id = db.Column(db.Integer, db.ForeignKey('masterclasses.id'), nullable=False, index=True)
+    
+    # Event type
+    event_type = db.Column(db.String(50), nullable=False)  # page_view, registration, email_sent, email_opened, email_clicked
+    
+    # Event data
+    event_data = db.Column(db.Text)  # JSON for additional data
+    
+    # Source info
+    ip_address = db.Column(db.String(45))
+    user_agent = db.Column(db.String(500))
+    device = db.Column(db.String(50))
+    country = db.Column(db.String(100))
+    
+    # UTM
+    utm_source = db.Column(db.String(100))
+    utm_medium = db.Column(db.String(100))
+    utm_campaign = db.Column(db.String(100))
+    
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=utc_now, index=True)
+    
+    def __repr__(self):
+        return f'<MasterclassAnalytics {self.event_type}>'
+
+
+class MasterclassEmailLog(db.Model):
+    """Email sending logs for masterclasses."""
+    __tablename__ = 'masterclass_email_logs'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    registration_id = db.Column(db.Integer, db.ForeignKey('masterclass_registrations.id'), nullable=False, index=True)
+    
+    # Email details
+    email_type = db.Column(db.String(50), nullable=False)  # confirmation, reminder_24h, reminder_3h, reminder_30m
+    subject = db.Column(db.String(200))
+    sent_at = db.Column(db.DateTime, default=utc_now)
+    opened_at = db.Column(db.DateTime)
+    clicked_at = db.Column(db.DateTime)
+    bounced = db.Column(db.Boolean, default=False)
+    failed = db.Column(db.Boolean, default=False)
+    error_message = db.Column(db.Text)
+    
+    def __repr__(self):
+        return f'<MasterclassEmailLog {self.email_type}>'

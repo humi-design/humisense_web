@@ -1,0 +1,175 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Analytics - {{ masterclass.title }} - HUMISENSE Admin{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+{% block page_subtitle %}{{ masterclass.title }}{% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('admin_masterclasses') }}" class="text-gray-500 hover:text-indigo-600 mr-4">
+    <i class="fas fa-arrow-left mr-1"></i> Back to Masterclasses
+</a>
+<a href="{{ url_for('admin_masterclass_edit', masterclass_id=masterclass.id) }}" class="text-gray-500 hover:text-indigo-600">
+    <i class="fas fa-edit mr-1"></i> Edit
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Overview Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                <i class="fas fa-eye text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <div class="text-sm text-gray-500">Page Views</div>
+                <div class="text-2xl font-bold text-gray-900">{{ page_views }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                <i class="fas fa-users text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <div class="text-sm text-gray-500">Total Registrations</div>
+                <div class="text-2xl font-bold text-gray-900">{{ total_registrations }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                <i class="fas fa-check-circle text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <div class="text-sm text-gray-500">Confirmed</div>
+                <div class="text-2xl font-bold text-gray-900">{{ confirmed_registrations }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                <i class="fas fa-percentage text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <div class="text-sm text-gray-500">Conversion Rate</div>
+                <div class="text-2xl font-bold text-gray-900">{% if page_views > 0 %}{{ "%.1f"|format((total_registrations / page_views) * 100) }}%{% else %}0%{% endif %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Country Distribution -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Country Distribution</h3>
+        <div class="space-y-3">
+            {% for stat in country_stats %}
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">{{ stat.country or 'Unknown' }}</span>
+                <div class="flex items-center gap-2">
+                    <div class="w-24 bg-gray-200 rounded-full h-2">
+                        <div class="bg-indigo-600 h-2 rounded-full" style="width: {% if total_registrations > 0 %}{{ (stat.count / total_registrations * 100) }}{% else %}0{% endif %}%"></div>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900 w-8">{{ stat.count }}</span>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-sm text-gray-500">No country data available</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Device Distribution -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Device Distribution</h3>
+        <div class="grid grid-cols-3 gap-4 text-center">
+            {% for stat in device_stats %}
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <div class="text-3xl mb-2">
+                    {% if stat.device == 'desktop' %}💻{% elif stat.device == 'mobile' %}📱{% else %}📱{% endif %}
+                </div>
+                <div class="text-sm text-gray-500 capitalize">{{ stat.device or 'Unknown' }}</div>
+                <div class="text-xl font-bold text-gray-900">{{ stat.count }}</div>
+            </div>
+            {% else %}
+            <div class="col-span-3 text-center text-gray-500">No device data available</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Daily Registrations Chart -->
+<div class="bg-white rounded-lg shadow p-6 mb-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Daily Registrations (Last 30 Days)</h3>
+    <div class="h-64 flex items-end justify-around gap-2">
+        {% for stat in daily_stats %}
+        <div class="flex flex-col items-center">
+            <div class="w-8 bg-indigo-600 rounded-t" style="height: {% if daily_stats|map(attribute='count')|max > 0 %}{{ (stat.count / (daily_stats|map(attribute='count')|max)) * 150 }}{% else %}0{% endif %}px;"></div>
+            <span class="text-xs text-gray-500 mt-2">{{ stat.date.strftime('%m/%d') if stat.date else '' }}</span>
+            <span class="text-xs font-medium">{{ stat.count }}</span>
+        </div>
+        {% else %}
+        <p class="text-sm text-gray-500 w-full text-center py-12">No registration data for the last 30 days</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Event</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Device</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">IP</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">UTM Source</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for event in recent_analytics %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {% set event_colors = {
+                            'page_view': 'bg-blue-100 text-blue-800',
+                            'registration': 'bg-green-100 text-green-800',
+                            'email_sent': 'bg-purple-100 text-purple-800',
+                            'email_opened': 'bg-yellow-100 text-yellow-800'
+                        } %}
+                        <span class="px-2 py-1 text-xs rounded-full {{ event_colors.get(event.event_type, 'bg-gray-100 text-gray-800') }}">
+                            {{ event.event_type.replace('_', ' ').title() }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
+                        {{ event.device or 'Unknown' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ event.ip_address[:12] + '...' if event.ip_address else 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ event.utm_source or 'Direct' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ event.created_at.strftime('%b %d, %H:%M') }}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                        No activity recorded yet
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

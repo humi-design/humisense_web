@@ -94,3 +94,145 @@ class DemoRequestForm(FlaskForm):
         ('evening', 'Evening (5PM - 8PM)'),
         ('any', 'Any time')
     ])
+
+
+# =====================================================
+# MASTERCLASS FORMS
+# =====================================================
+
+class MasterclassForm(FlaskForm):
+    """Form for creating/editing masterclasses."""
+    # General Info
+    title = StringField('Title', validators=[DataRequired(), Length(min=3, max=200)])
+    slug = StringField('Slug', validators=[Length(max=220)])
+    short_description = StringField('Short Description', validators=[Length(max=500)])
+    detailed_description = TextAreaField('Detailed Description')
+    
+    # Images
+    banner_image = StringField('Banner Image URL')
+    thumbnail = StringField('Thumbnail URL')
+    featured_image = StringField('Featured Image URL')
+    
+    # Schedule
+    date = StringField('Date', validators=[DataRequired()])
+    time = StringField('Time', validators=[DataRequired()])
+    timezone = SelectField('Timezone', choices=[
+        ('UTC', 'UTC'),
+        ('US/Eastern', 'US/Eastern'),
+        ('US/Pacific', 'US/Pacific'),
+        ('Europe/London', 'Europe/London'),
+        ('Europe/Paris', 'Europe/Paris'),
+        ('Asia/Tokyo', 'Asia/Tokyo'),
+        ('Asia/Shanghai', 'Asia/Shanghai'),
+        ('Asia/Kolkata', 'Asia/Kolkata'),
+        ('Australia/Sydney', 'Australia/Sydney'),
+    ], default='UTC')
+    duration = StringField('Duration (minutes)')
+    registration_opens = StringField('Registration Opens')
+    registration_closes = StringField('Registration Closes')
+    
+    # Instructor
+    instructor_name = StringField('Instructor Name', validators=[Length(max=100)])
+    instructor_photo = StringField('Instructor Photo URL')
+    instructor_designation = StringField('Designation', validators=[Length(max=100)])
+    instructor_company = StringField('Company', validators=[Length(max=100)])
+    instructor_bio = TextAreaField('Bio')
+    instructor_linkedin = StringField('LinkedIn URL')
+    instructor_twitter = StringField('Twitter URL')
+    instructor_website = StringField('Website URL')
+    
+    # Seats
+    max_seats = StringField('Maximum Seats', validators=[DataRequired()])
+    
+    # Status & Visibility
+    status = SelectField('Status', choices=[
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('registration_open', 'Registration Open'),
+        ('live', 'Live'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ], default='draft')
+    is_featured = BooleanField('Featured')
+    show_floating_button = BooleanField('Show Floating Button')
+    show_popup = BooleanField('Show Popup')
+    show_sticky_banner = BooleanField('Show Sticky Banner')
+    show_homepage_promotion = BooleanField('Show Homepage Promotion')
+    
+    # SEO
+    meta_title = StringField('Meta Title', validators=[Length(max=200)])
+    meta_description = StringField('Meta Description', validators=[Length(max=500)])
+    meta_keywords = StringField('Meta Keywords', validators=[Length(max=500)])
+    og_image = StringField('Open Graph Image URL')
+    canonical_url = StringField('Canonical URL')
+    
+    # Content
+    about_content = TextAreaField('About Content')
+    language = SelectField('Language', choices=[
+        ('English', 'English'),
+        ('Spanish', 'Spanish'),
+        ('French', 'French'),
+        ('German', 'German'),
+        ('Chinese', 'Chinese'),
+        ('Japanese', 'Japanese'),
+        ('Hindi', 'Hindi'),
+    ], default='English')
+    mode = SelectField('Mode', choices=[
+        ('online', 'Online'),
+        ('offline', 'Offline'),
+        ('hybrid', 'Hybrid'),
+    ], default='online')
+
+
+class MasterclassRegistrationForm(FlaskForm):
+    """Registration form for masterclasses."""
+    first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=100)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=100)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    phone = StringField('Phone', validators=[Optional(), Length(max=20)])
+    
+    # Professional Info
+    country = SelectField('Country', choices=[
+        ('', 'Select your country'),
+        ('US', 'United States'),
+        ('UK', 'United Kingdom'),
+        ('CA', 'Canada'),
+        ('AU', 'Australia'),
+        ('DE', 'Germany'),
+        ('FR', 'France'),
+        ('IN', 'India'),
+        ('JP', 'Japan'),
+        ('CN', 'China'),
+        ('BR', 'Brazil'),
+        ('Other', 'Other'),
+    ])
+    company = StringField('Company Name', validators=[Optional(), Length(max=100)])
+    job_title = StringField('Job Title', validators=[Optional(), Length(max=100)])
+    experience = SelectField('Experience Level', choices=[
+        ('', 'Select your experience'),
+        ('beginner', 'Beginner'),
+        ('intermediate', 'Intermediate'),
+        ('advanced', 'Advanced'),
+        ('expert', 'Expert'),
+    ])
+    industry = StringField('Industry', validators=[Optional(), Length(max=100)])
+    linkedin = StringField('LinkedIn Profile (optional)', validators=[Optional(), Length(max=500)])
+    
+    receive_updates = BooleanField('I agree to receive updates about this masterclass and related events')
+
+
+class MasterclassSettingsForm(FlaskForm):
+    """Settings form for masterclass module."""
+    enable_module = BooleanField('Enable Masterclass Module')
+    enable_homepage_promotion = BooleanField('Enable Homepage Promotion')
+    enable_floating_cta = BooleanField('Enable Floating CTA')
+    enable_popup = BooleanField('Enable Exit Intent Popup')
+    enable_sticky_banner = BooleanField('Enable Sticky Banner')
+    enable_countdown = BooleanField('Enable Countdown Timer')
+    enable_seat_counter = BooleanField('Enable Seat Counter')
+    enable_reminder_emails = BooleanField('Enable Reminder Emails')
+    enable_calendar_integration = BooleanField('Enable Calendar Integration')
+    enable_waitlist = BooleanField('Enable Waitlist')
+    enable_certificates = BooleanField('Enable Certificates')
+    enable_analytics = BooleanField('Enable Analytics')
+    admin_email = StringField('Admin Notification Email', validators=[Optional(), Email()])

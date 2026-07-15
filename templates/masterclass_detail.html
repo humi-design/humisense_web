@@ -1,0 +1,528 @@
+{% extends "base.html" %}
+
+{% block title %}{{ masterclass.meta_title or masterclass.title }}{% endblock %}
+{% block extra_head %}
+<meta name="description" content="{{ masterclass.meta_description or masterclass.short_description }}">
+<meta name="keywords" content="{{ masterclass.meta_keywords }}">
+{% if masterclass.og_image %}
+<meta property="og:image" content="{{ masterclass.og_image }}">
+{% endif %}
+{% if masterclass.canonical_url %}
+<link rel="canonical" href="{{ masterclass.canonical_url }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-[70vh] flex items-center overflow-hidden">
+    {% if masterclass.banner_image %}
+    <div class="absolute inset-0 z-0">
+        <img src="{{ masterclass.banner_image }}" alt="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/50"></div>
+    </div>
+    {% else %}
+    <div class="absolute inset-0 z-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800"></div>
+    {% endif %}
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="max-w-3xl">
+            {% if masterclass.is_featured %}
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-400 text-yellow-900 mb-4">
+                <i class="fas fa-star mr-1"></i> Featured
+            </span>
+            {% endif %}
+            
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+                {{ masterclass.title }}
+            </h1>
+            
+            {% if masterclass.short_description %}
+            <p class="text-xl text-gray-200 mb-8">
+                {{ masterclass.short_description }}
+            </p>
+            {% endif %}
+            
+            <div class="flex flex-wrap gap-4 mb-8">
+                <div class="flex items-center text-white">
+                    <i class="fas fa-calendar-alt text-indigo-400 mr-2"></i>
+                    <span>{{ masterclass.date.strftime('%B %d, %Y') }}</span>
+                </div>
+                <div class="flex items-center text-white">
+                    <i class="fas fa-clock text-indigo-400 mr-2"></i>
+                    <span>{{ masterclass.time.strftime('%I:%M %p') }} {{ masterclass.timezone }}</span>
+                </div>
+                <div class="flex items-center text-white">
+                    <i class="fas fa-hourglass-half text-indigo-400 mr-2"></i>
+                    <span>{{ masterclass.duration }} minutes</span>
+                </div>
+                <div class="flex items-center text-white">
+                    <i class="fas fa-globe text-indigo-400 mr-2"></i>
+                    <span>{{ masterclass.language }}</span>
+                </div>
+                <div class="flex items-center text-white">
+                    <i class="fas fa-laptop text-indigo-400 mr-2"></i>
+                    <span>{{ masterclass.mode.title() }}</span>
+                </div>
+            </div>
+            
+            <!-- Instructor -->
+            {% if masterclass.instructor_name %}
+            <div class="flex items-center mb-8">
+                {% if masterclass.instructor_photo %}
+                <img src="{{ masterclass.instructor_photo }}" alt="{{ masterclass.instructor_name }}" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-400">
+                {% else %}
+                <div class="w-14 h-14 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xl font-bold">
+                    {{ masterclass.instructor_name[0] }}
+                </div>
+                {% endif %}
+                <div class="ml-4">
+                    <p class="text-white font-medium">{{ masterclass.instructor_name }}</p>
+                    <p class="text-gray-300 text-sm">
+                        {{ masterclass.instructor_designation }}{% if masterclass.instructor_company %}, {{ masterclass.instructor_company }}{% endif %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Seat Counter & CTA -->
+            <div class="flex flex-wrap items-center gap-4">
+                {% if seats_available and registration_open %}
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
+                    <span class="text-indigo-300 text-sm">Available Seats:</span>
+                    <span id="seatCounter" class="text-white font-bold ml-2">{{ masterclass.available_seats }}</span>
+                </div>
+                {% endif %}
+                
+                {% if registration_open and seats_available %}
+                <a href="#register" class="inline-flex items-center px-8 py-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors shadow-lg shadow-indigo-500/30">
+                    Reserve Your Seat
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                {% else %}
+                <span class="inline-flex items-center px-6 py-3 rounded-lg bg-gray-500 text-white font-semibold">
+                    {% if not seats_available %}
+                    Registrations Closed
+                    {% else %}
+                    Registration Opening Soon
+                    {% endif %}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Countdown Timer -->
+{% if registration_open and seats_available %}
+<section class="bg-gradient-to-r from-indigo-600 to-purple-600 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-4">
+            <h3 class="text-white text-lg font-medium">Event Starts In</h3>
+        </div>
+        <div id="countdown" class="flex justify-center gap-4" data-target="{{ (masterclass.date.strftime('%Y') ~ '-' ~ masterclass.date.strftime('%m') ~ '-' ~ masterclass.date.strftime('%d') ~ 'T' ~ masterclass.time.strftime('%H') ~ ':' ~ masterclass.time.strftime('%M') ~ ':00') }}">
+            <div class="text-center">
+                <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[80px]">
+                    <div id="countdown-days" class="text-4xl font-bold text-white">00</div>
+                    <div class="text-indigo-200 text-sm">Days</div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[80px]">
+                    <div id="countdown-hours" class="text-4xl font-bold text-white">00</div>
+                    <div class="text-indigo-200 text-sm">Hours</div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[80px]">
+                    <div id="countdown-minutes" class="text-4xl font-bold text-white">00</div>
+                    <div class="text-indigo-200 text-sm">Minutes</div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-3 min-w-[80px]">
+                    <div id="countdown-seconds" class="text-4xl font-bold text-white">00</div>
+                    <div class="text-indigo-200 text-sm">Seconds</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Main Content -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <!-- About -->
+                {% if masterclass.about_content %}
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">About This Masterclass</h2>
+                    <div class="prose prose-indigo max-w-none">
+                        {{ masterclass.about_content|safe }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- What You'll Learn -->
+                {% if what_you_learn %}
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">What You'll Learn</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        {% for item in what_you_learn %}
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                                    <i class="fas fa-check text-green-600 text-sm"></i>
+                                </div>
+                            </div>
+                            <p class="ml-3 text-gray-700">{{ item }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Who Should Attend -->
+                {% if who_should_attend %}
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Who Should Attend</h2>
+                    <div class="flex flex-wrap gap-2">
+                        {% for item in who_should_attend %}
+                        <span class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium">
+                            {{ item }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Agenda -->
+                {% if agenda %}
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Agenda</h2>
+                    <div class="space-y-4">
+                        {% for item in agenda %}
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-24">
+                                <span class="text-indigo-600 font-medium">{{ item.time }}</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-900">{{ item.title }}</h4>
+                                {% if item.description %}
+                                <p class="text-gray-600 text-sm mt-1">{{ item.description }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Prerequisites -->
+                {% if prerequisites %}
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Prerequisites</h2>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        {% for item in prerequisites %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <!-- FAQs -->
+                {% if faqs %}
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        {% for faq in faqs %}
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-medium text-gray-900 mb-2">{{ faq.question }}</h4>
+                            <p class="text-gray-600">{{ faq.answer }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Testimonials -->
+                {% if testimonials %}
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">What Participants Say</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        {% for testimonial in testimonials %}
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <div class="flex items-center mb-4">
+                                {% if testimonial.photo %}
+                                <img src="{{ testimonial.photo }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full object-cover">
+                                {% else %}
+                                <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
+                                    {{ testimonial.name[0] }}
+                                </div>
+                                {% endif %}
+                                <div class="ml-4">
+                                    <p class="font-medium text-gray-900">{{ testimonial.name }}</p>
+                                    <p class="text-sm text-gray-500">{{ testimonial.role }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">"{{ testimonial.quote }}"</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="mt-12 lg:mt-0">
+                <div class="sticky top-24">
+                    <!-- Registration Card -->
+                    <div id="register" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                        {% if registration_open and seats_available %}
+                        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
+                            <h3 class="text-white font-bold text-lg">Reserve Your Seat</h3>
+                            {% if masterclass.available_seats < 100 %}
+                            <p class="text-indigo-200 text-sm mt-1">
+                                <i class="fas fa-fire mr-1"></i> Only {{ masterclass.available_seats }} seats left!
+                            </p>
+                            {% endif %}
+                        </div>
+                        
+                        <form id="registrationForm" class="p-6 space-y-4">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                                    <input type="text" name="first_name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                                    <input type="text" name="last_name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                                <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                                <select name="country" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="">Select your country</option>
+                                    <option value="US">United States</option>
+                                    <option value="UK">United Kingdom</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="AU">Australia</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="FR">France</option>
+                                    <option value="IN">India</option>
+                                    <option value="JP">Japan</option>
+                                    <option value="CN">China</option>
+                                    <option value="BR">Brazil</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                                <input type="text" name="company" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                                <input type="text" name="job_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Experience Level</label>
+                                <select name="experience" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="">Select your experience</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">LinkedIn (optional)</label>
+                                <input type="url" name="linkedin" placeholder="https://linkedin.com/in/..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <input type="checkbox" name="receive_updates" id="receive_updates" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded mt-1">
+                                <label for="receive_updates" class="ml-2 text-sm text-gray-600">
+                                    I agree to receive updates about this masterclass and related events
+                                </label>
+                            </div>
+                            
+                            <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                                <span id="submitText">Reserve My Seat</span>
+                                <span id="submitLoader" class="hidden">
+                                    <i class="fas fa-spinner fa-spin mr-2"></i> Processing...
+                                </span>
+                            </button>
+                        </form>
+                        
+                        <div id="successMessage" class="hidden p-6 text-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-check text-green-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">You're Registered!</h3>
+                            <p class="text-gray-600 mb-4">Check your email for confirmation details.</p>
+                            <p class="text-sm text-gray-500">Registration ID: <code id="registrationId" class="bg-gray-100 px-2 py-1 rounded"></code></p>
+                        </div>
+                        {% else %}
+                        <div class="p-6 text-center">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-times text-gray-400 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Registration Closed</h3>
+                            <p class="text-gray-600">This masterclass is no longer accepting registrations.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Share -->
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-500 mb-3">Share this masterclass</p>
+                        <div class="flex justify-center gap-3">
+                            <a href="https://twitter.com/intent/tweet?text={{ masterclass.title|urlencode }}&url={{ request.url|urlencode }}" target="_blank" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url|urlencode }}" target="_blank" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white hover:bg-blue-800 transition-colors">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="mailto:?subject={{ masterclass.title|urlencode }}&body=Check out this masterclass: {{ request.url|urlencode }}" class="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white hover:bg-gray-500 transition-colors">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Countdown Timer
+function updateCountdown() {
+    const countdown = document.getElementById('countdown');
+    if (!countdown) return;
+    
+    const targetStr = countdown.dataset.target;
+    const target = new Date(targetStr).getTime();
+    const now = new Date().getTime();
+    const diff = target - now;
+    
+    if (diff <= 0) {
+        document.getElementById('countdown-days').textContent = '00';
+        document.getElementById('countdown-hours').textContent = '00';
+        document.getElementById('countdown-minutes').textContent = '00';
+        document.getElementById('countdown-seconds').textContent = '00';
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    document.getElementById('countdown-days').textContent = String(days).padStart(2, '0');
+    document.getElementById('countdown-hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('countdown-minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('countdown-seconds').textContent = String(seconds).padStart(2, '0');
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Real-time Seat Counter
+function updateSeatCounter() {
+    fetch('/api/masterclass/{{ masterclass.slug }}/seats')
+        .then(res => res.json())
+        .then(data => {
+            const counter = document.getElementById('seatCounter');
+            if (counter) {
+                counter.textContent = data.available_seats;
+                
+                // Show urgency if seats are low
+                if (data.available_seats < 20) {
+                    counter.parentElement.classList.add('bg-red-500/20');
+                }
+                
+                // Hide if no seats
+                if (data.available_seats === 0) {
+                    location.reload(); // Reload to show registration closed
+                }
+            }
+        })
+        .catch(err => console.error('Failed to update seat counter:', err));
+}
+
+// Update seats every 30 seconds
+setInterval(updateSeatCounter, 30000);
+
+// Registration Form
+document.getElementById('registrationForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitLoader = document.getElementById('submitLoader');
+    
+    // Disable button
+    submitBtn.disabled = true;
+    submitText.classList.add('hidden');
+    submitLoader.classList.remove('hidden');
+    
+    // Collect form data
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    fetch('/masterclass/{{ masterclass.slug }}/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (result.success) {
+            // Show success message
+            form.classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+            document.getElementById('registrationId').textContent = result.registration_id;
+            
+            // Update seat counter
+            updateSeatCounter();
+        } else {
+            alert(result.message || 'Registration failed. Please try again.');
+            submitBtn.disabled = false;
+            submitText.classList.remove('hidden');
+            submitLoader.classList.add('hidden');
+        }
+    })
+    .catch(err => {
+        console.error('Registration error:', err);
+        alert('An error occurred. Please try again.');
+        submitBtn.disabled = false;
+        submitText.classList.remove('hidden');
+        submitLoader.classList.add('hidden');
+    });
+});
+</script>
+{% endblock %}
