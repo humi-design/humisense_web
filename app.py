@@ -1735,7 +1735,7 @@ def masterclass_detail(slug):
             event_type='page_view',
             ip_address=request.remote_addr,
             user_agent=request.user_agent.string,
-            device='mobile' if request.user_agent.is_mobile else 'desktop',
+            device='mobile' if 'mobile' in request.user_agent.string.lower() else 'desktop',
             utm_source=request.args.get('utm_source'),
             utm_medium=request.args.get('utm_medium'),
             utm_campaign=request.args.get('utm_campaign')
@@ -1862,7 +1862,7 @@ def masterclass_register(slug):
         source_page=request.referrer,
         ip_address=request.remote_addr,
         user_agent=request.user_agent.string,
-        device='mobile' if request.user_agent.is_mobile else 'desktop',
+        device='mobile' if 'mobile' in request.user_agent.string.lower() else 'desktop',
         utm_source=request.args.get('utm_source'),
         utm_medium=request.args.get('utm_medium'),
         utm_campaign=request.args.get('utm_campaign')
@@ -1893,7 +1893,7 @@ def masterclass_register(slug):
             event_type='registration',
             event_data=json.dumps({'registration_id': registration_id}),
             ip_address=request.remote_addr,
-            device='mobile' if request.user_agent.is_mobile else 'desktop'
+            device='mobile' if 'mobile' in request.user_agent.string.lower() else 'desktop'
         )
         db.session.add(analytics)
     except Exception:
