@@ -1746,14 +1746,16 @@ def masterclass_detail(slug):
         pass
     
     # Check if registration is open
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()
     registration_open = True
     
     if masterclass.registration_closes:
-        registration_open = now < masterclass.registration_closes
+        closes_time = masterclass.registration_closes.replace(tzinfo=None) if masterclass.registration_closes.tzinfo else masterclass.registration_closes
+        registration_open = now < closes_time
     
     if masterclass.registration_opens:
-        registration_open = registration_open and now >= masterclass.registration_opens
+        opens_time = masterclass.registration_opens.replace(tzinfo=None) if masterclass.registration_opens.tzinfo else masterclass.registration_opens
+        registration_open = registration_open and now >= opens_time
     
     seats_available = masterclass.available_seats > 0
     
@@ -1789,14 +1791,16 @@ def masterclass_register(slug):
     form = MasterclassRegistrationForm()
     
     # Check if registration is open
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()
     registration_open = True
     
     if masterclass.registration_closes:
-        registration_open = now < masterclass.registration_closes
+        closes_time = masterclass.registration_closes.replace(tzinfo=None) if masterclass.registration_closes.tzinfo else masterclass.registration_closes
+        registration_open = now < closes_time
     
     if masterclass.registration_opens:
-        registration_open = registration_open and now >= masterclass.registration_opens
+        opens_time = masterclass.registration_opens.replace(tzinfo=None) if masterclass.registration_opens.tzinfo else masterclass.registration_opens
+        registration_open = registration_open and now >= opens_time
     
     if not registration_open:
         return jsonify({'success': False, 'message': 'Registration is closed'}), 400
