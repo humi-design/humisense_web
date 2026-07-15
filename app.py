@@ -1722,7 +1722,10 @@ def masterclass_detail(slug):
     masterclass = Masterclass.query.filter_by(slug=slug).first_or_404()
     
     # Increment view count
-    masterclass.view_count += 1
+    if masterclass.view_count is None:
+        masterclass.view_count = 1
+    else:
+        masterclass.view_count += 1
     db.session.commit()
     
     # Track analytics

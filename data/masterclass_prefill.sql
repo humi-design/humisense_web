@@ -44,6 +44,7 @@ INSERT INTO masterclasses (
     language,
     mode,
     reminder_settings,
+    view_count,
     created_at,
     updated_at
 ) VALUES (
@@ -100,6 +101,7 @@ Dr. Chen holds a Ph.D. in Machine Learning from Stanford University and has publ
     'English',
     'online',
     '{"send_24h": true, "send_3h": true, "send_30min": true, "send_immediately": true}',
+    0,
     DATETIME('2026-07-15 00:00:00'),
     DATETIME('2026-07-15 00:00:00')
 );
