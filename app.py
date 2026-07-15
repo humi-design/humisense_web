@@ -1788,7 +1788,12 @@ def masterclass_detail(slug):
 def masterclass_register(slug):
     """Handle masterclass registration."""
     masterclass = Masterclass.query.filter_by(slug=slug).first_or_404()
-    form = MasterclassRegistrationForm()
+    
+    # Get JSON data (same way other forms work)
+    if request.is_json:
+        data = request.get_json()
+    else:
+        data = {k: v for k, v in request.form.items()}
     
     # Check if registration is open
     now = datetime.utcnow()
@@ -1809,81 +1814,165 @@ def masterclass_register(slug):
     if masterclass.available_seats <= 0:
         return jsonify({'success': False, 'message': 'All seats are taken'}), 400
     
+    # Validate required fields
+    email = data.get('email', '').lower().strip()
+    first_name = data.get('first_name', '').strip()
+    last_name = data.get('last_name', '').strip()
+    
+    if not first_name:
+        return jsonify({'success': False, 'message': 'First name is required'}), 400
+    if not last_name:
+        return jsonify({'success': False, 'message': 'Last name is required'}), 400
+    if not email:
+        return jsonify({'success': False, 'message': 'Email is required'}), 400
+    
+    # Validate email format
+    import re
+    if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        return jsonify({'success': False, 'message': 'Please enter a valid email address'}), 400
+    
     # Check for duplicate registration
     existing = MasterclassRegistration.query.filter_by(
         masterclass_id=masterclass.id,
-        email=form.email.data.lower()
+        email=email
     ).first()
     
     if existing:
         return jsonify({'success': False, 'message': 'You have already registered for this masterclass'}), 400
     
-    if form.validate_on_submit():
-        # Generate unique registration ID
-        registration_id = f"MC-{masterclass.id}-{uuid.uuid4().hex[:6].upper()}"
-        
-        registration = MasterclassRegistration(
-            masterclass_id=masterclass.id,
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            email=form.email.data.lower(),
-            phone=form.phone.data,
-            country=form.country.data,
-            company=form.company.data,
-            job_title=form.job_title.data,
-            experience=form.experience.data,
-            industry=form.industry.data,
-            linkedin=form.linkedin.data,
-            receive_updates=form.receive_updates.data,
-            registration_id=registration_id,
-            status='confirmed',
-            source_page=request.referrer,
-            ip_address=request.remote_addr,
-            user_agent=request.user_agent.string,
-            device='mobile' if request.user_agent.is_mobile else 'desktop',
-            utm_source=request.args.get('utm_source'),
-            utm_medium=request.args.get('utm_medium'),
-            utm_campaign=request.args.get('utm_campaign')
-        )
-        
-        db.session.add(registration)
-        
-        # Track analytics
-        try:
-            analytics = MasterclassAnalytics(
-                masterclass_id=masterclass.id,
-                event_type='registration',
-                event_data=json.dumps({'registration_id': registration_id}),
-                ip_address=request.remote_addr,
-                device='mobile' if request.user_agent.is_mobile else 'desktop'
-            )
-            db.session.add(analytics)
-        except Exception:
-            pass
-        
-        db.session.commit()
-        
-        # Send confirmation email
-        try:
-            EmailService.send_masterclass_confirmation(registration, masterclass)
-        except Exception as e:
-            print(f"Failed to send confirmation email: {e}")
-        
-        # Notify admin
-        try:
-            EmailService.send_masterclass_admin_notification(registration, masterclass)
-        except Exception as e:
-            print(f"Failed to send admin notification: {e}")
-        
-        return jsonify({
-            'success': True, 
-            'message': 'Registration successful!',
-            'registration_id': registration_id
-        })
+    # Generate unique registration ID
+    registration_id = f"MC-{masterclass.id}-{uuid.uuid4().hex[:6].upper()}"
     
-    # Return validation errors
-    errors = {field: str(error) for field, error in form.errors.items()}
-    return jsonify({'success': False, 'message': 'Validation failed', 'errors': errors}), 400
+    # Create registration
+    registration = MasterclassRegistration(
+        masterclass_id=masterclass.id,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        phone=data.get('phone', '').strip() if data.get('phone') else None,
+        country=data.get('country', '').strip() if data.get('country') else None,
+        company=data.get('company', '').strip() if data.get('company') else None,
+        job_title=data.get('job_title', '').strip() if data.get('job_title') else None,
+        experience=data.get('experience', '').strip() if data.get('experience') else None,
+        industry=data.get('industry', '').strip() if data.get('industry') else None,
+        linkedin=data.get('linkedin', '').strip() if data.get('linkedin') else None,
+        receive_updates=bool(data.get('receive_updates')),
+        registration_id=registration_id,
+        status='confirmed',
+        source_page=request.referrer,
+        ip_address=request.remote_addr,
+        user_agent=request.user_agent.string,
+        device='mobile' if request.user_agent.is_mobile else 'desktop',
+        utm_source=request.args.get('utm_source'),
+        utm_medium=request.args.get('utm_medium'),
+        utm_campaign=request.args.get('utm_campaign')
+    )
+    
+    db.session.add(registration)
+    
+    # Also create a Lead entry (same as other forms)
+    try:
+        lead = Lead(
+            name=f"{first_name} {last_name}",
+            email=email,
+            phone=data.get('phone', '').strip() if data.get('phone') else None,
+            company=data.get('company', '').strip() if data.get('company') else None,
+            form_type='masterclass',
+            source='website',
+            status='new',
+            ip_address=request.remote_addr
+        )
+        db.session.add(lead)
+    except Exception as e:
+        print(f"Failed to create lead: {e}")
+    
+    # Track analytics
+    try:
+        analytics = MasterclassAnalytics(
+            masterclass_id=masterclass.id,
+            event_type='registration',
+            event_data=json.dumps({'registration_id': registration_id}),
+            ip_address=request.remote_addr,
+            device='mobile' if request.user_agent.is_mobile else 'desktop'
+        )
+        db.session.add(analytics)
+    except Exception:
+        pass
+    
+    db.session.commit()
+    
+    # Send confirmation email to participant
+    try:
+        EmailService.send_masterclass_confirmation(registration, masterclass)
+    except Exception as e:
+        print(f"Failed to send confirmation email: {e}")
+    
+    # Send admin notification
+    try:
+        admin_email = EmailService.get_setting('masterclass_admin_email', 'admin@humisense.com')
+        subject = f"New Masterclass Registration - {masterclass.title}"
+        
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <style>
+                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .header {{ background: #4f46e5; color: white; padding: 20px; border-radius: 8px 8px 0 0; }}
+                .content {{ background: #f9fafb; padding: 20px; border-radius: 0 0 8px 8px; }}
+                .field {{ margin-bottom: 15px; }}
+                .label {{ font-weight: bold; color: #4f46e5; }}
+                .value {{ margin-top: 5px; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h2>New Masterclass Registration</h2>
+                </div>
+                <div class="content">
+                    <p><strong>Masterclass:</strong> {masterclass.title}</p>
+                    <div class="field">
+                        <div class="label">Name:</div>
+                        <div class="value">{first_name} {last_name}</div>
+                    </div>
+                    <div class="field">
+                        <div class="label">Email:</div>
+                        <div class="value"><a href="mailto:{email}">{email}</a></div>
+                    </div>
+                    <div class="field">
+                        <div class="label">Phone:</div>
+                        <div class="value">{data.get('phone', 'N/A')}</div>
+                    </div>
+                    <div class="field">
+                        <div class="label">Company:</div>
+                        <div class="value">{data.get('company', 'N/A')}</div>
+                    </div>
+                    <div class="field">
+                        <div class="label">Job Title:</div>
+                        <div class="value">{data.get('job_title', 'N/A')}</div>
+                    </div>
+                    <div class="field">
+                        <div class="label">Registration ID:</div>
+                        <div class="value">{registration_id}</div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        EmailService.send_email(admin_email, subject, html_content)
+    except Exception as e:
+        print(f"Failed to send admin notification: {e}")
+    
+    return jsonify({
+        'success': True, 
+        'message': 'Registration successful!',
+        'registration_id': registration_id
+    })
 
 
 @app.route('/api/masterclass/<slug>/seats')
