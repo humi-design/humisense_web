@@ -1479,6 +1479,16 @@ def admin_masterclass_create():
     form = MasterclassForm()
     
     if request.method == 'POST':
+        print(f"DEBUG: Form submission received")
+        print(f"DEBUG: Title = {form.title.data}")
+        print(f"DEBUG: validate_on_submit = {form.validate_on_submit()}")
+        
+        if not form.validate_on_submit():
+            print(f"DEBUG: Form errors = {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f'{field}: {error}', 'error')
+        
         if form.validate_on_submit():
             # Generate slug if not provided
             slug = form.slug.data
@@ -1541,11 +1551,16 @@ def admin_masterclass_create():
                 except ValueError:
                     pass
             
-            db.session.add(masterclass)
-            db.session.commit()
-            
-            flash(f'Masterclass "{masterclass.title}" created successfully!', 'success')
-            return redirect(url_for('admin_masterclass_edit', masterclass_id=masterclass.id))
+            try:
+                db.session.add(masterclass)
+                db.session.commit()
+                print(f"DEBUG: Masterclass created with ID {masterclass.id}")
+                flash(f'Masterclass "{masterclass.title}" created successfully!', 'success')
+                return redirect(url_for('admin_masterclass_edit', masterclass_id=masterclass.id))
+            except Exception as e:
+                db.session.rollback()
+                print(f"DEBUG: Database error = {e}")
+                flash(f'Database error: {str(e)}', 'error')
     
     return render_template('admin/masterclass_edit.html', form=form, masterclass=None)
 
