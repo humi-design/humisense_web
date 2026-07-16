@@ -17,6 +17,7 @@
 
 {% block content %}
 <form method="POST" enctype="multipart/form-data" id="masterclassForm">
+    {{ form.hidden_tag() }}
     <!-- Tabs -->
     <div class="bg-white rounded-lg shadow mb-6">
         <div class="border-b border-gray-200">
