@@ -30,22 +30,31 @@ class EmailService:
         """Send email notification."""
         try:
             # Get SMTP settings
-            smtp_host = cls.get_setting('smtp_host', 'localhost')
-            smtp_port = cls.get_setting('smtp_port', 587)
+            smtp_host = cls.get_setting('smtp_host', '')
+            smtp_port = cls.get_setting('smtp_port', '587')
             smtp_username = cls.get_setting('smtp_username', '')
             smtp_password = cls.get_setting('smtp_password', '')
             sender_email = cls.get_setting('sender_email', 'noreply@humisense.com')
             sender_name = cls.get_setting('sender_name', 'HUMISENSE')
             
+            # Debug: Print settings (only in test mode)
+            print(f"DEBUG SMTP - host: '{smtp_host}', port: '{smtp_port}', user: '{smtp_username}'")
+            
             # Ensure port is integer
             try:
-                smtp_port = int(smtp_port)
+                smtp_port = int(smtp_port) if smtp_port else 587
             except (ValueError, TypeError):
                 smtp_port = 587
             
             # Skip if SMTP not configured
-            if not smtp_host or smtp_host == 'localhost' or not smtp_host.strip():
-                print(f"Email skipped - SMTP not configured. To: {to_email}")
+            if not smtp_host or not smtp_host.strip():
+                print(f"Email skipped - SMTP host not set. To: {to_email}")
+                print(f"  host='{smtp_host}', password set={bool(smtp_password)}")
+                return False
+            
+            # Check if password is required but not set
+            if smtp_host not in ['localhost', '127.0.0.1'] and not smtp_password:
+                print(f"Email skipped - SMTP password not set. To: {to_email}")
                 return False
             
             # Create message
@@ -60,17 +69,28 @@ class EmailService:
             msg.attach(MIMEText(html_content, 'html'))
             
             # Send email
+            print(f"Connecting to {smtp_host}:{smtp_port}...")
             with smtplib.SMTP(smtp_host, smtp_port, timeout=30) as server:
                 if smtp_port == 587:
                     server.starttls()
                 server.ehlo()
                 if smtp_username and smtp_password:
+                    print(f"Logging in as {smtp_username}...")
                     server.login(smtp_username, smtp_password)
+                print(f"Sending email to {to_email}...")
                 server.send_message(msg)
             
             print(f"Email sent successfully to {to_email}")
             return True
             
+        except smtplib.SMTPAuthenticationError as e:
+            print(f"SMTP Authentication Error: {e}")
+            print("  - Check your SMTP username/password")
+            print("  - For Gmail, make sure you're using an App Password")
+            return False
+        except smtplib.SMTPException as e:
+            print(f"SMTP Error: {e}")
+            return False
         except Exception as e:
             print(f"Email error: {e}")
             return False

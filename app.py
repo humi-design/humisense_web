@@ -1332,6 +1332,15 @@ def admin_settings():
             test_to = request.form.get('test_email', '')
             if test_to and '@' in test_to:
                 from services.email_service import EmailService
+                
+                # Debug: Check current SMTP settings
+                print(f"=== SMTP DEBUG ===")
+                for key in ['smtp_host', 'smtp_port', 'smtp_username', 'smtp_password', 'sender_email', 'sender_name']:
+                    setting = SiteSettings.query.filter_by(key=key).first()
+                    val = setting.get_value() if setting else None
+                    print(f"  {key}: '{val}' (type: {type(val).__name__})")
+                print(f"=================")
+                
                 success = EmailService.test_email(test_to)
                 if success:
                     flash(f'Test email sent to {test_to}!', 'success')
