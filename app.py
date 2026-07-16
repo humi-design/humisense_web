@@ -1314,8 +1314,27 @@ def admin_settings():
             admin.email = request.form.get('email')
             db.session.commit()
             flash('Profile updated successfully!', 'success')
+        
+        elif action == 'update_smtp':
+            # Update SMTP settings
+            smtp_fields = ['smtp_host', 'smtp_port', 'smtp_username', 'smtp_password', 'sender_email', 'sender_name']
+            for field in smtp_fields:
+                value = request.form.get(field, '')
+                setting = SiteSettings.query.filter_by(key=field).first()
+                if not setting:
+                    setting = SiteSettings(key=field, value_type='string')
+                    db.session.add(setting)
+                setting.set_value(value)
+            db.session.commit()
+            flash('Email settings saved successfully!', 'success')
     
-    return render_template('admin/settings.html', admin=admin)
+    # Get SMTP settings for template
+    smtp_settings = {}
+    for key in ['smtp_host', 'smtp_port', 'smtp_username', 'smtp_password', 'sender_email', 'sender_name']:
+        setting = SiteSettings.query.filter_by(key=key).first()
+        smtp_settings[key] = setting.get_value() if setting else ''
+    
+    return render_template('admin/settings.html', admin=admin, settings=smtp_settings)
 
 
 @app.route('/admin/create-user', methods=['GET', 'POST'])
