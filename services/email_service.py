@@ -37,8 +37,14 @@ class EmailService:
             sender_email = cls.get_setting('sender_email', 'noreply@humisense.com')
             sender_name = cls.get_setting('sender_name', 'HUMISENSE')
             
+            # Ensure port is integer
+            try:
+                smtp_port = int(smtp_port)
+            except (ValueError, TypeError):
+                smtp_port = 587
+            
             # Skip if SMTP not configured
-            if not smtp_host or smtp_host == 'localhost':
+            if not smtp_host or smtp_host == 'localhost' or not smtp_host.strip():
                 print(f"Email skipped - SMTP not configured. To: {to_email}")
                 return False
             
@@ -54,9 +60,10 @@ class EmailService:
             msg.attach(MIMEText(html_content, 'html'))
             
             # Send email
-            with smtplib.SMTP(smtp_host, smtp_port) as server:
+            with smtplib.SMTP(smtp_host, smtp_port, timeout=30) as server:
                 if smtp_port == 587:
                     server.starttls()
+                server.ehlo()
                 if smtp_username and smtp_password:
                     server.login(smtp_username, smtp_password)
                 server.send_message(msg)
@@ -67,6 +74,26 @@ class EmailService:
         except Exception as e:
             print(f"Email error: {e}")
             return False
+    
+    @classmethod
+    def test_email(cls, to_email):
+        """Test email configuration."""
+        subject = "HUMISENSE - Test Email"
+        html_content = """
+        <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; padding: 30px; text-align: center; border-radius: 8px;">
+                <h1>✅ Test Email Successful!</h1>
+            </div>
+            <div style="padding: 30px; background: #f9fafb; border-radius: 8px; margin-top: 20px;">
+                <p>Your SMTP settings are configured correctly.</p>
+                <p>This email was sent from the HUMISENSE Admin Panel.</p>
+            </div>
+        </body>
+        </html>
+        """
+        text_content = "Test email successful! Your SMTP settings are configured correctly."
+        return cls.send_email(to_email, subject, html_content, text_content, 'test')
     
     @classmethod
     def generate_confirmation_email(cls, registration, masterclass):

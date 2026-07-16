@@ -1327,6 +1327,18 @@ def admin_settings():
                 setting.set_value(value)
             db.session.commit()
             flash('Email settings saved successfully!', 'success')
+        
+        elif action == 'test_email':
+            test_to = request.form.get('test_email', '')
+            if test_to and '@' in test_to:
+                from services.email_service import EmailService
+                success = EmailService.test_email(test_to)
+                if success:
+                    flash(f'Test email sent to {test_to}!', 'success')
+                else:
+                    flash('Failed to send test email. Check your SMTP settings.', 'error')
+            else:
+                flash('Please enter a valid email address.', 'error')
     
     # Get SMTP settings for template
     smtp_settings = {}
